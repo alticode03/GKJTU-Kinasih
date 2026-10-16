@@ -107,39 +107,33 @@
   <script src="js/db.js"></script>
   <script src="js/ui.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var warta = DB.get('warta');
-      if (!warta || warta.length === 0) {
-        warta = [
-          { id: '1', title: 'Warta Minggu 04 Oktober 2026', date: '2026-10-04', pdfUrl: '#' },
-          { id: '2', title: 'Warta Minggu 27 September 2026', date: '2026-09-27', pdfUrl: '#' }
-        ];
-        DB.set('warta', warta);
-      }
+    document.addEventListener('DOMContentLoaded', async function() {
+      var warta = [];
+      try { warta = await DB.reload('warta'); }
+      catch (error) { console.warn('Warta Supabase tidak tersedia:', error.message); }
       var wHtml = '';
       warta.slice(0, 3).forEach(function(w) {
         wHtml += '<article class="warta-card"><a href="pages/warta.html" class="warta-link"><span class="warta-date">' + w.date + '</span><span class="warta-title">' + w.title + '</span><span class="warta-action">Baca Selengkapnya &rarr;</span></a></article>';
       });
       document.getElementById('homeWartaGrid').innerHTML = wHtml;
 
-      var events = DB.get('event');
-      if (!events || events.length === 0) {
-        events = [
-          { id: '1', title: 'Retreat Pemuda 2026', date: '2026-10-25', location: 'Wisma Kinasih, Bogor', desc: 'Pembinaan rohani dan keakraban pemuda jemaat.' },
-          { id: '2', title: 'Bakti Sosial Kasih', date: '2026-11-10', location: 'Halaman Gereja', desc: 'Pelayanan kesehatan gratis dan sembako murah.' }
-        ];
-        DB.set('event', events);
-      }
+      var events = [];
+      var eventPhotos = [];
+      try { events = await DB.reload('event'); eventPhotos = await DB.reload('event_photo', '?select=*'); }
+      catch (error) { console.warn('Event Supabase tidak tersedia:', error.message); }
+      var photosByEvent = {};
+      eventPhotos.forEach(function(p) { (photosByEvent[p.event_id] = photosByEvent[p.event_id] || []).push(p.photo_url); });
       var eHtml = '';
       events.slice(0, 2).forEach(function(e) {
         eHtml += '<article class="event-card">';
         eHtml += '<div class="event-images">';
-        (e.images || []).slice(0, 2).forEach(function(img) {
+        var imgs = photosByEvent[e.id] || [];
+        imgs.slice(0, 2).forEach(function(img) {
           eHtml += '<img src="' + img + '" alt="' + e.title + '" />'; });
-        if ((e.images || []).length === 0) {
+        if (imgs.length === 0) {
           eHtml += '<img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80" alt="Event" />'; }
         eHtml += '</div>';
-        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + e.date + '</p><p class="event-location">📍 ' + e.location + '</p><p>' + e.desc + '</p></div>';
+        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + (e.date || '-') + '</p><p class="event-location">📍 ' + (e.location || '-') + '</p><p>' + (e.description || '') + '</p></div>';
         eHtml += '</article>';
       });
       document.getElementById('homeEventGrid').innerHTML = eHtml;

@@ -76,31 +76,29 @@
   <script src="../js/db.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    function renderList() {
-      var renungan = DB.get('renungan');
+    async function renderList() {
+      var renungan = [];
+      try {
+        renungan = await DB.reload('renungan');
+      } catch (error) {
+        showToast('Gagal memuat renungan terbaru: ' + error.message, 'error');
+      }
       if (!renungan || renungan.length === 0) {
         renungan = [
-          {
-            id: '1',
-            title: 'Kasih yang Memulihkan',
-            date: '2026-10-05',
-            content: 'Di tengah tantangan hidup yang berat, kasih Tuhan selalu hadir membawa pengharapan baru bagi setiap orang yang percaya dan berserah kepada-Nya.'
-          },
-          {
-            id: '2',
-            title: 'Setia dalam Perkara Kecil',
-            date: '2026-09-28',
-            content: 'Kesetiaan sejati tidak diuji dari panggung besar, melainkan dari ketulusan hati kita saat melayani dalam hal-hal sederhana setiap hari.'
-          }
+          { id: '1', title: 'Kasih yang Memulihkan', date: '2026-10-05', content: 'Di tengah tantangan hidup yang berat, kasih Tuhan selalu hadir membawa pengharapan baru bagi setiap orang yang percaya dan berserah kepada-Nya.' },
+          { id: '2', title: 'Setia dalam Perkara Kecil', date: '2026-09-28', content: 'Kesetiaan sejati tidak diuji dari panggung besar, melainkan dari ketulusan hati kita saat melayani dalam hal-hal sederhana setiap hari.' }
         ];
-        DB.set('renungan', renungan);
       }
       var html = '';
       renungan.forEach(function(item) {
-        html += '<article class="renungan-item" data-title="' + (item.title || '').toLowerCase() + '" data-content="' + (item.content || '').toLowerCase() + '" data-date="' + (item.date || '') + '">';
-        html += '<div class="meta">📅 ' + item.date + '</div>';
-        html += '<h3>' + item.title + '</h3>';
-        html += '<p>' + item.content + '</p>';
+        var title = item.title || item.imageName || 'Renungan Harian';
+        var content = item.content || 'Renungan untuk menguatkan iman dan langkah hidup sehari-hari.';
+        var image = item.image_url || item.imageUrl || item.imageData || '';
+        html += '<article class="renungan-item" data-title="' + title.toLowerCase() + '" data-content="' + content.toLowerCase() + '" data-date="' + (item.date || '') + '">';
+        if (image) html += '<img src="' + image + '" alt="' + title + '" style="width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin-bottom:1rem;">';
+        html += '<div class="meta">📅 ' + (item.date || '-') + '</div>';
+        html += '<h3>' + title + '</h3>';
+        html += '<p>' + content + '</p>';
         html += '</article>';
       });
       document.getElementById('renunganList').innerHTML = html;

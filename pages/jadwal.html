@@ -78,18 +78,8 @@
   <script src="../js/db.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var jadwal = DB.get('jadwal');
-      if (!jadwal || jadwal.length === 0) {
-        jadwal = [
-          { id: '1', name: 'Ibadah Raya Umum 1', day: 'Minggu', time: '06:30 WIB', location: 'Gedung Gereja Utama' },
-          { id: '2', name: 'Ibadah Raya Umum 2', day: 'Minggu', time: '09:00 WIB', location: 'Gedung Gereja Utama' },
-          { id: '3', name: 'Sekolah Minggu', day: 'Minggu', time: '09:00 WIB', location: 'Ruang Anak & Remaja' },
-          { id: '4', name: 'Persekutuan Pemuda', day: 'Sabtu', time: '18:00 WIB', location: 'Ruang Serbaguna' },
-          { id: '5', name: 'Doa Malam', day: 'Rabu', time: '19:00 WIB', location: 'Gedung Gereja Utama' }
-        ];
-        DB.set('jadwal', jadwal);
-      }
+    document.addEventListener('DOMContentLoaded', async function() {
+      var jadwal = await DB.reload('jadwal');
       var html = '';
       jadwal.forEach(function(j) {
         html += '<div class="schedule-card">';

@@ -78,20 +78,22 @@
   <script src="../js/db.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var events = DB.get('event');
-      if (!events || events.length === 0) {
-        events = [
-          { id: '1', title: 'Retreat Pemuda 2026', date: '2026-10-25', location: 'Wisma Kinasih, Bogor', desc: 'Pembinaan rohani dan keakraban pemuda jemaat.', images: ['https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80', 'https://images.unsplash.com/photo-1544027993-33d4b2033737?w=600&q=80'] },
-          { id: '2', title: 'Bakti Sosial Kasih', date: '2026-11-10', location: 'Halaman Gereja', desc: 'Pelayanan kesehatan gratis dan sembako murah.', images: ['https://images.unsplash.com/photo-1527515055213-79cbd663034e?w=600&q=80', 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&q=80'] }
-        ];
-        DB.set('event', events);
+    document.addEventListener('DOMContentLoaded', async function() {
+      var events = [];
+      var eventPhotos = [];
+      try {
+        events = await DB.reload('event');
+        eventPhotos = await DB.reload('event_photo', '?select=*');
+      } catch (error) {
+        showToast('Gagal memuat event: ' + error.message, 'error');
       }
+      var photosByEvent = {};
+      eventPhotos.forEach(function(p) { (photosByEvent[p.event_id] = photosByEvent[p.event_id] || []).push(p.photo_url); });
       var html = '';
       events.forEach(function(e) {
         html += '<article class="event-card">';
         html += '<div class="event-images">';
-        var eventImages = e.photos || e.images || [];
+        var eventImages = photosByEvent[e.id] || [];
         eventImages.forEach(function(img) {
           html += '<img src="' + img + '" alt="' + e.title + '" />'; });
         if (eventImages.length === 0) {
@@ -99,16 +101,16 @@
         html += '</div>';
         html += '<div class="event-info">';
         html += '<h3>' + e.title + '</h3>';
-        html += '<p class="event-date">📅 ' + e.date + '</p>';
-        html += '<p class="event-location">📍 ' + e.location + '</p>';
-        html += '<p>' + e.desc + '</p>';
-        if (e.driveFolderUrl) {
-          html += '<p><a class="btn-sm btn-primary" href="' + e.driveFolderUrl + '" target="_blank" rel="noopener">📸 Lihat Dokumentasi Lengkap</a></p>';
+        html += '<p class="event-date">📅 ' + (e.date || '-') + '</p>';
+        html += '<p class="event-location">📍 ' + (e.location || '-') + '</p>';
+        html += '<p>' + (e.description || '') + '</p>';
+        if (e.drive_folder_url) {
+          html += '<p><a class="btn-sm btn-primary" href="' + e.drive_folder_url + '" target="_blank" rel="noopener">📸 Lihat Dokumentasi Lengkap</a></p>';
         }
         html += '</div>';
         html += '</article>';
       });
-      document.getElementById('eventGrid').innerHTML = html;
+      document.getElementById('eventGrid').innerHTML = html || '<p style="color:var(--muted);">Belum ada event.</p>';
     });
   </script>
 </body>

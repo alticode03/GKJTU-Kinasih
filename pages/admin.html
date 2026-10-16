@@ -90,6 +90,14 @@
           <h3 style="margin-bottom: 1rem;">Tambah Renungan</h3>
           <form class="auth-form" onsubmit="saveRenungan(event)">
             <div class="form-group">
+              <label for="renunganTitle">Judul Renungan</label>
+              <input type="text" id="renunganTitle" required placeholder="Contoh: Kasih yang Memulihkan">
+            </div>
+            <div class="form-group">
+              <label for="renunganContent">Isi Renungan</label>
+              <textarea id="renunganContent" rows="4" required placeholder="Tuliskan renungan singkat..."></textarea>
+            </div>
+            <div class="form-group">
               <label>Tanggal</label>
               <input type="date" id="renunganDate" required>
             </div>
@@ -232,7 +240,7 @@
       : '/api/upload-event';
 
     function checkAuth() {
-      var isAuth = localStorage.getItem('church_loggedIn') === 'true';
+      var isAuth = window.adminAuthenticated === true;
       document.getElementById('loginView').style.display = isAuth ? 'none' : 'block';
       document.getElementById('dashboardView').style.display = isAuth ? 'block' : 'none';
       var logoutBtn = document.getElementById('logoutBtn');
@@ -245,7 +253,7 @@
       var email = document.getElementById('adminEmail').value;
       var pass = document.getElementById('adminPass').value;
       if (email === 'admin@gereja.id' && pass === 'admin') {
-        localStorage.setItem('church_loggedIn', 'true');
+        window.adminAuthenticated = true;
         showToast('Berhasil login sebagai admin', 'success');
         checkAuth();
       } else {
@@ -254,7 +262,7 @@
     }
 
     function handleLogout() {
-      localStorage.removeItem('church_loggedIn');
+      window.adminAuthenticated = false;
       showToast('Berhasil logout', 'info');
       checkAuth();
     }
@@ -284,81 +292,63 @@
       btn.style.display = 'none';
     });
 
-    function renderAllAdmin() {
-      renderAdminWarta();
-      renderAdminRenungan();
-      renderAdminJadwal();
-      renderAdminEvent();
+    async function renderAllAdmin() {
+      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent()]);
     }
 
-    function renderAdminWarta() {
-      var items = DB.get('warta');
+    async function renderAdminWarta() {
+      var items = [];
+      try { items = await DB.reload('warta'); } catch (error) { showToast(error.message, 'error'); }
       var html = '';
       items.forEach(function(item) {
-        var pdfLink = item.pdfData ? '<a href="' + item.pdfData + '" download="' + (item.pdfName || 'warta.pdf') + '" class="btn-sm btn-soft" style="margin-left: 8px;">📥 Unduh PDF</a>' : '';
+        var pdfUrl = item.pdf_url || item.pdfData;
+        var pdfName = item.pdf_name || item.pdfName || 'warta.pdf';
+        var pdfLink = pdfUrl ? '<a href="' + pdfUrl + '" download="' + pdfName + '" class="btn-sm btn-soft" style="margin-left: 8px;">📥 Unduh PDF</a>' : '';
         html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminWartaList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data warta.</p>';
     }
 
-    function saveWarta(e) {
+    async function saveWarta(e) {
       e.preventDefault();
-      if (!selectedWartaPdf) {
-        showToast('Silakan pilih file PDF warta', 'error');
-        return;
-      }
-      var reader = new FileReader();
-      reader.onload = function(evt) {
-        var item = {
-          title: document.getElementById('wartaTitle').value,
-          date: document.getElementById('wartaDate').value,
-          pdfData: evt.target.result,
-          pdfName: selectedWartaPdf.name
-        };
-        DB.add('warta', item);
-        e.target.reset();
-        selectedWartaPdf = null;
-        document.getElementById('wartaPdfPreview').innerHTML = '';
-        showToast('Warta berhasil ditambahkan', 'success');
-        renderAdminWarta();
-      };
-      reader.readAsDataURL(selectedWartaPdf);
+      if (!selectedWartaPdf) { showToast('Silakan pilih file PDF warta', 'error'); return; }
+      var file = selectedWartaPdf;
+      try {
+        var filename = DB.filename(file.name, '.pdf');
+        var pdfUrl = await DB.upload('warta', filename, file, 'application/pdf');
+        await DB.add('warta', { title: document.getElementById('wartaTitle').value.trim(), date: document.getElementById('wartaDate').value, pdf_url: pdfUrl, pdf_name: file.name });
+        e.target.reset(); selectedWartaPdf = null; document.getElementById('wartaPdfPreview').innerHTML = '';
+        showToast('Warta berhasil ditambahkan', 'success'); await renderAdminWarta();
+      } catch (error) { showToast('Gagal menyimpan warta: ' + error.message, 'error'); }
     }
 
-    function renderAdminRenungan() {
-      var items = DB.get('renungan');
+    async function renderAdminRenungan() {
+      var items = [];
+      try { items = await DB.reload('renungan'); } catch (error) { showToast(error.message, 'error'); }
       var html = '';
       items.forEach(function(item) {
-        html += '<div class="admin-item"><div><strong>Renungan</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'renungan\',\'' + item.id + '\')">Hapus</button></div>';
+        var label = item.title || 'Renungan';
+        html += '<div class="admin-item"><div><strong>' + label + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'renungan\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminRenunganList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data renungan.</p>';
     }
 
-    function saveRenungan(e) {
+    async function saveRenungan(e) {
       e.preventDefault();
-      if (!selectedRenunganImage) {
-        showToast('Silakan pilih gambar renungan', 'error');
-        return;
-      }
-      var reader = new FileReader();
-      reader.onload = function(evt) {
-        var item = {
-          date: document.getElementById('renunganDate').value,
-          imageData: evt.target.result,
-          imageName: selectedRenunganImage.name
-        };
-        DB.add('renungan', item);
-        e.target.reset();
-        selectedRenunganImage = null;
-        document.getElementById('renunganImagePreview').innerHTML = '';
-        showToast('Renungan berhasil ditambahkan', 'success');
-        renderAdminRenungan();
-      };
-      reader.readAsDataURL(selectedRenunganImage);
+      if (!selectedRenunganImage) { showToast('Silakan pilih gambar renungan', 'error'); return; }
+      try {
+        var compressed = await ImageCompressor.compress(selectedRenunganImage);
+        var blob = await (await fetch(compressed.dataUrl)).blob();
+        var filename = DB.filename(selectedRenunganImage.name, '.webp');
+        var imageUrl = await DB.upload('renungan', filename, blob, 'image/webp');
+        await DB.add('renungan', { date: document.getElementById('renunganDate').value, image_url: imageUrl, image_name: filename });
+        e.target.reset(); selectedRenunganImage = null; document.getElementById('renunganImagePreview').innerHTML = '';
+        showToast('Renungan berhasil ditambahkan', 'success'); await renderAdminRenungan();
+      } catch (error) { showToast('Gagal menyimpan renungan: ' + error.message, 'error'); }
     }
 
-    function renderAdminJadwal() {
-      var items = DB.get('jadwal');
+    async function renderAdminJadwal() {
+      var items = await DB.reload('jadwal');
       var html = '';
       items.forEach(function(item) {
         var scheduleType = item.type === 'khusus' ? 'Ibadah Khusus' : 'Ibadah Rutin';
@@ -368,7 +358,7 @@
       document.getElementById('adminJadwalList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data jadwal.</p>';
     }
 
-    function saveJadwal(e) {
+    async function saveJadwal(e) {
       e.preventDefault();
       var type = document.querySelector('input[name="jadwalType"]:checked').value;
       var dateValue = document.getElementById('jadwalDate').value;
@@ -386,7 +376,7 @@
         time: document.getElementById('jadwalTime').value,
         location: document.getElementById('jadwalLocation').value
       };
-      DB.add('jadwal', item);
+      await DB.add('jadwal', item);
       e.target.reset();
       showToast('Jadwal berhasil ditambahkan', 'success');
       renderAdminJadwal();
@@ -555,12 +545,18 @@
       renderPhotoPreviews();
     }
 
-    function renderAdminEvent() {
-      var items = DB.get('event');
+    async function renderAdminEvent() {
+      var items = await DB.reload('event');
+      var photoRows = [];
+      try { photoRows = await DB.reload('event_photo', '?select=event_id'); } catch (e) {}
+      var countByEvent = {};
+      photoRows.forEach(function(p) { countByEvent[p.event_id] = (countByEvent[p.event_id] || 0) + 1; });
       var html = '';
       items.forEach(function(item) {
-        var photoCount = item.photos && item.photos.length ? item.photos.length : 0;
-        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') • ' + photoCount + ' foto</span>' + (item.driveFolderUrl ? ' • <a href="' + item.driveFolderUrl + '" target="_blank" rel="noopener">📂 Buka folder Drive</a>' : '') + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
+        var photoCount = countByEvent[item.id] || 0;
+        var folderUrl = item.drive_folder_url || item.driveFolderUrl || '';
+        var folderLink = folderUrl ? ' • <a href="' + folderUrl + '" target="_blank" rel="noopener">📂 Buka folder Drive</a>' : '';
+        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') • ' + photoCount + ' foto</span>' + folderLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminEventList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data event.</p>';
     }
@@ -596,14 +592,24 @@
       }).then(function(response) {
         if (!response.ok) throw new Error('Server proxy/Google Apps Script merespons HTTP ' + response.status);
         return response.json();
-      }).then(function(result) {
+      }).then(async function(result) {
         if (result.status !== 'success' || !result.folderUrl) {
           throw new Error(result.message || 'Google Apps Script tidak mengembalikan URL folder.');
         }
         item.driveFolderUrl = result.folderUrl;
         item.driveFolderId = result.folderId || '';
         if (Array.isArray(result.photos) && result.photos.length) item.photos = result.photos;
-        DB.add('event', item);
+        var savedEvent = await DB.add('event', { title: item.title, date: item.date, location: item.location, description: item.desc, drive_folder_url: item.driveFolderUrl, drive_folder_id: item.driveFolderId });
+        if (Array.isArray(item.photos) && item.photos.length && savedEvent) {
+          for (var pi = 0; pi < item.photos.length; pi++) {
+            var photo = item.photos[pi];
+            var photoUrl = typeof photo === 'string' ? photo : (photo.url || photo.link || '');
+            var photoName = typeof photo === 'string' ? '' : (photo.name || '');
+            if (photoUrl) {
+              try { await DB.add('event_photo', { event_id: savedEvent.id, photo_url: photoUrl, photo_name: photoName }); } catch (photoErr) { console.warn('Gagal simpan event_photo:', photoErr.message); }
+            }
+          }
+        }
         form.reset();
         selectedEventPhotos = [];
         document.getElementById('eventPhotos').value = '';
@@ -622,11 +628,25 @@
       });
     }
 
-    function deleteItem(type, id) {
-      if (confirm('Yakin ingin menghapus item ini?')) {
-        DB.remove(type, id);
+    async function deleteItem(type, id) {
+      if (!confirm('Yakin ingin menghapus item ini?')) return;
+      try {
+        if (type === 'event') {
+          try { await DB.removeWhere('event_photo', 'event_id=eq.' + encodeURIComponent(id)); } catch (photoErr) { console.warn('Tidak ada event_photo yang perlu dihapus:', photoErr.message); }
+        } else {
+          var rows = await DB.reload(type, '?select=*&id=eq.' + encodeURIComponent(id));
+          var row = rows && rows[0];
+          if (row) {
+            var fileUrl = type === 'warta' ? row.pdf_url : row.image_url;
+            var m = String(fileUrl || '').match(/\/storage\/v1\/object\/public\/[^/]+\/(.+)/);
+            if (m) await DB.removeFile(type, decodeURIComponent(m[1]));
+          }
+        }
+        await DB.remove(type, id);
         showToast('Item berhasil dihapus', 'info');
-        renderAllAdmin();
+        await renderAllAdmin();
+      } catch (error) {
+        showToast('Gagal menghapus item: ' + error.message, 'error');
       }
     }
 

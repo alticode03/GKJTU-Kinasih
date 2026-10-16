@@ -76,24 +76,19 @@
   <script src="../js/db.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    function renderList() {
-      var warta = DB.get('warta');
-      if (!warta || warta.length === 0) {
-        warta = [
-          { id: '1', title: 'Warta Minggu 04 Oktober 2026', date: '2026-10-04', pdfUrl: 'https://example.com/warta-2026-10-04.pdf' },
-          { id: '2', title: 'Warta Minggu 27 September 2026', date: '2026-09-27', pdfUrl: 'https://example.com/warta-2026-09-27.pdf' },
-          { id: '3', title: 'Warta Minggu 20 September 2026', date: '2026-09-20', pdfUrl: 'https://example.com/warta-2026-09-20.pdf' }
-        ];
-        DB.set('warta', warta);
-      }
+    async function renderList() {
+      var warta = [];
+      try { warta = await DB.reload('warta'); }
+      catch (error) { showToast('Gagal memuat warta terbaru: ' + error.message, 'error'); }
       var html = '';
       warta.forEach(function(item) {
+        var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
         html += '<article class="warta-card" data-title="' + (item.title || '').toLowerCase() + '" data-date="' + (item.date || '') + '">';
         html += '<div class="warta-link">';
         html += '<span class="warta-date">' + item.date + '</span>';
         html += '<span class="warta-title">' + item.title + '</span>';
-        if (item.pdfUrl && item.pdfUrl !== '#') {
-          html += '<a href="' + item.pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF &rarr;</a>';
+        if (pdfUrl && pdfUrl !== '#') {
+          html += '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF &rarr;</a>';
         } else {
           html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
         }
