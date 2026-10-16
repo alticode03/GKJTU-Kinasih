@@ -24,6 +24,7 @@
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('renungan')">Renungan</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kepemimpinan')">Kepemimpinan</a>
       <a href="javascript:void(0)" class="admin-nav-link logout" onclick="handleLogout()">Logout</a>
     </nav>
   </header>
@@ -55,6 +56,7 @@
         <button class="admin-tab" onclick="switchTab('renungan')">Renungan</button>
         <button class="admin-tab" onclick="switchTab('jadwal')">Jadwal Ibadah</button>
         <button class="admin-tab" onclick="switchTab('event')">Event</button>
+        <button class="admin-tab" onclick="switchTab('kepemimpinan')">Kepemimpinan</button>
       </div>
 
       <!-- PANEL WARTA -->
@@ -195,6 +197,27 @@
         <h3 style="margin-bottom: 1rem;">Daftar Event</h3>
         <div id="adminEventList"></div>
       </div>
+
+      <!-- PANEL KEPEMIMPINAN -->
+      <div id="panel-kepemimpinan" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h3>
+          <form class="auth-form" onsubmit="saveKepemimpinan(event)">
+            <div class="form-group"><label for="leaderName">Nama</label><input id="leaderName" type="text" required maxlength="120" placeholder="Nama lengkap"></div>
+            <div class="form-group"><label for="leaderPosition">Jabatan / Pelayanan</label><input id="leaderPosition" type="text" required maxlength="120" placeholder="Contoh: Ketua Majelis"></div>
+            <div class="form-group"><label for="leaderOrder">Urutan tampil</label><input id="leaderOrder" type="number" min="0" value="0"></div>
+            <div class="form-group">
+              <label>Foto (opsional)</label>
+              <input type="file" id="leaderPhoto" accept="image/jpeg,image/png,image/webp" class="file-input" hidden>
+              <label for="leaderPhoto" class="file-input-label">📎 Pilih foto pengurus</label>
+              <div id="leaderPhotoPreview" class="photo-preview-grid"></div>
+            </div>
+            <button type="submit" class="btn-primary" id="saveLeaderButton">Simpan Pengurus</button>
+          </form>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Kepemimpinan</h3>
+        <div id="adminKepemimpinanList"></div>
+      </div>
     </div>
   </main>
 
@@ -293,7 +316,7 @@
     });
 
     async function renderAllAdmin() {
-      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent()]);
+      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent(), renderAdminKepemimpinan()]);
     }
 
     async function renderAdminWarta() {
@@ -488,6 +511,17 @@
     });
 
     // Renungan image upload handler
+    document.getElementById('leaderPhoto').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      var preview = document.getElementById('leaderPhotoPreview');
+      preview.innerHTML = '';
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar', 'error'); e.target.value = ''; return; }
+      var reader = new FileReader();
+      reader.onload = function(evt) { preview.innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview foto pengurus"></div>'; };
+      reader.readAsDataURL(file);
+    });
+
     document.getElementById('renunganImageFile').addEventListener('change', function(e) {
       var file = e.target.files[0];
       if (!file) return;
@@ -628,6 +662,46 @@
       });
     }
 
+    async function renderAdminKepemimpinan() {
+      var items = [];
+      try { items = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,created_at.asc'); } catch (error) { showToast(error.message, 'error'); }
+      var html = '';
+      items.forEach(function(item) {
+        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.position + ' • urutan ' + item.sort_order + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'kepemimpinan\',\'' + item.id + '\')">Hapus</button></div>';
+      });
+      document.getElementById('adminKepemimpinanList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data kepemimpinan.</p>';
+    }
+
+    async function saveKepemimpinan(e) {
+      e.preventDefault();
+      var button = document.getElementById('saveLeaderButton');
+      var photo = document.getElementById('leaderPhoto').files[0];
+      button.disabled = true;
+      try {
+        var photoUrl = '';
+        var photoName = '';
+        if (photo) {
+          var compressed = await ImageCompressor.compress(photo);
+          var blob = await (await fetch(compressed.dataUrl)).blob();
+          photoName = DB.filename(photo.name, '.webp');
+          photoUrl = await DB.upload('kepemimpinan', photoName, blob, 'image/webp');
+        }
+        await DB.add('kepemimpinan', {
+          name: document.getElementById('leaderName').value.trim(),
+          position: document.getElementById('leaderPosition').value.trim(),
+          photo_url: photoUrl,
+          photo_name: photoName,
+          sort_order: parseInt(document.getElementById('leaderOrder').value, 10) || 0,
+          is_active: true
+        });
+        e.target.reset();
+        document.getElementById('leaderPhotoPreview').innerHTML = '';
+        showToast('Pengurus berhasil disimpan', 'success');
+        await renderAdminKepemimpinan();
+      } catch (error) { showToast('Gagal menyimpan pengurus: ' + error.message, 'error'); }
+      finally { button.disabled = false; }
+    }
+
     async function deleteItem(type, id) {
       if (!confirm('Yakin ingin menghapus item ini?')) return;
       try {
@@ -637,7 +711,7 @@
           var rows = await DB.reload(type, '?select=*&id=eq.' + encodeURIComponent(id));
           var row = rows && rows[0];
           if (row) {
-            var fileUrl = type === 'warta' ? row.pdf_url : row.image_url;
+            var fileUrl = type === 'warta' ? row.pdf_url : (type === 'renungan' ? row.image_url : row.photo_url);
             var m = String(fileUrl || '').match(/\/storage\/v1\/object\/public\/[^/]+\/(.+)/);
             if (m) await DB.removeFile(type, decodeURIComponent(m[1]));
           }

@@ -10,7 +10,7 @@ window.SUPABASE_CONFIG = {
 var DB = (function () {
   var base = window.SUPABASE_CONFIG.url;
   var key = window.SUPABASE_CONFIG.anonKey;
-  var buckets = { warta: 'warta-pdfs', renungan: 'renungan-images' };
+  var buckets = { warta: 'warta-pdfs', renungan: 'renungan-images', kepemimpinan: 'kepemimpinan-images' };
 
   function headers(extra) {
     var result = { 'Content-Type': 'application/json', Prefer: 'return=representation' };
