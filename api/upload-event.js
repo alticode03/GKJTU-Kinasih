@@ -10,12 +10,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    const requestBody = typeof req.body === 'string'
+      ? req.body
+      : JSON.stringify(req.body || {});
+
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'text/plain;charset=utf-8'
       },
-      body: JSON.stringify(req.body)
+      body: requestBody
     });
 
     const text = await response.text();
@@ -30,7 +35,15 @@ export default async function handler(req, res) {
       };
     }
 
-    return res.status(response.ok ? 200 : 502).json(data);
+    if (!response.ok) {
+      return res.status(502).json({
+        success: false,
+        error: 'Google Apps Script merespons HTTP ' + response.status,
+        upstream: data
+      });
+    }
+
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(502).json({
       success: false,
