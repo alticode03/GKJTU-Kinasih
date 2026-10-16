@@ -1,7 +1,7 @@
 // ==================== SUPABASE CONFIG (Placeholder) ====================
 window.SUPABASE_CONFIG = {
-  url: 'YOUR_SUPABASE_URL_HERE',
-  anonKey: 'YOUR_SUPABASE_ANON_KEY_HERE'
+  url: 'https://rqswwfkkqaqphdnygsjw.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxc3d3ZmtrcWFxcGhkbnlnc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwNzQ1NjQsImV4cCI6MjEwNzY1MDU2NH0.fiiYsKL57rgbAazben2n3uwRkDGwMCKr7XFcP8PgjnI'
 };
 
 // ==================== DATA LAYER ====================
