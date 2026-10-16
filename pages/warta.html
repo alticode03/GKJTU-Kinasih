@@ -35,7 +35,7 @@
     </div>
     <div class="search-box">
       <input type="text" id="wartaSearch" placeholder="Cari judul atau tanggal warta..." oninput="filterWarta()">
-      <button class="search-clear" onclick="clearSearch()">Ã—</button>
+      <button class="search-clear" onclick="clearSearch()">×</button>
     </div>
     <div class="warta-grid" id="wartaList"></div>
   </main>
@@ -93,7 +93,7 @@
         html += '<span class="warta-date">' + item.date + '</span>';
         html += '<span class="warta-title">' + item.title + '</span>';
         if (item.pdfUrl && item.pdfUrl !== '#') {
-          html += '<a href="' + item.pdfUrl + '" target="_blank" rel="noopener" class="warta-action">ðŸ“„ Unduh Warta PDF &rarr;</a>';
+          html += '<a href="' + item.pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF &rarr;</a>';
         } else {
           html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
         }

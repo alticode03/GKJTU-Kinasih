@@ -73,7 +73,7 @@
             <div class="form-group">
               <label>Upload PDF Warta (max 5MB)</label>
               <input type="file" id="wartaPdfFile" accept=".pdf" class="file-input" hidden>
-              <label for="wartaPdfFile" class="file-input-label">ðŸ“Ž Pilih file PDF</label>
+              <label for="wartaPdfFile" class="file-input-label">📎 Pilih file PDF</label>
               <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 5MB, format PDF</small>
               <div id="wartaPdfPreview" class="photo-preview-grid"></div>
             </div>
@@ -96,7 +96,7 @@
             <div class="form-group">
               <label>Upload Gambar Renungan</label>
               <input type="file" id="renunganImageFile" accept="image/*" class="file-input" hidden>
-              <label for="renunganImageFile" class="file-input-label">ðŸ“Ž Pilih gambar renungan</label>
+              <label for="renunganImageFile" class="file-input-label">📎 Pilih gambar renungan</label>
               <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, atau WEBP</small>
               <div id="renunganImagePreview" class="photo-preview-grid"></div>
             </div>
@@ -176,7 +176,7 @@
             <div class="form-group">
               <label>Foto Event (max 3)</label>
               <input type="file" id="eventPhotos" accept="image/*" multiple class="file-input" hidden>
-              <label for="eventPhotos" class="file-input-label">ðŸ“Ž Pilih foto event</label>
+              <label for="eventPhotos" class="file-input-label">📎 Pilih foto event</label>
               <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 3 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
               <div id="eventPhotoPreview" class="photo-preview-grid"></div>
             </div>
@@ -295,7 +295,7 @@
       var items = DB.get('warta');
       var html = '';
       items.forEach(function(item) {
-        var pdfLink = item.pdfData ? '<a href="' + item.pdfData + '" download="' + (item.pdfName || 'warta.pdf') + '" class="btn-sm btn-soft" style="margin-left: 8px;">ðŸ“¥ Unduh PDF</a>' : '';
+        var pdfLink = item.pdfData ? '<a href="' + item.pdfData + '" download="' + (item.pdfName || 'warta.pdf') + '" class="btn-sm btn-soft" style="margin-left: 8px;">📥 Unduh PDF</a>' : '';
         html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminWartaList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data warta.</p>';
@@ -362,8 +362,8 @@
       var html = '';
       items.forEach(function(item) {
         var scheduleType = item.type === 'khusus' ? 'Ibadah Khusus' : 'Ibadah Rutin';
-        var scheduleDate = item.type === 'khusus' ? ' â€¢ ' + (item.date || '-') : '';
-        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + scheduleType + scheduleDate + ' â€¢ ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
+        var scheduleDate = item.type === 'khusus' ? ' • ' + (item.date || '-') : '';
+        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + scheduleType + scheduleDate + ' • ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminJadwalList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data jadwal.</p>';
     }
@@ -421,9 +421,9 @@
       var monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
       var dayNames = ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
       var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">' +
-        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(-1)">â€¹</button>' +
+        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(-1)">‹</button>' +
         '<strong>' + monthNames[month] + ' ' + year + '</strong>' +
-        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(1)">â€º</button></div>';
+        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(1)">›</button></div>';
       html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:.78rem;color:var(--muted);">';
       dayNames.forEach(function(day) { html += '<strong>' + day + '</strong>'; });
       for (var i = 0; i < firstDay; i++) html += '<span></span>';
@@ -492,7 +492,7 @@
         if (selectedEventPhotos.length) {
           var totalOriginal = selectedEventPhotos.reduce(function(sum, photo) { return sum + photo.originalSize; }, 0);
           var totalCompressed = selectedEventPhotos.reduce(function(sum, photo) { return sum + photo.size; }, 0);
-          showToast('Foto siap disimpan: ' + formatBytes(totalOriginal) + ' â†’ ' + formatBytes(totalCompressed), 'success');
+          showToast('Foto siap disimpan: ' + formatBytes(totalOriginal) + ' → ' + formatBytes(totalCompressed), 'success');
         }
       });
     });
@@ -536,7 +536,7 @@
       }
       selectedWartaPdf = file;
       var container = document.getElementById('wartaPdfPreview');
-      container.innerHTML = '<div class="photo-preview-item" style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><span style="font-size:24px">ðŸ“„</span><p style="margin:4px 0 0; font-size:12px">' + file.name + '</p></div></div>';
+      container.innerHTML = '<div class="photo-preview-item" style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><span style="font-size:24px">📄</span><p style="margin:4px 0 0; font-size:12px">' + file.name + '</p></div></div>';
     });
 
     function renderPhotoPreviews() {
@@ -560,7 +560,7 @@
       var html = '';
       items.forEach(function(item) {
         var photoCount = item.photos && item.photos.length ? item.photos.length : 0;
-        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') â€¢ ' + photoCount + ' foto</span>' + (item.driveFolderUrl ? ' â€¢ <a href="' + item.driveFolderUrl + '" target="_blank" rel="noopener">ðŸ“‚ Buka folder Drive</a>' : '') + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
+        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') • ' + photoCount + ' foto</span>' + (item.driveFolderUrl ? ' • <a href="' + item.driveFolderUrl + '" target="_blank" rel="noopener">📂 Buka folder Drive</a>' : '') + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminEventList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data event.</p>';
     }
@@ -609,7 +609,7 @@
         document.getElementById('eventPhotos').value = '';
         renderPhotoPreviews();
         renderAdminEvent();
-        resultBox.innerHTML = 'Event tersimpan dan folder Drive berhasil dibuat. <a href="' + result.folderUrl + '" target="_blank" rel="noopener">ðŸ“‚ Buka folder untuk mengunggah dokumentasi lainnya</a>';
+        resultBox.innerHTML = 'Event tersimpan dan folder Drive berhasil dibuat. <a href="' + result.folderUrl + '" target="_blank" rel="noopener">📂 Buka folder untuk mengunggah dokumentasi lainnya</a>';
         resultBox.style.display = 'block';
         showToast('Event berhasil disimpan dan folder Drive dibuat', 'success');
       }).catch(function(error) {

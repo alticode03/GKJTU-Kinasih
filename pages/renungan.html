@@ -35,7 +35,7 @@
     </div>
     <div class="search-box">
       <input type="text" id="renunganSearch" placeholder="Cari judul atau isi renungan..." oninput="filterRenungan()">
-      <button class="search-clear" onclick="clearSearch()">Ã—</button>
+      <button class="search-clear" onclick="clearSearch()">×</button>
     </div>
     <div class="renungan-list" id="renunganList"></div>
   </main>
@@ -98,7 +98,7 @@
       var html = '';
       renungan.forEach(function(item) {
         html += '<article class="renungan-item" data-title="' + (item.title || '').toLowerCase() + '" data-content="' + (item.content || '').toLowerCase() + '" data-date="' + (item.date || '') + '">';
-        html += '<div class="meta">ðŸ“… ' + item.date + '</div>';
+        html += '<div class="meta">📅 ' + item.date + '</div>';
         html += '<h3>' + item.title + '</h3>';
         html += '<p>' + item.content + '</p>';
         html += '</article>';
