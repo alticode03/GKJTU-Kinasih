@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GKJ TU Kinasih - Beranda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <img src="assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
+      <span>GKJ TU Kinasih</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu" id="navMenu">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="pages/tentang.html" class="nav-link">Tentang</a>
+      <a href="pages/warta.html" class="nav-link">Warta</a>
+      <a href="pages/renungan.html" class="nav-link">Renungan</a>
+      <a href="pages/jadwal.html" class="nav-link">Jadwal</a>
+      <a href="pages/event.html" class="nav-link">Event</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">ðŸŒ¸ Pintu Kami Selalu Terbuka Bagi Anda</div>
+          <h1>Ruang Penuh Kasih, <em>Tempat Jiwa Pulih</em></h1>
+          <p>Selamat datang di GKJ TU Kinasih. Komunitas hangat yang menerima Anda apa adanya, menemani Anda bertumbuh dalam iman dan pengharapan yang hidup.</p>
+          <div class="hero-btns">
+            <a href="pages/jadwal.html" class="btn btn-peach">Jadwal Ibadah</a>
+            <a href="pages/warta.html" class="btn btn-soft">Baca Warta</a>
+          </div>
+        </div>
+        <div class="hero-image" style="aspect-ratio: 3/4; position: relative; overflow: hidden; border-radius: var(--radius);">
+          <img src="assets/images/hero-image.webp" alt="GKJ TU Kinasih" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: var(--radius);" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Warta Terbaru</h2>
+        <p>Informasi dan pengumuman terkini pelayanan jemaat GKJ TU Kinasih</p>
+      </div>
+      <div class="warta-grid" id="homeWartaGrid"></div>
+      <p class="view-all"><a href="pages/warta.html">Lihat Semua Warta &rarr;</a></p>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Event Mendatang</h2>
+        <p>Kegiatan persekutuan dan pelayanan bersama dalam waktu dekat</p>
+      </div>
+      <div class="event-grid" id="homeEventGrid"></div>
+      <p class="view-all"><a href="pages/event.html">Lihat Semua Event &rarr;</a></p>
+    </section>
+
+    <div class="warm-banner">
+      <h3>Ingin Bergabung dalam Persekutuan?</h3>
+      <p>Mari bertumbuh bersama dalam iman, doa, dan kasih Kristus. Pintu kami selalu terbuka untuk Anda dan keluarga.</p>
+      <a href="pages/jadwal.html" class="btn btn-peach">Lihat Jadwal Ibadah</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>GKJ TU Kinasih</h3>
+        <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pages/tentang.html">Tentang Kami</a></li>
+          <li><a href="pages/warta.html">Warta Jemaat</a></li>
+          <li><a href="pages/renungan.html">Renungan Harian</a></li>
+          <li><a href="pages/jadwal.html">Jadwal Ibadah</a></li>
+          <li><a href="pages/event.html">Event & Kegiatan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p>Jl. Jenderal Sudirman No. 123<br>Jakarta, 12345</p>
+        <p style="margin-top: 8px;"><a href="https://maps.google.com/?q=Gereja+Kristus" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak Pastoral</h4>
+        <p>Telepon: (021) 1234-5678<br>Email: info@gkjtukinasih.id</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 GKJ TU Kinasih. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="js/db.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var warta = DB.get('warta');
+      if (!warta || warta.length === 0) {
+        warta = [
+          { id: '1', title: 'Warta Minggu 04 Oktober 2026', date: '2026-10-04', pdfUrl: '#' },
+          { id: '2', title: 'Warta Minggu 27 September 2026', date: '2026-09-27', pdfUrl: '#' }
+        ];
+        DB.set('warta', warta);
+      }
+      var wHtml = '';
+      warta.slice(0, 3).forEach(function(w) {
+        wHtml += '<article class="warta-card"><a href="pages/warta.html" class="warta-link"><span class="warta-date">' + w.date + '</span><span class="warta-title">' + w.title + '</span><span class="warta-action">Baca Selengkapnya &rarr;</span></a></article>';
+      });
+      document.getElementById('homeWartaGrid').innerHTML = wHtml;
+
+      var events = DB.get('event');
+      if (!events || events.length === 0) {
+        events = [
+          { id: '1', title: 'Retreat Pemuda 2026', date: '2026-10-25', location: 'Wisma Kinasih, Bogor', desc: 'Pembinaan rohani dan keakraban pemuda jemaat.' },
+          { id: '2', title: 'Bakti Sosial Kasih', date: '2026-11-10', location: 'Halaman Gereja', desc: 'Pelayanan kesehatan gratis dan sembako murah.' }
+        ];
+        DB.set('event', events);
+      }
+      var eHtml = '';
+      events.slice(0, 2).forEach(function(e) {
+        eHtml += '<article class="event-card">';
+        eHtml += '<div class="event-images">';
+        (e.images || []).slice(0, 2).forEach(function(img) {
+          eHtml += '<img src="' + img + '" alt="' + e.title + '" />'; });
+        if ((e.images || []).length === 0) {
+          eHtml += '<img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80" alt="Event" />'; }
+        eHtml += '</div>';
+        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + e.date + '</p><p class="event-location">ðŸ“ ' + e.location + '</p><p>' + e.desc + '</p></div>';
+        eHtml += '</article>';
+      });
+      document.getElementById('homeEventGrid').innerHTML = eHtml;
+    });
+  </script>
+</body>
+</html>

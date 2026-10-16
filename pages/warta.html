@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warta Jemaat - GKJ TU Kinasih</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
+      <span>GKJ TU Kinasih</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu" id="navMenu">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="tentang.html" class="nav-link">Tentang</a>
+      <a href="warta.html" class="nav-link active">Warta</a>
+      <a href="renungan.html" class="nav-link">Renungan</a>
+      <a href="jadwal.html" class="nav-link">Jadwal</a>
+      <a href="event.html" class="nav-link">Event</a>
+    </nav>
+  </header>
+
+  <main class="page-section">
+    <div class="section-head">
+      <h2>Warta Jemaat</h2>
+      <p>Arsip warta mingguan, pengumuman, dan laporan pelayanan GKJ TU Kinasih</p>
+    </div>
+    <div class="search-box">
+      <input type="text" id="wartaSearch" placeholder="Cari judul atau tanggal warta..." oninput="filterWarta()">
+      <button class="search-clear" onclick="clearSearch()">Ã—</button>
+    </div>
+    <div class="warta-grid" id="wartaList"></div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>GKJ TU Kinasih</h3>
+        <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="tentang.html">Tentang Kami</a></li>
+          <li><a href="warta.html">Warta Jemaat</a></li>
+          <li><a href="renungan.html">Renungan Harian</a></li>
+          <li><a href="jadwal.html">Jadwal Ibadah</a></li>
+          <li><a href="event.html">Event & Kegiatan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p>Jl. Jenderal Sudirman No. 123<br>Jakarta, 12345</p>
+        <p style="margin-top: 8px;"><a href="https://maps.google.com/?q=Gereja+Kristus" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak Pastoral</h4>
+        <p>Telepon: (021) 1234-5678<br>Email: info@gkjtukinasih.id</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 GKJ TU Kinasih. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="../js/db.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    function renderList() {
+      var warta = DB.get('warta');
+      if (!warta || warta.length === 0) {
+        warta = [
+          { id: '1', title: 'Warta Minggu 04 Oktober 2026', date: '2026-10-04', pdfUrl: 'https://example.com/warta-2026-10-04.pdf' },
+          { id: '2', title: 'Warta Minggu 27 September 2026', date: '2026-09-27', pdfUrl: 'https://example.com/warta-2026-09-27.pdf' },
+          { id: '3', title: 'Warta Minggu 20 September 2026', date: '2026-09-20', pdfUrl: 'https://example.com/warta-2026-09-20.pdf' }
+        ];
+        DB.set('warta', warta);
+      }
+      var html = '';
+      warta.forEach(function(item) {
+        html += '<article class="warta-card" data-title="' + (item.title || '').toLowerCase() + '" data-date="' + (item.date || '') + '">';
+        html += '<div class="warta-link">';
+        html += '<span class="warta-date">' + item.date + '</span>';
+        html += '<span class="warta-title">' + item.title + '</span>';
+        if (item.pdfUrl && item.pdfUrl !== '#') {
+          html += '<a href="' + item.pdfUrl + '" target="_blank" rel="noopener" class="warta-action">ðŸ“„ Unduh Warta PDF &rarr;</a>';
+        } else {
+          html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
+        }
+        html += '</div></article>';
+      });
+      document.getElementById('wartaList').innerHTML = html;
+    }
+
+    function filterWarta() {
+      var q = document.getElementById('wartaSearch').value.toLowerCase();
+      var items = document.querySelectorAll('#wartaList .warta-card');
+      items.forEach(function(el) {
+        var t = el.getAttribute('data-title') || '';
+        var d = el.getAttribute('data-date') || '';
+        el.style.display = (t.indexOf(q) > -1 || d.indexOf(q) > -1) ? '' : 'none';
+      });
+    }
+
+    function clearSearch() {
+      document.getElementById('wartaSearch').value = '';
+      filterWarta();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderList);
+  </script>
+</body>
+</html>

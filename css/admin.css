@@ -1,0 +1,155 @@
+﻿/* Admin-only styles */
+/* ===== ADMIN ===== */
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 2rem; flex-wrap: wrap; }
+.admin-tab { padding: 8px 20px; border: 1px solid var(--border); border-radius: 2rem; background: var(--card); cursor: pointer; font-size: .92rem; font-weight: 600; transition: all .2s; }
+.admin-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.admin-panel { display: none; }
+.admin-panel.active { display: block; }
+
+/* ===== ADMIN NAVBAR ===== */
+.admin-navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,247,242,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 1.1rem 6%;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.admin-brand { display: flex; align-items: center; gap: .7rem; font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: var(--primary-dark); }
+.admin-brand .brand-logo { width: 46px; height: 46px; border-radius: 50%; object-fit: contain; background: var(--card); padding: 4px; border: 1px solid var(--border); }
+.admin-nav { display: flex; gap: 2rem; align-items: center; }
+.admin-nav-link { color: var(--muted); font-weight: 600; font-size: .95rem; transition: color .2s; }
+.admin-nav-link:hover, .admin-nav-link.active { color: var(--primary); }
+.admin-nav-link.logout { color: #E53935; }
+.admin-nav-link.logout:hover { color: #b71c1c; }
+.admin-menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+.admin-menu-toggle span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+.admin-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; border: 1px solid var(--border); border-radius: .6rem; margin-bottom: 10px; background: var(--card); }
+.btn-sm { padding: 5px 14px; font-size: .82rem; border-radius: 2rem; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-weight: 600; }
+.btn-danger { color: #E53935; border-color: #E53935; }
+.btn-danger:hover { background: #E53935; color: #fff; }
+
+
+/* ===== CUSTOM FILE INPUT ===== */
+.file-input {
+  display: none;
+}
+.file-input-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px dashed var(--border);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.file-input-label:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+  border-color: var(--primary);
+}
+
+/* ===== PHOTO PREVIEW GRID ===== */
+.photo-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.photo-preview-item {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.photo-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.photo-remove-btn:hover {
+  background: #E53935;
+}
+
+/* ===== TOAST ===== */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+.toast { padding: 14px 22px; border-radius: .6rem; color: #fff; font-size: .88rem; font-weight: 600; animation: fadeInRight .3s ease; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+.toast-success { background: #43A047; }
+.toast-error { background: #E53935; }
+.toast-info { background: #1E88E5; }
+
+/* ===== ADMIN SCHEDULE FORM ===== */
+.schedule-form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, .92fr);
+  gap: 2rem;
+  align-items: start;
+}
+.schedule-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.schedule-type-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+.schedule-type-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .65rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: .88rem;
+}
+.schedule-type-options input { accent-color: var(--primary); }
+.schedule-form-fields .btn-primary { align-self: flex-start; margin-top: .65rem; }
+.schedule-calendar-panel {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  min-height: 100%;
+}
+.schedule-calendar-heading { display: flex; flex-direction: column; gap: .15rem; margin-bottom: 1rem; }
+.schedule-calendar-heading span { font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.25rem; font-weight: 700; }
+.schedule-calendar-heading small, .schedule-calendar-help { color: var(--muted); font-size: .78rem; }
+.schedule-calendar-help { display: block; margin-top: .8rem; }
+#jadwalCalendar { transition: opacity .22s ease, transform .22s cubic-bezier(.22,1,.36,1); }
+#jadwalCalendar.calendar-changing { opacity: .25; transform: translateY(5px) scale(.985); }
+#jadwalCalendar button { transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease; }
+#jadwalCalendar button:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(200,109,81,.16); }
+#jadwalCalendar button:active { transform: translateY(0) scale(.95); }
+
+

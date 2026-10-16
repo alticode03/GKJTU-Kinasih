@@ -1,0 +1,663 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - GKJ TU Kinasih</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header class="admin-navbar">
+    <a href="admin.html" class="admin-brand">
+      <img src="../assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
+      <span>Admin Panel</span>
+    </a>
+    <button class="admin-menu-toggle" id="adminMenuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="admin-nav" id="adminNav">
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('warta')">Warta Jemaat</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('renungan')">Renungan</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
+      <a href="javascript:void(0)" class="admin-nav-link logout" onclick="handleLogout()">Logout</a>
+    </nav>
+  </header>
+
+  <main class="page-section">
+    <!-- LOGIN VIEW -->
+    <div id="loginView" class="auth-card">
+      <h2>Login Admin</h2>
+      <form class="auth-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="adminEmail">Email</label>
+          <input type="email" id="adminEmail" required value="admin@gereja.id">
+        </div>
+        <div class="form-group">
+          <label for="adminPass">Password</label>
+          <input type="password" id="adminPass" required placeholder="Password (isi: admin)">
+        </div>
+        <button type="submit" class="btn-primary">Masuk</button>
+        <p class="auth-note">Email: admin@gereja.id | Password: admin</p>
+      </form>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboardView" style="display: none; max-width: 900px; margin: 0 auto;">
+      <h1 style="font-size: 1.8rem; margin-bottom: 24px;">Kelola Konten Gereja</h1>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('warta')">Warta Jemaat</button>
+        <button class="admin-tab" onclick="switchTab('renungan')">Renungan</button>
+        <button class="admin-tab" onclick="switchTab('jadwal')">Jadwal Ibadah</button>
+        <button class="admin-tab" onclick="switchTab('event')">Event</button>
+      </div>
+
+      <!-- PANEL WARTA -->
+      <div id="panel-warta" class="admin-panel active">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Warta</h3>
+          <form class="auth-form" onsubmit="saveWarta(event)">
+            <div class="form-group">
+              <label>Judul Warta</label>
+              <input type="text" id="wartaTitle" required placeholder="Contoh: Warta Minggu 11 Oktober 2026">
+            </div>
+            <div class="form-group">
+              <label>Tanggal</label>
+              <input type="date" id="wartaDate" required>
+            </div>
+            <div class="form-group">
+              <label>Upload PDF Warta (max 5MB)</label>
+              <input type="file" id="wartaPdfFile" accept=".pdf" class="file-input" hidden>
+              <label for="wartaPdfFile" class="file-input-label">ðŸ“Ž Pilih file PDF</label>
+              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 5MB, format PDF</small>
+              <div id="wartaPdfPreview" class="photo-preview-grid"></div>
+            </div>
+            <button type="submit" class="btn-primary">Simpan Warta</button>
+          </form>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Warta</h3>
+        <div id="adminWartaList"></div>
+      </div>
+
+      <!-- PANEL RENUNGAN -->
+      <div id="panel-renungan" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Renungan</h3>
+          <form class="auth-form" onsubmit="saveRenungan(event)">
+            <div class="form-group">
+              <label>Tanggal</label>
+              <input type="date" id="renunganDate" required>
+            </div>
+            <div class="form-group">
+              <label>Upload Gambar Renungan</label>
+              <input type="file" id="renunganImageFile" accept="image/*" class="file-input" hidden>
+              <label for="renunganImageFile" class="file-input-label">ðŸ“Ž Pilih gambar renungan</label>
+              <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, atau WEBP</small>
+              <div id="renunganImagePreview" class="photo-preview-grid"></div>
+            </div>
+            <button type="submit" class="btn-primary">Simpan Renungan</button>
+          </form>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Renungan</h3>
+        <div id="adminRenunganList"></div>
+      </div>
+
+      <!-- PANEL JADWAL -->
+      <div id="panel-jadwal" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Jadwal Ibadah</h3>
+          <form class="auth-form schedule-form-layout" onsubmit="saveJadwal(event)">
+            <div class="schedule-form-fields">
+              <div class="form-group">
+                <label>Nama Ibadah / Kegiatan</label>
+                <input type="text" id="jadwalName" required placeholder="Contoh: Ibadah Remaja">
+              </div>
+              <div class="form-group">
+                <label>Jenis Ibadah</label>
+                <div class="schedule-type-options">
+                  <label><input type="radio" name="jadwalType" value="rutin" checked onchange="toggleJadwalType()"> Ibadah Rutin</label>
+                  <label><input type="radio" name="jadwalType" value="khusus" onchange="toggleJadwalType()"> Ibadah Khusus</label>
+                </div>
+              </div>
+              <div class="form-group schedule-special-date" id="jadwalDateGroup" style="display:none;">
+                <label>Tanggal Ibadah Khusus</label>
+                <input type="date" id="jadwalDate">
+              </div>
+              <div class="form-group">
+                <label>Waktu</label>
+                <input type="text" id="jadwalTime" required placeholder="Contoh: 17:00 WIB">
+              </div>
+              <div class="form-group">
+                <label>Tempat</label>
+                <input type="text" id="jadwalLocation" required placeholder="Contoh: Ruang Remaja">
+              </div>
+              <button type="submit" class="btn-primary">Simpan Jadwal</button>
+            </div>
+            <div class="schedule-calendar-panel" id="jadwalCalendarPanel" style="display:none;">
+              <div class="schedule-calendar-heading">
+                <span>Kalender Jadwal</span>
+                <small>Pilih tanggal ibadah</small>
+              </div>
+              <div id="jadwalCalendar"></div>
+              <small class="schedule-calendar-help">Klik tanggal pada kalender atau gunakan input tanggal di sebelah kiri.</small>
+            </div>
+          </form>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Jadwal</h3>
+        <div id="adminJadwalList"></div>
+      </div>
+
+      <!-- PANEL EVENT -->
+      <div id="panel-event" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Event</h3>
+          <form class="auth-form" onsubmit="saveEvent(event)">
+            <div class="form-group">
+              <label>Nama Event</label>
+              <input type="text" id="eventTitle" required placeholder="Contoh: Natal Bersama 2026">
+            </div>
+            <div class="form-group">
+              <label>Tanggal</label>
+              <input type="date" id="eventDate" required>
+            </div>
+            <div class="form-group">
+              <label>Lokasi</label>
+              <input type="text" id="eventLocation" required placeholder="Contoh: Gedung Serbaguna">
+            </div>
+            <div class="form-group">
+              <label>Keterangan</label>
+              <textarea id="eventDesc" rows="3" required placeholder="Deskripsi singkat event..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Foto Event (max 3)</label>
+              <input type="file" id="eventPhotos" accept="image/*" multiple class="file-input" hidden>
+              <label for="eventPhotos" class="file-input-label">ðŸ“Ž Pilih foto event</label>
+              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 3 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
+              <div id="eventPhotoPreview" class="photo-preview-grid"></div>
+            </div>
+            <button type="submit" class="btn-primary" id="saveEventButton">Simpan Event &amp; Buat Folder Drive</button>
+            <div id="eventDriveResult" style="display:none;margin-top:12px;padding:12px;border-radius:8px;background:var(--primary-light);"></div>
+          </form>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Event</h3>
+        <div id="adminEventList"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>GKJ TU Kinasih</h3>
+        <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="tentang.html">Tentang Kami</a></li>
+          <li><a href="warta.html">Warta Jemaat</a></li>
+          <li><a href="renungan.html">Renungan Harian</a></li>
+          <li><a href="jadwal.html">Jadwal Ibadah</a></li>
+          <li><a href="event.html">Event & Kegiatan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p>Jl. Jenderal Sudirman No. 123<br>Jakarta, 12345</p>
+        <p style="margin-top: 8px;"><a href="https://maps.google.com/?q=Gereja+Kristus" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak Pastoral</h4>
+        <p>Telepon: (021) 1234-5678<br>Email: info@gkjtukinasih.id</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 GKJ TU Kinasih. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="../js/db.js"></script>
+  <script src="../js/image-compressor.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbxMXGBo8urLfg9pn00x1QMGiEEJmD1opNGk8F9hwvM62DzQNutS_Ktr8B2WHbRi4uVV/exec';
+
+    function checkAuth() {
+      var isAuth = localStorage.getItem('church_loggedIn') === 'true';
+      document.getElementById('loginView').style.display = isAuth ? 'none' : 'block';
+      document.getElementById('dashboardView').style.display = isAuth ? 'block' : 'none';
+      var logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) logoutBtn.style.display = isAuth ? 'inline-flex' : 'none';
+      if (isAuth) renderAllAdmin();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      var email = document.getElementById('adminEmail').value;
+      var pass = document.getElementById('adminPass').value;
+      if (email === 'admin@gereja.id' && pass === 'admin') {
+        localStorage.setItem('church_loggedIn', 'true');
+        showToast('Berhasil login sebagai admin', 'success');
+        checkAuth();
+      } else {
+        showToast('Email atau password salah', 'error');
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('church_loggedIn');
+      showToast('Berhasil logout', 'info');
+      checkAuth();
+    }
+
+    function switchTabAdmin(tab) {
+      document.querySelectorAll('.admin-tab').forEach(function(btn) {
+        btn.classList.remove('active');
+        btn.style.display = 'none';
+      });
+      document.querySelectorAll('.admin-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      document.getElementById('panel-' + tab).classList.add('active');
+      
+      // Update active nav link
+      document.querySelectorAll('.admin-nav-link').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Find and activate the corresponding nav link
+      var navLink = document.querySelector('.admin-nav-link[onclick*="' + tab + '"]');
+      if (navLink) navLink.classList.add('active');
+    }
+
+    // Hide the old tab buttons since navigation is now in navbar
+    document.querySelectorAll('.admin-tab').forEach(function(btn) {
+      btn.style.display = 'none';
+    });
+
+    function renderAllAdmin() {
+      renderAdminWarta();
+      renderAdminRenungan();
+      renderAdminJadwal();
+      renderAdminEvent();
+    }
+
+    function renderAdminWarta() {
+      var items = DB.get('warta');
+      var html = '';
+      items.forEach(function(item) {
+        var pdfLink = item.pdfData ? '<a href="' + item.pdfData + '" download="' + (item.pdfName || 'warta.pdf') + '" class="btn-sm btn-soft" style="margin-left: 8px;">ðŸ“¥ Unduh PDF</a>' : '';
+        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
+      });
+      document.getElementById('adminWartaList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data warta.</p>';
+    }
+
+    function saveWarta(e) {
+      e.preventDefault();
+      if (!selectedWartaPdf) {
+        showToast('Silakan pilih file PDF warta', 'error');
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        var item = {
+          title: document.getElementById('wartaTitle').value,
+          date: document.getElementById('wartaDate').value,
+          pdfData: evt.target.result,
+          pdfName: selectedWartaPdf.name
+        };
+        DB.add('warta', item);
+        e.target.reset();
+        selectedWartaPdf = null;
+        document.getElementById('wartaPdfPreview').innerHTML = '';
+        showToast('Warta berhasil ditambahkan', 'success');
+        renderAdminWarta();
+      };
+      reader.readAsDataURL(selectedWartaPdf);
+    }
+
+    function renderAdminRenungan() {
+      var items = DB.get('renungan');
+      var html = '';
+      items.forEach(function(item) {
+        html += '<div class="admin-item"><div><strong>Renungan</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'renungan\',\'' + item.id + '\')">Hapus</button></div>';
+      });
+      document.getElementById('adminRenunganList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data renungan.</p>';
+    }
+
+    function saveRenungan(e) {
+      e.preventDefault();
+      if (!selectedRenunganImage) {
+        showToast('Silakan pilih gambar renungan', 'error');
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        var item = {
+          date: document.getElementById('renunganDate').value,
+          imageData: evt.target.result,
+          imageName: selectedRenunganImage.name
+        };
+        DB.add('renungan', item);
+        e.target.reset();
+        selectedRenunganImage = null;
+        document.getElementById('renunganImagePreview').innerHTML = '';
+        showToast('Renungan berhasil ditambahkan', 'success');
+        renderAdminRenungan();
+      };
+      reader.readAsDataURL(selectedRenunganImage);
+    }
+
+    function renderAdminJadwal() {
+      var items = DB.get('jadwal');
+      var html = '';
+      items.forEach(function(item) {
+        var scheduleType = item.type === 'khusus' ? 'Ibadah Khusus' : 'Ibadah Rutin';
+        var scheduleDate = item.type === 'khusus' ? ' â€¢ ' + (item.date || '-') : '';
+        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + scheduleType + scheduleDate + ' â€¢ ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
+      });
+      document.getElementById('adminJadwalList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data jadwal.</p>';
+    }
+
+    function saveJadwal(e) {
+      e.preventDefault();
+      var type = document.querySelector('input[name="jadwalType"]:checked').value;
+      var dateValue = document.getElementById('jadwalDate').value;
+      if (type === 'khusus' && !dateValue) {
+        showToast('Silakan pilih tanggal ibadah khusus', 'error');
+        return;
+      }
+      var dateObj = dateValue ? new Date(dateValue + 'T00:00:00') : null;
+      var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      var item = {
+        name: document.getElementById('jadwalName').value,
+        type: type,
+        date: type === 'khusus' ? dateValue : '',
+        day: type === 'khusus' && dateObj ? dayNames[dateObj.getDay()] : 'Rutin',
+        time: document.getElementById('jadwalTime').value,
+        location: document.getElementById('jadwalLocation').value
+      };
+      DB.add('jadwal', item);
+      e.target.reset();
+      showToast('Jadwal berhasil ditambahkan', 'success');
+      renderAdminJadwal();
+    }
+
+    var selectedEventPhotos = [];
+    var selectedWartaPdf = null;
+    var selectedRenunganImage = null;
+    var calendarMonth = new Date();
+
+    function toggleJadwalType() {
+      var type = document.querySelector('input[name="jadwalType"]:checked').value;
+      var dateGroup = document.getElementById('jadwalDateGroup');
+      var calendarPanel = document.getElementById('jadwalCalendarPanel');
+      var dateInput = document.getElementById('jadwalDate');
+      var isSpecial = type === 'khusus';
+      dateGroup.style.display = isSpecial ? '' : 'none';
+      calendarPanel.style.display = isSpecial ? '' : 'none';
+      dateInput.required = isSpecial;
+      if (!isSpecial) dateInput.value = '';
+      if (isSpecial) renderJadwalCalendar();
+    }
+
+    function renderJadwalCalendar() {
+      var container = document.getElementById('jadwalCalendar');
+      if (!container) return;
+      var input = document.getElementById('jadwalDate');
+      var year = calendarMonth.getFullYear();
+      var month = calendarMonth.getMonth();
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      var dayNames = ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
+      var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">' +
+        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(-1)">â€¹</button>' +
+        '<strong>' + monthNames[month] + ' ' + year + '</strong>' +
+        '<button type="button" class="btn-sm btn-soft" onclick="changeCalendarMonth(1)">â€º</button></div>';
+      html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:.78rem;color:var(--muted);">';
+      dayNames.forEach(function(day) { html += '<strong>' + day + '</strong>'; });
+      for (var i = 0; i < firstDay; i++) html += '<span></span>';
+      for (var day = 1; day <= daysInMonth; day++) {
+        var dateValue = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        var isSelected = input && input.value === dateValue;
+        html += '<button type="button" data-date="' + dateValue + '" style="border:1px solid ' + (isSelected ? 'var(--primary)' : 'transparent') + ';background:' + (isSelected ? 'var(--primary)' : 'var(--card)') + ';color:' + (isSelected ? '#fff' : 'var(--text)') + ';border-radius:8px;padding:.45rem .1rem;cursor:pointer;" onclick="selectJadwalDate(\'' + dateValue + '\')">' + day + '</button>';
+      }
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function changeCalendarMonth(offset) {
+      var container = document.getElementById('jadwalCalendar');
+      if (container) container.classList.add('calendar-changing');
+      calendarMonth.setMonth(calendarMonth.getMonth() + offset);
+      setTimeout(function() {
+        renderJadwalCalendar();
+        if (container) {
+          requestAnimationFrame(function() { container.classList.remove('calendar-changing'); });
+        }
+      }, 110);
+    }
+
+    function selectJadwalDate(dateValue) {
+      var input = document.getElementById('jadwalDate');
+      if (!input) return;
+      input.value = dateValue;
+      input.dispatchEvent(new Event('change'));
+      var container = document.getElementById('jadwalCalendar');
+      if (container) container.classList.add('calendar-changing');
+      setTimeout(function() {
+        renderJadwalCalendar();
+        if (container) requestAnimationFrame(function() { container.classList.remove('calendar-changing'); });
+      }, 80);
+    }
+
+    // Event photo upload handler
+    document.getElementById('eventPhotos').addEventListener('change', function(e) {
+      var files = Array.from(e.target.files);
+      if (files.length > 3) {
+        showToast('Maksimal 3 foto diizinkan', 'error');
+        e.target.value = '';
+        selectedEventPhotos = [];
+        renderPhotoPreviews();
+        return;
+      }
+      selectedEventPhotos = [];
+      var previewContainer = document.getElementById('eventPhotoPreview');
+      previewContainer.innerHTML = '<small style="color:var(--muted);">Mengompres gambar...</small>';
+
+      Promise.all(files.map(function(file) {
+        return ImageCompressor.compress(file).then(function(result) {
+          selectedEventPhotos.push({
+            name: file.name.replace(/\.[^.]+$/, '') + '.webp',
+            data: result.dataUrl,
+            size: result.size,
+            originalSize: result.originalSize,
+            compressed: result.compressed
+          });
+        }).catch(function(error) {
+          showToast(file.name + ': ' + error.message, 'error');
+        });
+      })).then(function() {
+        renderPhotoPreviews();
+        if (selectedEventPhotos.length) {
+          var totalOriginal = selectedEventPhotos.reduce(function(sum, photo) { return sum + photo.originalSize; }, 0);
+          var totalCompressed = selectedEventPhotos.reduce(function(sum, photo) { return sum + photo.size; }, 0);
+          showToast('Foto siap disimpan: ' + formatBytes(totalOriginal) + ' â†’ ' + formatBytes(totalCompressed), 'success');
+        }
+      });
+    });
+
+    // Renungan image upload handler
+    document.getElementById('renunganImageFile').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('File harus berupa gambar', 'error');
+        e.target.value = '';
+        selectedRenunganImage = null;
+        document.getElementById('renunganImagePreview').innerHTML = '';
+        return;
+      }
+      selectedRenunganImage = file;
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview gambar renungan"></div>';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // PDF upload handler
+    document.getElementById('wartaPdfFile').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Ukuran PDF melebihi 5MB', 'error');
+        e.target.value = '';
+        selectedWartaPdf = null;
+        document.getElementById('wartaPdfPreview').innerHTML = '';
+        return;
+      }
+      if (file.type !== 'application/pdf') {
+        showToast('File harus berformat PDF', 'error');
+        e.target.value = '';
+        selectedWartaPdf = null;
+        document.getElementById('wartaPdfPreview').innerHTML = '';
+        return;
+      }
+      selectedWartaPdf = file;
+      var container = document.getElementById('wartaPdfPreview');
+      container.innerHTML = '<div class="photo-preview-item" style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><span style="font-size:24px">ðŸ“„</span><p style="margin:4px 0 0; font-size:12px">' + file.name + '</p></div></div>';
+    });
+
+    function renderPhotoPreviews() {
+      var container = document.getElementById('eventPhotoPreview');
+      container.innerHTML = '';
+      selectedEventPhotos.forEach(function(photo, index) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'photo-preview-item';
+        wrapper.innerHTML = '<img src="' + photo.data + '" alt="Preview"><button type="button" class="photo-remove-btn" onclick="removeSelectedPhoto(' + index + ')">&times;</button><small style="display:block;font-size:10px;color:var(--muted);">' + formatBytes(photo.size) + '</small>';
+        container.appendChild(wrapper);
+      });
+    }
+
+    function removeSelectedPhoto(index) {
+      selectedEventPhotos.splice(index, 1);
+      renderPhotoPreviews();
+    }
+
+    function renderAdminEvent() {
+      var items = DB.get('event');
+      var html = '';
+      items.forEach(function(item) {
+        var photoCount = item.photos && item.photos.length ? item.photos.length : 0;
+        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') â€¢ ' + photoCount + ' foto</span>' + (item.driveFolderUrl ? ' â€¢ <a href="' + item.driveFolderUrl + '" target="_blank" rel="noopener">ðŸ“‚ Buka folder Drive</a>' : '') + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
+      });
+      document.getElementById('adminEventList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data event.</p>';
+    }
+
+    function saveEvent(e) {
+      e.preventDefault();
+      if (!selectedEventPhotos.length) {
+        showToast('Silakan pilih minimal satu foto event', 'error');
+        return;
+      }
+      var button = document.getElementById('saveEventButton');
+      var resultBox = document.getElementById('eventDriveResult');
+      var form = e.target;
+      var originalButtonText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Membuat folder & mengunggah foto...';
+      resultBox.style.display = 'none';
+
+      var item = {
+        title: document.getElementById('eventTitle').value,
+        date: document.getElementById('eventDate').value,
+        location: document.getElementById('eventLocation').value,
+        desc: document.getElementById('eventDesc').value,
+        photos: selectedEventPhotos.map(function(p) {
+          return { name: p.name, data: p.data };
+        })
+      };
+
+      fetch(GOOGLE_DRIVE_EVENT_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(item)
+      }).then(function(response) {
+        if (!response.ok) throw new Error('Server Google Apps Script merespons HTTP ' + response.status);
+        return response.json();
+      }).then(function(result) {
+        if (result.status !== 'success' || !result.folderUrl) {
+          throw new Error(result.message || 'Google Apps Script tidak mengembalikan URL folder.');
+        }
+        item.driveFolderUrl = result.folderUrl;
+        item.driveFolderId = result.folderId || '';
+        if (Array.isArray(result.photos) && result.photos.length) item.photos = result.photos;
+        DB.add('event', item);
+        form.reset();
+        selectedEventPhotos = [];
+        document.getElementById('eventPhotos').value = '';
+        renderPhotoPreviews();
+        renderAdminEvent();
+        resultBox.innerHTML = 'Event tersimpan dan folder Drive berhasil dibuat. <a href="' + result.folderUrl + '" target="_blank" rel="noopener">ðŸ“‚ Buka folder untuk mengunggah dokumentasi lainnya</a>';
+        resultBox.style.display = 'block';
+        showToast('Event berhasil disimpan dan folder Drive dibuat', 'success');
+      }).catch(function(error) {
+        showToast('Gagal membuat folder Drive: ' + error.message, 'error');
+        resultBox.innerHTML = 'Upload ke Google Drive gagal. Event belum disimpan. Periksa deployment Apps Script dan coba lagi.';
+        resultBox.style.display = 'block';
+      }).finally(function() {
+        button.disabled = false;
+        button.textContent = originalButtonText;
+      });
+    }
+
+    function deleteItem(type, id) {
+      if (confirm('Yakin ingin menghapus item ini?')) {
+        DB.remove(type, id);
+        showToast('Item berhasil dihapus', 'info');
+        renderAllAdmin();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuth();
+      toggleJadwalType();
+      var jadwalDate = document.getElementById('jadwalDate');
+      if (jadwalDate) {
+        jadwalDate.addEventListener('change', function() {
+          var selected = new Date(this.value + 'T00:00:00');
+          if (!isNaN(selected.getTime())) {
+            calendarMonth = selected;
+            renderJadwalCalendar();
+          }
+        });
+        renderJadwalCalendar();
+      }
+      
+      var adminMenuToggle = document.getElementById('adminMenuToggle');
+      var adminNav = document.getElementById('adminNav');
+      if (adminMenuToggle && adminNav) {
+        adminMenuToggle.addEventListener('click', function() {
+          adminNav.classList.toggle('open');
+        });
+        
+        var links = adminNav.querySelectorAll('.admin-nav-link');
+        links.forEach(function(link) {
+          link.addEventListener('click', function() {
+            adminNav.classList.remove('open');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
