@@ -227,7 +227,9 @@
   <script src="../js/image-compressor.js"></script>
   <script src="../js/ui.js"></script>
   <script>
-    var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbxMXGBo8urLfg9pn00x1QMGiEEJmD1opNGk8F9hwvM62DzQNutS_Ktr8B2WHbRi4uVV/exec';
+    var GOOGLE_DRIVE_EVENT_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'https://script.google.com/macros/s/AKfycbxMXGBo8urLfg9pn00x1QMGiEEJmD1opNGk8F9hwvM62DzQNutS_Ktr8B2WHbRi4uVV/exec'
+      : '/api/upload-event';
 
     function checkAuth() {
       var isAuth = localStorage.getItem('church_loggedIn') === 'true';
@@ -589,10 +591,10 @@
 
       fetch(GOOGLE_DRIVE_EVENT_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item)
       }).then(function(response) {
-        if (!response.ok) throw new Error('Server Google Apps Script merespons HTTP ' + response.status);
+        if (!response.ok) throw new Error('Server proxy/Google Apps Script merespons HTTP ' + response.status);
         return response.json();
       }).then(function(result) {
         if (result.status !== 'success' || !result.folderUrl) {
