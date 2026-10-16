@@ -8,14 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/global.css">
-  <style>
-    .leadership-section { margin-top: 2.5rem; }
-    .leadership-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; }
-    .leader-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; box-shadow: var(--shadow); }
-    .leader-photo { width: 112px; height: 112px; margin: 0 auto 1rem; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-light); background: var(--bg-alt); }
-    .leader-card h3 { margin: 0 0 .35rem; font-size: 1rem; }
-    .leader-card p { margin: 0; color: var(--muted); font-size: .9rem; }
-  </style>
 </head>
 <body>
   <header class="navbar">
@@ -64,12 +56,12 @@
       </p>
     </div>
 
-    <section class="leadership-section" aria-labelledby="leadershipTitle">
-      <div class="section-head" style="margin-bottom: 1.25rem;">
-        <h2 id="leadershipTitle">Struktur Kepemimpinan</h2>
-        <p>Pengurus dan pelayan GKJ TU Kinasih</p>
+    <section aria-labelledby="pengurusanTitle" style="margin-top:2.5rem;">
+      <div class="section-head" style="text-align:left;margin-bottom:1.75rem;">
+        <h2 id="pengurusanTitle">Kepengurusan</h2>
+        <p>Pengurus pelayanan dan pelayanan GKJ TU Kinasih</p>
       </div>
-      <div id="leadershipGrid" class="leadership-grid"><p style="color:var(--muted);">Memuat data kepemimpinan...</p></div>
+      <div id="pengurusanContainer"></div>
     </section>
   </main>
 
@@ -116,20 +108,38 @@
   <script src="../js/ui.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
-      var grid = document.getElementById('leadershipGrid');
-      var placeholder = '../assets/images/icon.png';
+      var container = document.getElementById('pengurusanContainer');
+      var iconUrl = '../assets/images/icon.png';
+      function imgTag(src, alt, extra) {
+        return '<img src="' + src + '" alt="' + alt + '" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:8px;background:#fff;' + (extra||'') + '">';
+      }
+      function createCard(position, people) {
+        var headshot = people[0].photo_url || iconUrl;
+        return '<article style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.06);margin-bottom:2rem;">' +
+          imgTag(headshot, 'Kepengurusan ' + escapeHtml(position)) +
+          '<div style="padding:1.5rem;text-align:center;">' +
+          '<h3 style="margin:0 0 .5rem;font-size:1.3rem;color:#c47f65;">' + escapeHtml(position) + '</h3>' +
+          '<p style="margin:0;color:#555;line-height:1.5;">' + people.map(function(p,i){return i===0?escapeHtml(p.name):escapeHtml(position+' '+i+' - '+p.name);}).join(', ') + '</p>' +
+          '</div></article>';
+      }
       try {
-        var leaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,created_at.asc');
-        if (!leaders.length) { grid.innerHTML = '<p style="color:var(--muted);">Data kepemimpinan belum tersedia.</p>'; return; }
-        grid.innerHTML = leaders.map(function(item) {
-          var photo = item.photo_url || placeholder;
-          return '<article class="leader-card"><img class="leader-photo" src="' + photo + '" alt="Foto ' + item.name + '" loading="lazy"><h3>' + item.name + '</h3><p>' + item.position + '</p></article>';
-        }).join('');
-      } catch (error) {
-        grid.innerHTML = '<p style="color:var(--muted);">Data kepemimpinan belum dapat dimuat.</p>';
-        console.error('Gagal memuat kepemimpinan:', error);
+        var allLeaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,position.asc,created_at.asc');
+        if (!allLeaders.length) { container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>'; return; }
+        var groups = {};
+        allLeaders.forEach(function(l) {
+          (groups[l.position] = groups[l.position] || []).push({ name: l.name, photo_url: l.photo_url });
+        });
+        var html = Object.keys(groups).length ? Object.keys(groups).sort().map(function(pos) { return createCard(pos, groups[pos]); }).join('') : ''; html += '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>'; container.innerHTML = html || '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>';
+      } catch (err) {
+        container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum dapat dimuat.</p>';
+        console.error('Gagal memuat kepengurusan:', err);
       }
     });
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function(c) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "\'": '&#39;' })[c];
+      });
+    }
   </script>
 </body>
 </html>

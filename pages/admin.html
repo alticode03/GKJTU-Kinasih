@@ -202,20 +202,14 @@
       <div id="panel-kepemimpinan" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
           <h3 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h3>
-          <form class="auth-form" onsubmit="saveKepemimpinan(event)">
-            <div class="form-group"><label for="leaderName">Nama</label><input id="leaderName" type="text" required maxlength="120" placeholder="Nama lengkap"></div>
-            <div class="form-group"><label for="leaderPosition">Jabatan / Pelayanan</label><input id="leaderPosition" type="text" required maxlength="120" placeholder="Contoh: Ketua Majelis"></div>
-            <div class="form-group"><label for="leaderOrder">Urutan tampil</label><input id="leaderOrder" type="number" min="0" value="0"></div>
-            <div class="form-group">
-              <label>Foto (opsional)</label>
-              <input type="file" id="leaderPhoto" accept="image/jpeg,image/png,image/webp" class="file-input" hidden>
-              <label for="leaderPhoto" class="file-input-label">📎 Pilih foto pengurus</label>
-              <div id="leaderPhotoPreview" class="photo-preview-grid"></div>
-            </div>
-            <button type="submit" class="btn-primary" id="saveLeaderButton">Simpan Pengurus</button>
+          <form class="auth-form" onsubmit="saveKepengurusan(event)">
+            <div class="form-group"><label for="leaderPosition">Nama Jabatan</label><input id="leaderPosition" type="text" required maxlength="120" placeholder="Contoh: Ketua"></div>
+            <div class="form-group"><label for="leaderCount">Jumlah Orang</label><input id="leaderCount" type="number" min="1" max="30" value="1" required oninput="buildLeaderFields()"></div>
+            <div id="leaderFields" class="leader-fields"></div>
+            <button type="submit" class="btn-primary" id="saveLeaderButton">Simpan Kepengurusan</button>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Kepemimpinan</h3>
+        <h3 style="margin-bottom: 1rem;">Daftar Kepengurusan</h3>
         <div id="adminKepemimpinanList"></div>
       </div>
     </div>
@@ -511,17 +505,6 @@
     });
 
     // Renungan image upload handler
-    document.getElementById('leaderPhoto').addEventListener('change', function(e) {
-      var file = e.target.files[0];
-      var preview = document.getElementById('leaderPhotoPreview');
-      preview.innerHTML = '';
-      if (!file) return;
-      if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar', 'error'); e.target.value = ''; return; }
-      var reader = new FileReader();
-      reader.onload = function(evt) { preview.innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview foto pengurus"></div>'; };
-      reader.readAsDataURL(file);
-    });
-
     document.getElementById('renunganImageFile').addEventListener('change', function(e) {
       var file = e.target.files[0];
       if (!file) return;
@@ -662,6 +645,12 @@
       });
     }
 
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+      });
+    }
+
     async function renderAdminKepemimpinan() {
       var items = [];
       try { items = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,created_at.asc'); } catch (error) { showToast(error.message, 'error'); }
@@ -672,33 +661,54 @@
       document.getElementById('adminKepemimpinanList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data kepemimpinan.</p>';
     }
 
-    async function saveKepemimpinan(e) {
+    function buildLeaderFields() {
+      var position = document.getElementById('leaderPosition').value.trim() || 'Jabatan';
+      var count = Math.min(30, Math.max(1, parseInt(document.getElementById('leaderCount').value, 10) || 1));
+      var container = document.getElementById('leaderFields');
+      var oldValues = Array.prototype.map.call(container.querySelectorAll('.leader-name-input'), function(input) { return input.value; });
+      var html = '';
+      for (var i = 0; i < count; i++) {
+        html += '<div class="leader-person-field"><label for="leaderName' + i + '">Nama Lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '</label><input class="leader-name-input" id="leaderName' + i + '" type="text" required maxlength="120" placeholder="Nama lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '"><label class="file-input-label leader-photo-label" for="leaderPhoto' + i + '">📎 Pilih foto (opsional)</label><input id="leaderPhoto' + i + '" type="file" accept="image/jpeg,image/png,image/webp" class="file-input leader-photo-input" data-index="' + i + '" hidden><div id="leaderPhotoPreview' + i + '" class="photo-preview-grid"></div></div>';
+      }
+      container.innerHTML = html;
+      container.querySelectorAll('.leader-name-input').forEach(function(input, i) { if (oldValues[i]) input.value = oldValues[i]; });
+      container.querySelectorAll('.leader-photo-input').forEach(function(input) { input.addEventListener('change', previewLeaderPhoto); });
+    }
+
+    function previewLeaderPhoto(e) {
+      var input = e.target;
+      var preview = document.getElementById('leaderPhotoPreview' + input.getAttribute('data-index'));
+      preview.innerHTML = '';
+      if (!input.files[0]) return;
+      var reader = new FileReader();
+      reader.onload = function(evt) { preview.innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview foto pengurus"></div>'; };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    async function saveKepengurusan(e) {
       e.preventDefault();
       var button = document.getElementById('saveLeaderButton');
-      var photo = document.getElementById('leaderPhoto').files[0];
+      var position = document.getElementById('leaderPosition').value.trim();
+      var names = Array.prototype.map.call(document.querySelectorAll('.leader-name-input'), function(input) { return input.value.trim(); });
       button.disabled = true;
       try {
-        var photoUrl = '';
-        var photoName = '';
-        if (photo) {
-          var compressed = await ImageCompressor.compress(photo);
-          var blob = await (await fetch(compressed.dataUrl)).blob();
-          photoName = DB.filename(photo.name, '.webp');
-          photoUrl = await DB.upload('kepemimpinan', photoName, blob, 'image/webp');
+        for (var i = 0; i < names.length; i++) {
+          var photo = document.getElementById('leaderPhoto' + i).files[0];
+          var photoUrl = '', photoName = '';
+          if (photo) {
+            var compressed = await ImageCompressor.compress(photo);
+            var blob = await (await fetch(compressed.dataUrl)).blob();
+            photoName = DB.filename(photo.name, '.webp');
+            photoUrl = await DB.upload('kepemimpinan', photoName, blob, 'image/webp');
+          }
+          await DB.add('kepemimpinan', { name: names[i], position: position, photo_url: photoUrl, photo_name: photoName, sort_order: i, is_active: true });
         }
-        await DB.add('kepemimpinan', {
-          name: document.getElementById('leaderName').value.trim(),
-          position: document.getElementById('leaderPosition').value.trim(),
-          photo_url: photoUrl,
-          photo_name: photoName,
-          sort_order: parseInt(document.getElementById('leaderOrder').value, 10) || 0,
-          is_active: true
-        });
         e.target.reset();
-        document.getElementById('leaderPhotoPreview').innerHTML = '';
-        showToast('Pengurus berhasil disimpan', 'success');
+        document.getElementById('leaderCount').value = 1;
+        buildLeaderFields();
+        showToast('Kepengurusan berhasil disimpan', 'success');
         await renderAdminKepemimpinan();
-      } catch (error) { showToast('Gagal menyimpan pengurus: ' + error.message, 'error'); }
+      } catch (error) { showToast('Gagal menyimpan kepengurusan: ' + error.message, 'error'); }
       finally { button.disabled = false; }
     }
 
@@ -727,6 +737,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       checkAuth();
       toggleJadwalType();
+      buildLeaderFields();
       var jadwalDate = document.getElementById('jadwalDate');
       if (jadwalDate) {
         jadwalDate.addEventListener('change', function() {
