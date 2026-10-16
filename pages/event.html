@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/global.css">
+  <style>
+    /* Slider foto otomatis untuk kartu event (hanya 1 foto terlihat) */
+    .event-images.event-slider { position: relative; display: block; height: 220px; padding: 0; overflow: hidden; background: var(--bg-alt); }
+    .event-images.event-slider .event-slide-track { display: flex; height: 100%; transition: transform .6s ease; }
+    .event-images.event-slider .event-slide-track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; border-radius: 0; transform: none !important; }
+    .event-images.event-slider .event-slider-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 2; }
+    .event-images.event-slider .event-slider-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .5); cursor: pointer; transition: background .25s ease, transform .25s ease; }
+    .event-images.event-slider .event-slider-dots span.active { background: #fff; transform: scale(1.25); }
+  </style>
 </head>
 <body>
   <header class="navbar">
@@ -91,14 +100,27 @@
       eventPhotos.forEach(function(p) { (photosByEvent[p.event_id] = photosByEvent[p.event_id] || []).push(p.photo_url); });
       var html = '';
       events.forEach(function(e) {
-        html += '<article class="event-card">';
-        html += '<div class="event-images">';
         var eventImages = photosByEvent[e.id] || [];
-        eventImages.forEach(function(img) {
-          html += '<img src="' + img + '" alt="' + e.title + '" />'; });
-        if (eventImages.length === 0) {
-          html += '<img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80" alt="Event" />'; }
-        html += '</div>';
+        html += '<article class="event-card">';
+        if (eventImages.length > 1) {
+          html += '<div class="event-images event-slider" data-interval="4000"><div class="event-slide-track">';
+          eventImages.forEach(function(img) {
+            html += '<img src="' + img + '" alt="' + e.title + '" loading="lazy" />';
+          });
+          html += '</div><div class="event-slider-dots">';
+          eventImages.forEach(function(_, i) {
+            html += '<span data-index="' + i + '"' + (i === 0 ? ' class="active"' : '') + '></span>';
+          });
+          html += '</div></div>';
+        } else {
+          html += '<div class="event-images">';
+          if (eventImages.length === 1) {
+            html += '<img src="' + eventImages[0] + '" alt="' + e.title + '" loading="lazy" />';
+          } else {
+            html += '<img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80" alt="Event" />';
+          }
+          html += '</div>';
+        }
         html += '<div class="event-info">';
         html += '<h3>' + e.title + '</h3>';
         html += '<p class="event-date">📅 ' + (e.date || '-') + '</p>';
@@ -111,7 +133,33 @@
         html += '</article>';
       });
       document.getElementById('eventGrid').innerHTML = html || '<p style="color:var(--muted);">Belum ada event.</p>';
+      initEventSliders();
     });
+
+    function initEventSliders() {
+      document.querySelectorAll('.event-slider').forEach(function(slider) {
+        var track = slider.querySelector('.event-slide-track');
+        var dots = slider.querySelectorAll('.event-slider-dots span');
+        var slides = track.children.length;
+        if (slides < 2) return;
+        var index = 0;
+        var intervalMs = parseInt(slider.getAttribute('data-interval') || '4000', 10);
+        var timer = null;
+        function go(i) {
+          index = (i + slides) % slides;
+          track.style.transform = 'translateX(-' + (index * 100) + '%)';
+          dots.forEach(function(dot, di) { dot.classList.toggle('active', di === index); });
+        }
+        function start() { if (!timer) timer = setInterval(function() { go(index + 1); }, intervalMs); }
+        function stop() { clearInterval(timer); timer = null; }
+        slider.addEventListener('mouseenter', stop);
+        slider.addEventListener('mouseleave', start);
+        dots.forEach(function(dot) {
+          dot.addEventListener('click', function() { stop(); go(parseInt(dot.getAttribute('data-index'), 10)); start(); });
+        });
+        start();
+      });
+    }
   </script>
 </body>
 </html>
