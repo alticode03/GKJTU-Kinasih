@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel - GKJ TU Kinasih</title>
+  <script src="../config/settings.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -36,14 +37,14 @@
       <form class="auth-form" onsubmit="handleLogin(event)">
         <div class="form-group">
           <label for="adminEmail">Email</label>
-          <input type="email" id="adminEmail" required value="admin@gereja.id">
+          <input type="email" id="adminEmail" required placeholder="Email admin">
         </div>
         <div class="form-group">
           <label for="adminPass">Password</label>
-          <input type="password" id="adminPass" required placeholder="Password (isi: admin)">
+          <input type="password" id="adminPass" required placeholder="Password admin">
         </div>
         <button type="submit" class="btn-primary">Masuk</button>
-        <p class="auth-note">Email: admin@gereja.id | Password: admin</p>
+        <p class="auth-note">Gunakan akun admin yang terdaftar di Supabase Auth.</p>
       </form>
     </div>
 
@@ -248,6 +249,15 @@
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      var config = window.APP_CONFIG && window.APP_CONFIG.supabase;
+      if (config && config.url && config.anonKey && window.supabase) {
+        window.supabaseClient = window.supabase.createClient(config.url, config.anonKey);
+      }
+    })();
+  </script>
   <script src="../js/db.js"></script>
   <script src="../js/image-compressor.js"></script>
   <script src="../js/ui.js"></script>
@@ -256,32 +266,44 @@
       ? 'https://script.google.com/macros/s/AKfycbxMXGBo8urLfg9pn00x1QMGiEEJmD1opNGk8F9hwvM62DzQNutS_Ktr8B2WHbRi4uVV/exec'
       : '/api/upload-event';
 
-    function checkAuth() {
-      var isAuth = window.adminAuthenticated === true;
+    async function checkAuth() {
+      var isAuth = false;
+      if (window.supabaseClient) {
+        var result = await window.supabaseClient.auth.getUser();
+        if (result.data && result.data.user) {
+          var admin = await window.supabaseClient.from('admin_users').select('user_id').eq('user_id', result.data.user.id).maybeSingle();
+          isAuth = !!(admin.data && !admin.error);
+        }
+      }
+      window.adminAuthenticated = isAuth;
       document.getElementById('loginView').style.display = isAuth ? 'none' : 'block';
       document.getElementById('dashboardView').style.display = isAuth ? 'block' : 'none';
-      var logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) logoutBtn.style.display = isAuth ? 'inline-flex' : 'none';
       if (isAuth) renderAllAdmin();
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
-      var email = document.getElementById('adminEmail').value;
-      var pass = document.getElementById('adminPass').value;
-      if (email === 'admin@gereja.id' && pass === 'admin') {
-        window.adminAuthenticated = true;
-        showToast('Berhasil login sebagai admin', 'success');
-        checkAuth();
-      } else {
-        showToast('Email atau password salah', 'error');
+      if (!window.supabaseClient) { showToast('Konfigurasi Supabase belum tersedia', 'error'); return; }
+      var email = document.getElementById('adminEmail').value.trim();
+      var password = document.getElementById('adminPass').value;
+      var result = await window.supabaseClient.auth.signInWithPassword({ email: email, password: password });
+      if (result.error) { showToast('Email atau password salah', 'error'); return; }
+      var admin = await window.supabaseClient.from('admin_users').select('user_id').eq('user_id', result.data.user.id).maybeSingle();
+      if (admin.error || !admin.data) {
+        await window.supabaseClient.auth.signOut();
+        showToast('Akun tidak terdaftar sebagai admin', 'error');
+        return;
       }
+      document.getElementById('adminPass').value = '';
+      showToast('Berhasil login sebagai admin', 'success');
+      await checkAuth();
     }
 
-    function handleLogout() {
+    async function handleLogout() {
+      if (window.supabaseClient) await window.supabaseClient.auth.signOut();
       window.adminAuthenticated = false;
       showToast('Berhasil logout', 'info');
-      checkAuth();
+      await checkAuth();
     }
 
     function switchTabAdmin(tab) {
