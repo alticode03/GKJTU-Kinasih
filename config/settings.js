@@ -12,12 +12,9 @@
       return { url: cachedUrl, key: cachedKey };
     }
 
-    // Fallback ke hardcoded (untuk production deployment)
-    // Nilai di sini hanya digunakan sebagai cadangan saat pertama kali akses
-    return {
-      url: window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url || '',
-      key: window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.anonKey || ''
-    };
+      // settings.js dimuat sebelum db.js, jadi jangan menebak atau membuat key.
+    // db.js sementara masih menyediakan konfigurasi Supabase lama.
+    return { url: '', key: '' };
   }
 
   var config = loadConfig();

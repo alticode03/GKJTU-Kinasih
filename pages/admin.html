@@ -249,16 +249,16 @@
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
+  <script src="../js/db.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     (function () {
-      var config = window.APP_CONFIG && window.APP_CONFIG.supabase;
-      if (config && config.url && config.anonKey && window.supabase) {
+      var config = window.SUPABASE_CONFIG || {};
+      if (config.url && config.anonKey && window.supabase) {
         window.supabaseClient = window.supabase.createClient(config.url, config.anonKey);
       }
     })();
   </script>
-  <script src="../js/db.js"></script>
   <script src="../js/image-compressor.js"></script>
   <script src="../js/ui.js"></script>
   <script>
