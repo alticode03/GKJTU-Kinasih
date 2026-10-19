@@ -98,7 +98,7 @@
           <form class="auth-form" onsubmit="saveRenungan(event)">
             <div class="form-group">
               <label for="renunganTitle">Judul Renungan</label>
-              <input type="text" id="renunganTitle" required placeholder="Contoh: Kasih yang Memulihkan">
+              <input type="text" id="renunganTitle" required placeholder="Contoh: Pengharapan dalam Kristus">
             </div>
             <div class="form-group">
               <label for="renunganContent">Isi Renungan</label>
@@ -384,7 +384,13 @@
         var blob = await (await fetch(compressed.dataUrl)).blob();
         var filename = DB.filename(selectedRenunganImage.name, '.webp');
         var imageUrl = await DB.upload('renungan', filename, blob, 'image/webp');
-        await DB.add('renungan', { date: document.getElementById('renunganDate').value, image_url: imageUrl, image_name: filename });
+        await DB.add('renungan', {
+          title: document.getElementById('renunganTitle').value.trim(),
+          content: document.getElementById('renunganContent').value.trim(),
+          date: document.getElementById('renunganDate').value,
+          image_url: imageUrl,
+          image_name: filename
+        });
         e.target.reset(); selectedRenunganImage = null; document.getElementById('renunganImagePreview').innerHTML = '';
         showToast('Renungan berhasil ditambahkan', 'success'); await renderAdminRenungan();
       } catch (error) { showToast('Gagal menyimpan renungan: ' + error.message, 'error'); }
