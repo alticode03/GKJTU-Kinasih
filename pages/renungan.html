@@ -97,10 +97,8 @@
         showToast('Gagal memuat renungan terbaru: ' + error.message, 'error');
       }
       if (!renungan || renungan.length === 0) {
-        renungan = [
-          { id: '1', title: 'Kasih yang Memulihkan', date: '2026-10-05', content: 'Di tengah tantangan hidup yang berat, kasih Tuhan selalu hadir membawa pengharapan baru bagi setiap orang yang percaya dan berserah kepada-Nya.' },
-          { id: '2', title: 'Setia dalam Perkara Kecil', date: '2026-09-28', content: 'Kesetiaan sejati tidak diuji dari panggung besar, melainkan dari ketulusan hati kita saat melayani dalam hal-hal sederhana setiap hari.' }
-        ];
+        document.getElementById('renunganList').innerHTML = '<p class="empty-state">Belum ada renungan yang dipublikasikan.</p>';
+        return;
       }
       var html = '';
       renungan.forEach(function(item) {
