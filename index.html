@@ -15,7 +15,7 @@
 </head>
 <body>
   <header class="navbar">
-    <a href="index.html" class="brand">
+    <a href="/" class="brand">
       <img src="assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
       <span>GKJ TU Kinasih</span>
     </a>
@@ -36,16 +36,15 @@
     <section class="hero">
       <div class="hero-content">
         <div class="hero-text">
-          <div class="hero-badge">Mari kita melayani dengan sukacita dan kasih! 🌟</div>
-          <h1>Shalom, keluarga besar Jemaat GKJTU Kinasih! 💒</h1>
+          <h1>Shalom, keluarga besar Jemaat GKJTU Kinasih.</h1>
           <p>Tuhan terus bekerja di tengah-tengah kita, dan melalui warta jemaat minggu ini, kita diingatkan untuk tetap terlibat dalam pelayanan dan persekutuan.</p>
           <div class="hero-btns">
             <a href="/jadwal" class="btn btn-peach">Jadwal Ibadah</a>
             <a href="/warta" class="btn btn-soft">Baca Warta</a>
           </div>
         </div>
-        <div class="hero-image" style="aspect-ratio: 3/4; position: relative; overflow: hidden; border-radius: var(--radius);">
-          <img src="assets/images/hero-image.webp" alt="GKJ TU Kinasih" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: var(--radius);" />
+        <div class="hero-image">
+          <img src="assets/images/hero-image.webp" alt="Suasana GKJ TU Kinasih" />
         </div>
       </div>
     </section>
@@ -56,7 +55,7 @@
         <p>Informasi dan pengumuman terkini pelayanan jemaat GKJ TU Kinasih</p>
       </div>
       <div class="warta-grid" id="homeWartaGrid"></div>
-      <p class="view-all"><a href="/warta">Lihat Semua Warta &rarr;</a></p>
+      <p class="view-all"><a href="/warta">Lihat Semua Warta</a></p>
     </section>
 
     <section class="section">
@@ -65,7 +64,7 @@
         <p>Kegiatan persekutuan dan pelayanan bersama dalam waktu dekat</p>
       </div>
       <div class="event-grid" id="homeEventGrid"></div>
-      <p class="view-all"><a href="/event">Lihat Semua Event &rarr;</a></p>
+      <p class="view-all"><a href="/event">Lihat Semua Event</a></p>
     </section>
 
     <div class="warm-banner">
@@ -84,7 +83,7 @@
       <div class="footer-col">
         <h4>Menu</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
           <li><a href="/warta">Warta Jemaat</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
@@ -137,7 +136,7 @@
         if (imgs.length === 0) {
           eHtml += '<img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80" alt="Event" />'; }
         eHtml += '</div>';
-        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + (e.date || '-') + '</p><p class="event-location">📍 ' + (e.location || '-') + '</p><p>' + (e.description || '') + '</p></div>';
+        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + (e.date || '-') + '</p><p class="event-location">Lokasi: ' + (e.location || '-') + '</p><p>' + (e.description || '') + '</p></div>';
         eHtml += '</article>';
       });
       document.getElementById('homeEventGrid').innerHTML = eHtml;

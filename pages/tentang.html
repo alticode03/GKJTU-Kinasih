@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 </head>
 <body>
   <header class="navbar">
-    <a href="../index.html" class="brand">
+    <a href="/" class="brand">
       <img src="/assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
       <span>GKJ TU Kinasih</span>
     </a>
@@ -20,7 +20,7 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="nav-menu" id="navMenu">
-      <a href="../index.html" class="nav-link">Home</a>
+      <a href="/" class="nav-link">Home</a>
       <a href="/tentang" class="nav-link active">Tentang</a>
       <a href="/warta" class="nav-link">Warta</a>
       <a href="/renungan" class="nav-link">Renungan</a>
@@ -30,12 +30,12 @@
   </header>
 
   <main class="page-section about-section">
-    <div class="section-head" style="text-align: left; margin-bottom: 2.5rem;">
+    <div class="section-head section-head-left">
       <h2>Tentang GKJ TU Kinasih</h2>
       <p style="margin: 0;">Mengenal lebih dekat <b>Visi</b>, <b>Misi</b>, dan perjalanan persekutuan jemaat kami</p>
     </div>
 
-    <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow); margin-bottom: 2.5rem;">
+    <div class="content-card">
       <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text); margin-bottom: 2rem;">
         GKJ TU Kinasih adalah persekutuan jemaat yang berakar dalam firman Tuhan dan bertumbuh dalam kasih Kristus untuk menjadi berkat nyata bagi sesama di tengah masyarakat.
       </p>
@@ -51,10 +51,10 @@
       </p>
     </div>
 
-    <section aria-labelledby="pengurusanTitle" style="margin-top:2.5rem;">
-      <div class="section-head" style="text-align:left;margin-bottom:1.75rem;">
+    <section class="about-section" aria-labelledby="pengurusanTitle">
+      <div class="section-head section-head-left">
         <h2 id="pengurusanTitle">Kepengurusan</h2>
-        <p style="margin-left:0;margin-right:0;text-align:left;">Pengurus pelayanan dan pelayanan GKJ TU Kinasih</p>
+        <p>Pengurus pelayanan dan pelayanan GKJ TU Kinasih</p>
       </div>
       <div id="pengurusanContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;"></div>
     </section>
@@ -69,7 +69,7 @@
       <div class="footer-col">
         <h4>Menu</h4>
         <ul>
-          <li><a href="../index.html">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
           <li><a href="/warta">Warta Jemaat</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
@@ -99,18 +99,18 @@
     document.addEventListener('DOMContentLoaded', async function() {
       var container = document.getElementById('pengurusanContainer');
       var iconUrl = '/assets/images/blank-profile-picture.webp';
-      function createCard(person) {
+      function createPersonCard(person) {
         var photo = person.photo_url || iconUrl;
-        return '<article style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:1.5rem;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.06);margin-bottom:1.25rem;">' +
-          '<img src="' + photo + '" alt="Foto ' + escapeHtml(person.name) + '" loading="lazy" style="width:112px;height:112px;margin:0 auto 1rem;object-fit:cover;border-radius:50%;border:3px solid #f1c5b5;background:#fff;">' +
-          '<h3 style="margin:0 0 .35rem;font-size:1.3rem;color:#c47f65;">' + escapeHtml(person.position) + '</h3>' +
+        return '<article class="person-card">' +
+          '<img src="' + photo + '" alt="Foto ' + escapeHtml(person.name) + '" loading="lazy" />' +
+          '<h3>' + escapeHtml(person.position) + '</h3>' +
           '<p style="margin:0;color:#555;line-height:1.5;">' + escapeHtml(person.name) + '</p>' +
           '</article>';
       }
       try {
         var allLeaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,position.asc,created_at.asc');
         if (!allLeaders.length) { container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>'; return; }
-        container.innerHTML = allLeaders.map(function(item) { return createCard(item); }).join('');
+        container.innerHTML = allLeaders.map(createPersonCard).join('');
       } catch (err) {
         container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum dapat dimuat.</p>';
         console.error('Gagal memuat kepengurusan:', err);
