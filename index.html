@@ -24,11 +24,11 @@
     </button>
     <nav class="nav-menu" id="navMenu">
       <a href="index.html" class="nav-link active">Home</a>
-      <a href="pages/tentang.html" class="nav-link">Tentang</a>
-      <a href="pages/warta.html" class="nav-link">Warta</a>
-      <a href="pages/renungan.html" class="nav-link">Renungan</a>
-      <a href="pages/jadwal.html" class="nav-link">Jadwal</a>
-      <a href="pages/event.html" class="nav-link">Event</a>
+      <a href="/tentang" class="nav-link">Tentang</a>
+      <a href="/warta" class="nav-link">Warta</a>
+      <a href="/renungan" class="nav-link">Renungan</a>
+      <a href="/jadwal" class="nav-link">Jadwal</a>
+      <a href="/event" class="nav-link">Event</a>
     </nav>
   </header>
 
@@ -40,8 +40,8 @@
           <h1>Shalom, keluarga besar Jemaat GKJTU Kinasih! 💒</h1>
           <p>Tuhan terus bekerja di tengah-tengah kita, dan melalui warta jemaat minggu ini, kita diingatkan untuk tetap terlibat dalam pelayanan dan persekutuan.</p>
           <div class="hero-btns">
-            <a href="pages/jadwal.html" class="btn btn-peach">Jadwal Ibadah</a>
-            <a href="pages/warta.html" class="btn btn-soft">Baca Warta</a>
+            <a href="/jadwal" class="btn btn-peach">Jadwal Ibadah</a>
+            <a href="/warta" class="btn btn-soft">Baca Warta</a>
           </div>
         </div>
         <div class="hero-image" style="aspect-ratio: 3/4; position: relative; overflow: hidden; border-radius: var(--radius);">
@@ -56,7 +56,7 @@
         <p>Informasi dan pengumuman terkini pelayanan jemaat GKJ TU Kinasih</p>
       </div>
       <div class="warta-grid" id="homeWartaGrid"></div>
-      <p class="view-all"><a href="pages/warta.html">Lihat Semua Warta &rarr;</a></p>
+      <p class="view-all"><a href="/warta">Lihat Semua Warta &rarr;</a></p>
     </section>
 
     <section class="section">
@@ -65,13 +65,13 @@
         <p>Kegiatan persekutuan dan pelayanan bersama dalam waktu dekat</p>
       </div>
       <div class="event-grid" id="homeEventGrid"></div>
-      <p class="view-all"><a href="pages/event.html">Lihat Semua Event &rarr;</a></p>
+      <p class="view-all"><a href="/event">Lihat Semua Event &rarr;</a></p>
     </section>
 
     <div class="warm-banner">
       <h3>Ingin Bergabung dalam Persekutuan?</h3>
       <p>Mari bertumbuh bersama dalam iman, doa, dan kasih Kristus.</p>
-      <a href="pages/jadwal.html" class="btn btn-peach">Lihat Jadwal Ibadah</a>
+      <a href="/jadwal" class="btn btn-peach">Lihat Jadwal Ibadah</a>
     </div>
   </main>
 
@@ -85,11 +85,11 @@
         <h4>Menu</h4>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="pages/tentang.html">Tentang Kami</a></li>
-          <li><a href="pages/warta.html">Warta Jemaat</a></li>
-          <li><a href="pages/renungan.html">Renungan Harian</a></li>
-          <li><a href="pages/jadwal.html">Jadwal Ibadah</a></li>
-          <li><a href="pages/event.html">Event & Kegiatan</a></li>
+          <li><a href="/tentang">Tentang Kami</a></li>
+          <li><a href="/warta">Warta Jemaat</a></li>
+          <li><a href="/renungan">Renungan Harian</a></li>
+          <li><a href="/jadwal">Jadwal Ibadah</a></li>
+          <li><a href="/event">Event & Kegiatan</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -117,7 +117,7 @@
       catch (error) { console.warn('Warta Supabase tidak tersedia:', error.message); }
       var wHtml = '';
       warta.slice(0, 3).forEach(function(w) {
-        wHtml += '<article class="warta-card"><a href="pages/warta.html" class="warta-link"><span class="warta-date">' + w.date + '</span><span class="warta-title">' + w.title + '</span><span class="warta-action">Baca Selengkapnya &rarr;</span></a></article>';
+        wHtml += '<article class="warta-card"><a href="/warta" class="warta-link"><span class="warta-date">' + w.date + '</span><span class="warta-title">' + w.title + '</span><span class="warta-action">Baca Selengkapnya &rarr;</span></a></article>';
       });
       document.getElementById('homeWartaGrid').innerHTML = wHtml;
 
