@@ -102,7 +102,7 @@
       }
       var html = '';
       renungan.forEach(function(item) {
-        var title = item.title || item.imageName || 'Renungan Harian';
+        var title = item.title || item.imageName || item.image_name || 'Renungan Harian';
         var image = item.image_url || item.imageUrl || item.imageData || '';
         var fileName = item.image_name || item.imageName || '';
         var isPdf = image && (/\.pdf(?:$|\?)/i.test(image) || /\.pdf$/i.test(fileName));

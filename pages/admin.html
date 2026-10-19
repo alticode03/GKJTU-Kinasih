@@ -390,11 +390,12 @@
           filename = DB.filename(file.name, '.webp');
         }
         var fileUrl = await DB.upload('renungan', filename, uploadBody, contentType);
+        // Skema tabel renungan saat ini memakai kolom date, image_url, dan image_name.
+        // Judul tetap dipakai sebagai nama file agar tidak mengirim kolom yang belum ada.
         await DB.add('renungan', {
-          title: document.getElementById('renunganTitle').value.trim(),
           date: document.getElementById('renunganDate').value,
           image_url: fileUrl,
-          image_name: filename
+          image_name: document.getElementById('renunganTitle').value.trim() + ' — ' + filename
         });
         e.target.reset(); selectedRenunganFile = null; document.getElementById('renunganImagePreview').innerHTML = '';
         showToast('Renungan berhasil ditambahkan', 'success'); await renderAdminRenungan();
