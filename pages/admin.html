@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel - GKJ TU Kinasih</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <script src="/config/settings.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -690,7 +691,7 @@
       var oldValues = Array.prototype.map.call(container.querySelectorAll('.leader-name-input'), function(input) { return input.value; });
       var html = '';
       for (var i = 0; i < count; i++) {
-        html += '<div class="leader-person-field"><label for="leaderName' + i + '">Nama Lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '</label><input class="leader-name-input" id="leaderName' + i + '" type="text" required maxlength="120" placeholder="Nama lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '"><label class="file-input-label leader-photo-label" for="leaderPhoto' + i + '">📎 Pilih foto (opsional)</label><input id="leaderPhoto' + i + '" type="file" accept="image/jpeg,image/png,image/webp" class="file-input leader-photo-input" data-index="' + i + '" hidden><div id="leaderPhotoPreview' + i + '" class="photo-preview-grid leader-photo-preview"></div></div>';
+        html += '<div class="leader-person-field"><label for="leaderName' + i + '">Nama Lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '</label><input class="leader-name-input" id="leaderName' + i + '" type="text" required maxlength="120" placeholder="Nama lengkap ' + escapeHtml(position) + ' ' + (i + 1) + '"><label class="file-input-label leader-photo-label" for="leaderPhoto' + i + '">Pilih foto</label><input id="leaderPhoto' + i + '" type="file" accept="image/jpeg,image/png,image/webp" class="file-input leader-photo-input" data-index="' + i + '" hidden><div id="leaderPhotoPreview' + i + '" class="photo-preview-grid leader-photo-preview"></div></div>';
       }
       container.innerHTML = html;
       container.querySelectorAll('.leader-name-input').forEach(function(input, i) { if (oldValues[i]) input.value = oldValues[i]; });

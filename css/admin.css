@@ -107,7 +107,7 @@
 /* ===== ADMIN KEPENGURUSAN FORM ===== */
 .leader-person-field {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 140px;
   gap: 14px;
   align-items: center;
   background: var(--card);
@@ -118,9 +118,11 @@
 .leader-person-field label:first-of-type,
 .leader-person-field .file-input-label {
   margin: 0;
-  font-size: .9rem;
+  padding: 6px 10px;
+  font-size: .8rem;
   color: var(--muted);
   font-weight: 500;
+  white-space: nowrap;
 }
 .leader-name-input {
   width: 100%;
