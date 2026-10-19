@@ -103,13 +103,14 @@
       var html = '';
       renungan.forEach(function(item) {
         var title = item.title || item.imageName || 'Renungan Harian';
-        var content = item.content || 'Renungan untuk menguatkan iman dan langkah hidup sehari-hari.';
         var image = item.image_url || item.imageUrl || item.imageData || '';
-        html += '<article class="renungan-item" data-title="' + title.toLowerCase() + '" data-content="' + content.toLowerCase() + '" data-date="' + (item.date || '') + '">';
-        if (image) html += '<img src="' + image + '" alt="' + title + '" style="width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin-bottom:1rem;">';
+        var fileName = item.image_name || item.imageName || '';
+        var isPdf = image && (/\.pdf(?:$|\?)/i.test(image) || /\.pdf$/i.test(fileName));
+        html += '<article class="renungan-item" data-title="' + title.toLowerCase() + '" data-content="" data-date="' + (item.date || '') + '">';
+        if (image && isPdf) html += '<a class="btn-primary" href="' + image + '" target="_blank" rel="noopener">📄 Buka PDF Renungan</a>';
+        else if (image) html += '<img src="' + image + '" alt="' + title + '" style="width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin-bottom:1rem;">';
         html += '<div class="meta">📅 ' + (item.date || '-') + '</div>';
         html += '<h3>' + title + '</h3>';
-        html += '<p>' + content + '</p>';
         html += '</article>';
       });
       document.getElementById('renunganList').innerHTML = html;

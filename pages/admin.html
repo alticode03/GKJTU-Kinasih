@@ -101,18 +101,14 @@
               <input type="text" id="renunganTitle" required placeholder="Contoh: Pengharapan dalam Kristus">
             </div>
             <div class="form-group">
-              <label for="renunganContent">Isi Renungan</label>
-              <textarea id="renunganContent" rows="4" required placeholder="Tuliskan renungan singkat..."></textarea>
-            </div>
-            <div class="form-group">
               <label>Tanggal</label>
               <input type="date" id="renunganDate" required>
             </div>
             <div class="form-group">
-              <label>Upload Gambar Renungan</label>
-              <input type="file" id="renunganImageFile" accept="image/*" class="file-input" hidden>
-              <label for="renunganImageFile" class="file-input-label">📎 Pilih gambar renungan</label>
-              <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, atau WEBP</small>
+              <label>Upload Berkas Renungan</label>
+              <input type="file" id="renunganImageFile" accept="image/*,application/pdf" class="file-input" hidden>
+              <label for="renunganImageFile" class="file-input-label">📎 Pilih gambar atau PDF</label>
+              <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, WEBP, atau PDF</small>
               <div id="renunganImagePreview" class="photo-preview-grid"></div>
             </div>
             <button type="submit" class="btn-primary">Simpan Renungan</button>
@@ -378,20 +374,29 @@
 
     async function saveRenungan(e) {
       e.preventDefault();
-      if (!selectedRenunganImage) { showToast('Silakan pilih gambar renungan', 'error'); return; }
+      if (!selectedRenunganFile) { showToast('Silakan pilih gambar atau PDF renungan', 'error'); return; }
       try {
-        var compressed = await ImageCompressor.compress(selectedRenunganImage);
-        var blob = await (await fetch(compressed.dataUrl)).blob();
-        var filename = DB.filename(selectedRenunganImage.name, '.webp');
-        var imageUrl = await DB.upload('renungan', filename, blob, 'image/webp');
+        var file = selectedRenunganFile;
+        var isPdf = file.type === 'application/pdf';
+        var uploadBody = file;
+        var contentType = file.type;
+        var filename;
+        if (isPdf) {
+          filename = DB.filename(file.name, '.pdf');
+        } else {
+          var compressed = await ImageCompressor.compress(file);
+          uploadBody = await (await fetch(compressed.dataUrl)).blob();
+          contentType = 'image/webp';
+          filename = DB.filename(file.name, '.webp');
+        }
+        var fileUrl = await DB.upload('renungan', filename, uploadBody, contentType);
         await DB.add('renungan', {
           title: document.getElementById('renunganTitle').value.trim(),
-          content: document.getElementById('renunganContent').value.trim(),
           date: document.getElementById('renunganDate').value,
-          image_url: imageUrl,
+          image_url: fileUrl,
           image_name: filename
         });
-        e.target.reset(); selectedRenunganImage = null; document.getElementById('renunganImagePreview').innerHTML = '';
+        e.target.reset(); selectedRenunganFile = null; document.getElementById('renunganImagePreview').innerHTML = '';
         showToast('Renungan berhasil ditambahkan', 'success'); await renderAdminRenungan();
       } catch (error) { showToast('Gagal menyimpan renungan: ' + error.message, 'error'); }
     }
@@ -433,7 +438,7 @@
 
     var selectedEventPhotos = [];
     var selectedWartaPdf = null;
-    var selectedRenunganImage = null;
+    var selectedRenunganFile = null;
     var calendarMonth = new Date();
 
     function toggleJadwalType() {
@@ -536,18 +541,23 @@
       });
     });
 
-    // Renungan image upload handler
+    // Renungan file upload handler (gambar atau PDF)
     document.getElementById('renunganImageFile').addEventListener('change', function(e) {
       var file = e.target.files[0];
       if (!file) return;
-      if (!file.type.startsWith('image/')) {
-        showToast('File harus berupa gambar', 'error');
+      var isPdf = file.type === 'application/pdf';
+      if (!file.type.startsWith('image/') && !isPdf) {
+        showToast('File harus berupa gambar atau PDF', 'error');
         e.target.value = '';
-        selectedRenunganImage = null;
+        selectedRenunganFile = null;
         document.getElementById('renunganImagePreview').innerHTML = '';
         return;
       }
-      selectedRenunganImage = file;
+      selectedRenunganFile = file;
+      if (isPdf) {
+        document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item" style="padding:1rem;display:flex;align-items:center;gap:.5rem;">📄 <span>' + file.name + '</span></div>';
+        return;
+      }
       var reader = new FileReader();
       reader.onload = function(evt) {
         document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview gambar renungan"></div>';
