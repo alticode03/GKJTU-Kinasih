@@ -426,7 +426,7 @@
       var item = {
         name: document.getElementById('jadwalName').value,
         type: type,
-        date: type === 'khusus' ? dateValue : '',
+        date: type === 'khusus' ? dateValue : null,
         day: type === 'khusus' && dateObj ? dayNames[dateObj.getDay()] : 'Rutin',
         time: document.getElementById('jadwalTime').value,
         location: document.getElementById('jadwalLocation').value
