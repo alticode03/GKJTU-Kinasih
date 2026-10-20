@@ -86,6 +86,12 @@
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
+  <div id="renunganModal" class="renungan-modal" role="dialog" aria-modal="true" aria-label="Renungan penuh" onclick="closeRenunganModal(event)">
+    <div class="renungan-modal-content">
+      <button class="renungan-modal-close" type="button" aria-label="Tutup" onclick="closeRenunganModal()">&times;</button>
+      <div id="renunganModalBody"></div>
+    </div>
+  </div>
   <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
   <script>
@@ -102,14 +108,15 @@
       }
       var html = '';
       renungan.forEach(function(item) {
-        var title = item.title || item.imageName || item.image_name || 'Renungan Harian';
+        var storedName = item.image_name || item.imageName || '';
+        var title = item.title || storedName.split(' — ')[0] || 'Renungan Harian';
         var image = item.image_url || item.imageUrl || item.imageData || '';
-        var fileName = item.image_name || item.imageName || '';
+        var fileName = storedName;
         var isPdf = image && (/\.pdf(?:$|\?)/i.test(image) || /\.pdf$/i.test(fileName));
-        html += '<article class="renungan-item" data-title="' + title.toLowerCase() + '" data-content="" data-date="' + (item.date || '') + '">';
-        if (image && isPdf) html += '<a class="btn-primary" href="' + image + '" target="_blank" rel="noopener">📄 Buka PDF Renungan</a>';
-        else if (image) html += '<img src="' + image + '" alt="' + title + '" style="width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin-bottom:1rem;">';
-        html += '<div class="meta">📅 ' + (item.date || '-') + '</div>';
+        var encodedImage = encodeURIComponent(image);
+        html += '<article class="renungan-item" tabindex="0" role="button" data-title="' + title.toLowerCase() + '" data-content="" data-date="' + (item.date || '') + '" onclick="openRenunganModal(decodeURIComponent(\'' + encodedImage + '\'),' + isPdf + ')" onkeydown="if(event.key===\'Enter\' || event.key===\' \'){openRenunganModal(decodeURIComponent(\'' + encodedImage + '\'),' + isPdf + ')}">';
+        if (image && isPdf) html += '<div class="renungan-pdf-thumb">📄 PDF</div>';
+        else if (image) html += '<img class="renungan-thumb" src="' + image + '" alt="' + title + '">';
         html += '<h3>' + title + '</h3>';
         html += '</article>';
       });
@@ -131,6 +138,19 @@
       document.getElementById('renunganSearch').value = '';
       filterRenungan();
     }
+
+    function openRenunganModal(url, isPdf) {
+      document.getElementById('renunganModalBody').innerHTML = isPdf ? '<iframe src="' + url + '" title="Renungan PDF"></iframe>' : '<img src="' + url + '" alt="Renungan">';
+      document.getElementById('renunganModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeRenunganModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+      document.getElementById('renunganModal').classList.remove('open');
+      document.getElementById('renunganModalBody').innerHTML = '';
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(event) { if (event.key === 'Escape') closeRenunganModal(); });
 
     document.addEventListener('DOMContentLoaded', renderList);
   </script>
