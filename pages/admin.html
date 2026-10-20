@@ -262,9 +262,9 @@
   <script src="/js/image-compressor.js"></script>
   <script src="/js/ui.js"></script>
   <script>
-    var GOOGLE_DRIVE_EVENT_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'https://script.google.com/macros/s/AKfycbxMXGBo8urLfg9pn00x1QMGiEEJmD1opNGk8F9hwvM62DzQNutS_Ktr8B2WHbRi4uVV/exec'
-      : '/api/upload-event';
+    // Firebase Hosting tidak menjalankan endpoint server-side lokal.
+    // Gunakan Google Apps Script langsung agar upload event tidak mendapat 404.
+    var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbwfcHMfpD8bNW6BRgPbwhpyv12D3nMarQY7SNR-I9xIBqc7mhSj_dFIoCJpQC2eNtVA/exec';
 
     async function checkAuth() {
       var isAuth = false;
