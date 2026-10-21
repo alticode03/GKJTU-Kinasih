@@ -217,6 +217,19 @@ img { display: block; max-width: 100%; }
 
 /* ===== SECTIONS ===== */
 .section { max-width: 1200px; margin: 0 auto; padding: 4.5rem 6%; }
+/* ===== BACK LINK ===== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  transition: color .2s ease;
+}
+.back-link:hover { color: var(--primary-dark); }
+
 .section-head { text-align: center; margin-bottom: 3.5rem; }
 .section-head-left { text-align: left; margin-bottom: 2.5rem; }
 .section-head-left p { margin-left: 0; margin-right: 0; }
