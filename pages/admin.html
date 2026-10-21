@@ -129,6 +129,14 @@
                 <input type="text" id="jadwalName" required placeholder="Contoh: Ibadah Remaja">
               </div>
               <div class="form-group">
+                <label>Gereja</label>
+                <div class="schedule-type-options">
+                  <label><input type="radio" name="jadwalChurch" value="gereja1" checked> Gereja 1</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja2"> Gereja 2</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja3"> Gereja 3</label>
+                </div>
+              </div>
+              <div class="form-group">
                 <label>Jenis Ibadah</label>
                 <div class="schedule-type-options">
                   <label><input type="radio" name="jadwalType" value="rutin" checked onchange="toggleJadwalType()"> Ibadah Rutin</label>
@@ -408,7 +416,8 @@
       items.forEach(function(item) {
         var scheduleType = item.type === 'khusus' ? 'Ibadah Khusus' : 'Ibadah Rutin';
         var scheduleDate = item.type === 'khusus' ? ' • ' + (item.date || '-') : '';
-        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + scheduleType + scheduleDate + ' • ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
+        var churchLabel = item.church === 'gereja1' ? 'Gereja 1' : item.church === 'gereja2' ? 'Gereja 2' : item.church === 'gereja3' ? 'Gereja 3' : item.church || '-';
+        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + churchLabel + ' • ' + scheduleType + scheduleDate + ' • ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminJadwalList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data jadwal.</p>';
     }
@@ -416,6 +425,7 @@
     async function saveJadwal(e) {
       e.preventDefault();
       var type = document.querySelector('input[name="jadwalType"]:checked').value;
+      var church = document.querySelector('input[name="jadwalChurch"]:checked').value;
       var dateValue = document.getElementById('jadwalDate').value;
       if (type === 'khusus' && !dateValue) {
         showToast('Silakan pilih tanggal ibadah khusus', 'error');
@@ -426,6 +436,7 @@
       var item = {
         name: document.getElementById('jadwalName').value,
         type: type,
+        church: church,
         date: type === 'khusus' ? dateValue : null,
         day: type === 'khusus' && dateObj ? dayNames[dateObj.getDay()] : 'Rutin',
         time: document.getElementById('jadwalTime').value,

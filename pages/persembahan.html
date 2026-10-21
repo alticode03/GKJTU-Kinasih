@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/assets/images/icon.png">
+  <title>Persembahan - GKJ TU Kinasih</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/global.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="brand">
+      <img src="/assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
+      <span>GKJ TU Kinasih</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu nav-menu-single" id="navMenu">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/tentang" class="nav-link">Tentang</a>
+      <a href="/jadwal" class="nav-link">Jadwal &amp; Warta</a>
+      <a href="/renungan" class="nav-link">Renungan</a>
+      <a href="/pages/kontak.html" class="nav-link">Kontak</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-link dropdown-toggle active" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">&#9662;</span></button>
+        <div class="dropdown-menu">
+          <a href="/pages/pengumuman.html" class="dropdown-item">Pengumuman</a>
+          <a href="/pages/pelayanan.html" class="dropdown-item">Pelayanan</a>
+          <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
+          <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
+          <a href="/pages/persembahan.html" class="dropdown-item">Persembahan</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-section">
+    <div class="section-head">
+      <h1>Persembahan</h1>
+      <p>Informasi rekening dan laporan persembahan mingguan GKJ TU Kinasih</p>
+    </div>
+
+    <div style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+      <!-- NOMOR REKENING UNTUK TRANSFER -->
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1.2rem; color: var(--primary-dark); font-size: 1.1rem;">Rekening Persembahan</h3>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">Jemaat dapat melakukan persembahan melalui transfer ke rekening gereja berikut:</p>
+        
+        <div style="background: var(--bg-alt); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+          <p style="margin: 0.4rem 0; font-size: 0.95rem; color: var(--text);">
+            <strong>Bank:</strong> <span id="bankName">-</span>
+          </p>
+          <p style="margin: 0.4rem 0; font-size: 0.95rem; color: var(--text);">
+            <strong>Nomor Rekening:</strong> <span id="bankAccount" style="font-family: 'Courier New', monospace; font-weight: 700; color: var(--primary);">-</span>
+          </p>
+          <p style="margin: 0.4rem 0; font-size: 0.95rem; color: var(--text);">
+            <strong>Atas Nama:</strong> <span id="bankAccountName">-</span>
+          </p>
+        </div>
+        
+        <p style="font-size: 0.82rem; color: var(--muted); font-style: italic;">
+          <strong>Catatan:</strong> Informasi rekening ini dikelola oleh pengurus gereja. Hubungi contact person jika ada pertanyaan.
+        </p>
+      </div>
+
+      <!-- LAPORAN PERSEMBAHAN MINGGUAN -->
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem;">
+        <h3 style="margin-bottom: 1.2rem; color: var(--primary-dark); font-size: 1.1rem;">Laporan Persembahan Mingguan</h3>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">Laporan transparansi penggunaan persembahan jemaat:</p>
+        
+        <div id="persembahanReportContainer" style="min-height: 200px;">
+          <p style="text-align: center; color: var(--muted);">Memuat data laporan...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>GKJ TU Kinasih</h3>
+        <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/tentang">Tentang Kami</a></li>
+          <li><a href="/warta">Warta Jemaat</a></li>
+          <li><a href="/renungan">Renungan Harian</a></li>
+          <li><a href="/jadwal">Jadwal Ibadah</a></li>
+          <li><a href="/event">Event & Kegiatan</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
+        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Person</h4>
+        <p>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 GKJ TU Kinasih. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/db.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Load bank account info
+      try {
+        const bankInfo = await DB.reload('bank_account');
+        if (bankInfo && bankInfo.length > 0) {
+          const account = bankInfo[0];
+          document.getElementById('bankName').textContent = account.bank_name || '-';
+          document.getElementById('bankAccount').textContent = account.account_number || '-';
+          document.getElementById('bankAccountName').textContent = account.account_name || '-';
+        }
+      } catch (error) {
+        console.warn('Bank account info tidak tersedia:', error.message);
+      }
+
+      // Load persembahan reports
+      try {
+        const reports = await DB.reload('persembahan_report');
+        const container = document.getElementById('persembahanReportContainer');
+        
+        if (!reports || reports.length === 0) {
+          container.innerHTML = '<p style="text-align: center; color: var(--muted);">Belum ada laporan persembahan.</p>';
+          return;
+        }
+
+        let html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">';
+        reports.forEach(function(report) {
+          html += `
+            <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
+              <h4 style="color: var(--primary-dark); margin-bottom: 0.8rem; font-size: 1rem;">${report.week_label || 'Minggu ' + report.week_number}</h4>
+              <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">${report.date_range || '-'}</p>
+              <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Total Persembahan:</strong> Rp ${Number(report.total_amount || 0).toLocaleString('id-ID')}</p>
+                <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Jumlah Donatur:</strong> ${report.donor_count || 0} orang</p>
+              </div>
+              ${report.notes ? `<p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted); font-style: italic;">${report.notes}</p>` : ''}
+            </div>
+          `;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+      } catch (error) {
+        console.warn('Laporan persembahan tidak tersedia:', error.message);
+        document.getElementById('persembahanReportContainer').innerHTML = '<p style="text-align: center; color: var(--muted);">Data laporan tidak dapat dimuat.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -31,13 +31,22 @@
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
-    <nav class="nav-menu" id="navMenu">
+    <nav class="nav-menu nav-menu-single" id="navMenu">
       <a href="/" class="nav-link">Home</a>
       <a href="/tentang" class="nav-link">Tentang</a>
-      <a href="/warta" class="nav-link">Warta</a>
+      <a href="/jadwal" class="nav-link">Jadwal &amp; Warta</a>
       <a href="/renungan" class="nav-link active">Renungan</a>
-      <a href="/jadwal" class="nav-link">Jadwal</a>
-      <a href="/event" class="nav-link">Event</a>
+      <a href="/pages/kontak.html" class="nav-link">Kontak</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">&#9662;</span></button>
+        <div class="dropdown-menu">
+          <a href="/pages/pengumuman.html" class="dropdown-item">Pengumuman</a>
+          <a href="/pages/pelayanan.html" class="dropdown-item">Pelayanan</a>
+          <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
+          <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
+          <a href="/pages/persembahan.html" class="dropdown-item">Persembahan</a>
+        </div>
+      </div>
     </nav>
   </header>
 
