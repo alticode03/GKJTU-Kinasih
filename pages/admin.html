@@ -30,6 +30,12 @@
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kepemimpinan')">Kepemimpinan</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('pengumuman')">Pengumuman</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('pelayanan')">Pelayanan</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('galeri')">Galeri</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('persembahan')">Persembahan</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kontak')">Kontak</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('formulir')">Formulir Jemaat</a>
       <a href="javascript:void(0)" class="admin-nav-link logout" onclick="handleLogout()">Logout</a>
     </nav>
   </header>
@@ -62,6 +68,12 @@
         <button class="admin-tab" onclick="switchTab('jadwal')">Jadwal Ibadah</button>
         <button class="admin-tab" onclick="switchTab('event')">Event</button>
         <button class="admin-tab" onclick="switchTab('kepemimpinan')">Kepemimpinan</button>
+        <button class="admin-tab" onclick="switchTab('pengumuman')">Pengumuman</button>
+        <button class="admin-tab" onclick="switchTab('pelayanan')">Pelayanan</button>
+        <button class="admin-tab" onclick="switchTab('galeri')">Galeri</button>
+        <button class="admin-tab" onclick="switchTab('persembahan')">Persembahan</button>
+        <button class="admin-tab" onclick="switchTab('kontak')">Kontak</button>
+        <button class="admin-tab" onclick="switchTab('formulir')">Formulir Jemaat</button>
       </div>
 
       <!-- PANEL WARTA -->
@@ -221,6 +233,66 @@
         <h3 style="margin-bottom: 1rem;">Daftar Kepengurusan</h3>
         <div id="adminKepemimpinanList"></div>
       </div>
+
+      <!-- PANEL PENGUMUMAN -->
+      <div id="panel-pengumuman" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Tambah Pengumuman</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola pengumuman jemaat akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Pengumuman</h3>
+        <div id="adminPengumumanList"></div>
+      </div>
+
+      <!-- PANEL PELAYANAN -->
+      <div id="panel-pelayanan" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola informasi komisi kategorial dan pelayanan jemaat akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Pelayanan</h3>
+        <div id="adminPelayananList"></div>
+      </div>
+
+      <!-- PANEL GALERI -->
+      <div id="panel-galeri" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Upload Foto Galeri</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk upload dan kelola foto galeri kegiatan gereja akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Foto Galeri</h3>
+        <div id="adminGaleriList"></div>
+      </div>
+
+      <!-- PANEL PERSEMBAHAN -->
+      <div id="panel-persembahan" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Kelola Data Persembahan</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola rekening bank dan laporan persembahan mingguan akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Laporan Persembahan</h3>
+        <div id="adminPersembahanList"></div>
+      </div>
+
+      <!-- PANEL KONTAK -->
+      <div id="panel-kontak" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola alamat gereja, email, Instagram, dan nomor kontak akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h3>
+        <div id="adminKontakList"></div>
+      </div>
+
+      <!-- PANEL FORMULIR JEMAAT -->
+      <div id="panel-formulir" class="admin-panel">
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Kelola Formulir Jemaat</h3>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola formulir pendaftaran pelayanan baptis, nikah, penyerahan anak, dll akan ditambahkan di sini.</p>
+        </div>
+        <h3 style="margin-bottom: 1rem;">Daftar Formulir</h3>
+        <div id="adminFormulirList"></div>
+      </div>
     </div>
   </main>
 
@@ -332,6 +404,11 @@
       // Find and activate the corresponding nav link
       var navLink = document.querySelector('.admin-nav-link[onclick*="' + tab + '"]');
       if (navLink) navLink.classList.add('active');
+    }
+
+    // Alias: switchTab calls switchTabAdmin
+    function switchTab(tab) {
+      switchTabAdmin(tab);
     }
 
     // Hide the old tab buttons since navigation is now in navbar
