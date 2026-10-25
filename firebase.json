@@ -9,12 +9,20 @@
     "cleanUrls": true,
     "trailingSlash": false,
     "rewrites": [
+      { "source": "/", "destination": "/index.html" },
       { "source": "/admin", "destination": "/pages/admin.html" },
       { "source": "/event", "destination": "/pages/event.html" },
       { "source": "/jadwal", "destination": "/pages/jadwal.html" },
       { "source": "/renungan", "destination": "/pages/renungan.html" },
       { "source": "/warta", "destination": "/pages/warta.html" },
-      { "source": "/tentang", "destination": "/pages/tentang.html" }
+      { "source": "/tentang", "destination": "/pages/tentang.html" },
+      { "source": "/pengumuman", "destination": "/pages/pengumuman.html" },
+      { "source": "/pelayanan", "destination": "/pages/pelayanan.html" },
+      { "source": "/galeri", "destination": "/pages/galeri.html" },
+      { "source": "/persembahan", "destination": "/pages/persembahan.html" },
+      { "source": "/kontak", "destination": "/pages/kontak.html" },
+      { "source": "/formulir-jemaat", "destination": "/pages/formulir-jemaat.html" },
+      { "source": "**", "destination": "/index.html" }
     ]
   }
 }
