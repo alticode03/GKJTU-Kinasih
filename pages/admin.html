@@ -30,12 +30,20 @@
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kepemimpinan')">Kepemimpinan</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('pengumuman')">Pengumuman</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('pelayanan')">Pelayanan</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('galeri')">Galeri</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('persembahan')">Persembahan</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kontak')">Kontak</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('formulir')">Formulir Jemaat</a>
+      
+      <!-- Dropdown Lainnya -->
+      <div class="admin-dropdown-wrapper">
+        <a href="#" class="admin-nav-link admin-dropdown-toggle" onclick="toggleAdminDropdown(event)">Lainnya ▾</a>
+        <div class="admin-dropdown-menu" id="adminDropdownMenu">
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pengumuman'); toggleAdminDropdown()">Pengumuman</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('formulir'); toggleAdminDropdown()">Formulir Jemaat</a>
+        </div>
+      </div>
+      
       <a href="javascript:void(0)" class="admin-nav-link logout" onclick="handleLogout()">Logout</a>
     </nav>
   </header>
@@ -237,8 +245,18 @@
       <!-- PANEL PENGUMUMAN -->
       <div id="panel-pengumuman" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Pengumuman</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola pengumuman jemaat akan ditambahkan di sini.</p>
+          <h3 style="margin-bottom: 1rem;" id="pengumumanFormTitle">Tambah Pengumuman</h3>
+          <form class="auth-form" onsubmit="savePengumuman(event)">
+            <input type="hidden" id="pengumumanId">
+            <div class="form-group">
+              <label>Isi Pengumuman</label>
+              <textarea id="pengumumanContent" required rows="6" placeholder="Contoh: Dengan berduka cita kami mengabarkan bahwa Bapak/Ibu [nama] telah dipanggil Tuhan pada hari [tanggal]. Keluarga besar GKJ TU Kinasih turut berduka cita..."></textarea>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="submit" class="btn-primary" id="savePengumumanButton">Simpan Pengumuman</button>
+              <button type="button" class="btn-soft" id="cancelEditPengumuman" style="display: none;" onclick="cancelEditPengumuman()">Batal</button>
+            </div>
+          </form>
         </div>
         <h3 style="margin-bottom: 1rem;">Daftar Pengumuman</h3>
         <div id="adminPengumumanList"></div>
@@ -287,8 +305,18 @@
       <!-- PANEL FORMULIR JEMAAT -->
       <div id="panel-formulir" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Kelola Formulir Jemaat</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola formulir pendaftaran pelayanan baptis, nikah, penyerahan anak, dll akan ditambahkan di sini.</p>
+          <h3 style="margin-bottom: 1rem;" id="formulirFormTitle">Tambah Jenis Formulir</h3>
+          <form class="auth-form" onsubmit="saveFormulir(event)">
+            <input type="hidden" id="formulirId">
+            <div class="form-group">
+              <label for="formulirNama">Nama Formulir</label>
+              <input type="text" id="formulirNama" required maxlength="120" placeholder="Contoh: Formulir Permohonan Baptis">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="submit" class="btn-primary" id="saveFormulirButton">Simpan Formulir</button>
+              <button type="button" class="btn-soft" id="cancelEditFormulir" style="display: none;" onclick="cancelEditFormulir()">Batal</button>
+            </div>
+          </form>
         </div>
         <h3 style="margin-bottom: 1rem;">Daftar Formulir</h3>
         <div id="adminFormulirList"></div>
@@ -301,26 +329,26 @@
       <div class="footer-col">
         <h3>GKJ TU Kinasih</h3>
         <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+        <p style="margin-top: 1rem;"><strong>Lokasi:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
+        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Contact Person:</strong><br>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
-        <ul>
+        <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem;">
           <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
           <li><a href="/warta">Warta Jemaat</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
           <li><a href="/jadwal">Jadwal Ibadah</a></li>
           <li><a href="/event">Event & Kegiatan</a></li>
+          <li><a href="/pengumuman">Pengumuman</a></li>
+          <li><a href="/pelayanan">Pelayanan</a></li>
+          <li><a href="/galeri">Galeri</a></li>
+          <li><a href="/persembahan">Persembahan</a></li>
+          <li><a href="/kontak">Kontak</a></li>
+          <li><a href="/formulir-jemaat">Formulir Jemaat</a></li>
         </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Lokasi</h4>
-        <p>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
-        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
-      </div>
-      <div class="footer-col">
-        <h4>Contact Person</h4>
-        <p>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -411,13 +439,138 @@
       switchTabAdmin(tab);
     }
 
+    function toggleAdminDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      var menu = document.getElementById('adminDropdownMenu');
+      if (menu) {
+        menu.classList.toggle('open');
+      }
+    }
+
+    // Tutup dropdown jika klik di luar
+    document.addEventListener('click', function(e) {
+      var dropdown = document.querySelector('.admin-dropdown-wrapper');
+      var menu = document.getElementById('adminDropdownMenu');
+      if (menu && dropdown && !dropdown.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+
     // Hide the old tab buttons since navigation is now in navbar
     document.querySelectorAll('.admin-tab').forEach(function(btn) {
       btn.style.display = 'none';
     });
 
     async function renderAllAdmin() {
-      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent(), renderAdminKepemimpinan()]);
+      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent(), renderAdminKepemimpinan(), renderAdminPengumuman(), renderAdminFormulir()]);
+    }
+
+    async function renderAdminPengumuman() {
+      var items = [];
+      try { items = await DB.reload('pengumuman'); } catch (error) { showToast(error.message, 'error'); }
+      var html = '';
+      items.forEach(function(item) {
+        var date = new Date(item.created_at);
+        var dateStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        var preview = item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content;
+        html += '<div class="admin-item" style="display: flex; justify-content: space-between; align-items: start; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem;"><div style="flex: 1;"><div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">' + dateStr + '</div><p style="margin: 0; line-height: 1.6;">' + preview + '</p></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editPengumuman(\'' + item.id + '\', \'' + item.content.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n') + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'pengumuman\',\'' + item.id + '\')">Hapus</button></div></div>';
+      });
+      document.getElementById('adminPengumumanList').innerHTML = html || '<p style="color:var(--muted);">Belum ada pengumuman.</p>';
+    }
+
+    async function savePengumuman(e) {
+      e.preventDefault();
+      var id = document.getElementById('pengumumanId').value;
+      var content = document.getElementById('pengumumanContent').value.trim();
+      var button = document.getElementById('savePengumumanButton');
+      button.disabled = true;
+      try {
+        if (id) {
+          await DB.update('pengumuman', id, { content: content });
+          showToast('Pengumuman berhasil diperbarui', 'success');
+        } else {
+          await DB.add('pengumuman', { content: content });
+          showToast('Pengumuman berhasil ditambahkan', 'success');
+        }
+        e.target.reset();
+        document.getElementById('pengumumanId').value = '';
+        document.getElementById('pengumumanFormTitle').textContent = 'Tambah Pengumuman';
+        document.getElementById('cancelEditPengumuman').style.display = 'none';
+        await renderAdminPengumuman();
+      } catch (error) {
+        showToast('Gagal menyimpan pengumuman: ' + error.message, 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function editPengumuman(id, content) {
+      document.getElementById('pengumumanId').value = id;
+      document.getElementById('pengumumanContent').value = content;
+      document.getElementById('pengumumanFormTitle').textContent = 'Edit Pengumuman';
+      document.getElementById('cancelEditPengumuman').style.display = 'inline-block';
+      document.getElementById('panel-pengumuman').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditPengumuman() {
+      document.getElementById('pengumumanId').value = '';
+      document.getElementById('pengumumanContent').value = '';
+      document.getElementById('pengumumanFormTitle').textContent = 'Tambah Pengumuman';
+      document.getElementById('cancelEditPengumuman').style.display = 'none';
+    }
+
+    async function renderAdminFormulir() {
+      var items = [];
+      try { items = await DB.reload('formulir'); } catch (error) { showToast(error.message, 'error'); }
+      var html = '';
+      items.forEach(function(item) {
+        html += '<div class="admin-item"><div><strong>' + item.nama + '</strong></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editFormulir(\'' + item.id + '\', \'' + item.nama.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'formulir\',\'' + item.id + '\')">Hapus</button></div></div>';
+      });
+      document.getElementById('adminFormulirList').innerHTML = html || '<p style="color:var(--muted);">Belum ada formulir.</p>';
+    }
+
+    async function saveFormulir(e) {
+      e.preventDefault();
+      var id = document.getElementById('formulirId').value;
+      var nama = document.getElementById('formulirNama').value.trim();
+      var button = document.getElementById('saveFormulirButton');
+      button.disabled = true;
+      try {
+        if (id) {
+          await DB.update('formulir', id, { nama: nama });
+          showToast('Formulir berhasil diperbarui', 'success');
+        } else {
+          await DB.add('formulir', { nama: nama });
+          showToast('Formulir berhasil ditambahkan', 'success');
+        }
+        e.target.reset();
+        document.getElementById('formulirId').value = '';
+        document.getElementById('formulirFormTitle').textContent = 'Tambah Jenis Formulir';
+        document.getElementById('cancelEditFormulir').style.display = 'none';
+        await renderAdminFormulir();
+      } catch (error) {
+        showToast('Gagal menyimpan formulir: ' + error.message, 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function editFormulir(id, nama) {
+      document.getElementById('formulirId').value = id;
+      document.getElementById('formulirNama').value = nama;
+      document.getElementById('formulirFormTitle').textContent = 'Edit Jenis Formulir';
+      document.getElementById('cancelEditFormulir').style.display = 'inline-block';
+      document.getElementById('panel-formulir').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditFormulir() {
+      document.getElementById('formulirId').value = '';
+      document.getElementById('formulirNama').value = '';
+      document.getElementById('formulirFormTitle').textContent = 'Tambah Jenis Formulir';
+      document.getElementById('cancelEditFormulir').style.display = 'none';
     }
 
     async function renderAdminWarta() {

@@ -48,10 +48,48 @@
       <h2>Formulir Jemaat</h2>
       <p style="margin: 0;">Pendaftaran pelayanan baptis, nikah, penyerahan anak, dan keperluan jemaat</p>
     </div>
-    <div class="content-card">
-      <p style="font-size: 1.05rem; color: var(--muted); margin-bottom: 1.5rem;">
-        Silakan isi formulir digital untuk pendaftaran pelayanan gerejawi atau pemutakhiran data warga jemaat.
-      </p>
+
+    <div style="max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);">
+        <form id="formJemaat" onsubmit="kirimFormulir(event)">
+          <div class="form-group">
+            <label for="jenisFormulir">Jenis Formulir</label>
+            <select id="jenisFormulir" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: var(--font-body);">
+              <option value="">Memuat formulir...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="namaLengkap">Nama Lengkap</label>
+            <input type="text" id="namaLengkap" required maxlength="200" placeholder="Nama lengkap Anda" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem;">
+          </div>
+
+          <div class="form-group">
+            <label for="keterangan">Keterangan</label>
+            <textarea id="keterangan" rows="4" required maxlength="1000" placeholder="Keterangan atau keperluan Anda" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: var(--font-body); resize: vertical;"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Asal Gereja</label>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="radio" name="asalGereja" value="gereja1" checked style="width: 18px; height: 18px; cursor: pointer;">
+                <span>Gereja 1</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="radio" name="asalGereja" value="gereja2" style="width: 18px; height: 18px; cursor: pointer;">
+                <span>Gereja 2</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="radio" name="asalGereja" value="gereja3" style="width: 18px; height: 18px; cursor: pointer;">
+                <span>Gereja 3</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Kirim via WhatsApp</button>
+        </form>
+      </div>
     </div>
   </main>
 
@@ -60,29 +98,94 @@
       <div class="footer-col">
         <h3>GKJ TU Kinasih</h3>
         <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+        <p style="margin-top: 1rem;"><strong>Lokasi:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
+        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Contact Person:</strong><br>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
       <div class="footer-col">
-        <h3>Menu Utama</h3>
-        <ul class="footer-links">
+        <h4>Menu</h4>
+        <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem;">
           <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
-          <li><a href="/jadwal">Jadwal & Warta</a></li>
-          <li><a href="/renungan">Renungan</a></li>
+          <li><a href="/warta">Warta Jemaat</a></li>
+          <li><a href="/renungan">Renungan Harian</a></li>
+          <li><a href="/jadwal">Jadwal Ibadah</a></li>
+          <li><a href="/event">Event & Kegiatan</a></li>
+          <li><a href="/pengumuman">Pengumuman</a></li>
+          <li><a href="/pelayanan">Pelayanan</a></li>
+          <li><a href="/galeri">Galeri</a></li>
+          <li><a href="/persembahan">Persembahan</a></li>
+          <li><a href="/kontak">Kontak</a></li>
+          <li><a href="/formulir-jemaat">Formulir Jemaat</a></li>
         </ul>
-      </div>
-      <div class="footer-col">
-        <h3>Lokasi & Ibadah</h3>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.7;">
-          Ibadah Umum: Setiap Minggu<br>
-          Mari bersekutu dan bertumbuh bersama kami.
-        </p>
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; 2026 GKJ TU Kinasih. Melayani dengan Kasih dan Ketulusan.
+      &copy; 2026 GKJ TU Kinasih. All rights reserved.
     </div>
   </footer>
 
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
+  <script>
+    // Nomor WhatsApp tujuan (ganti dengan nomor yang sebenarnya)
+    var WA_NUMBER = '6285868686868'; // Ganti dengan nomor WA admin gereja
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadFormulir();
+    });
+
+    async function loadFormulir() {
+      var select = document.getElementById('jenisFormulir');
+      var items = [];
+      try {
+        items = await DB.reload('formulir');
+      } catch (error) {
+        select.innerHTML = '<option value="">Gagal memuat formulir</option>';
+        return;
+      }
+
+      if (items.length === 0) {
+        select.innerHTML = '<option value="">Belum ada formulir tersedia</option>';
+        return;
+      }
+
+      var html = '<option value="">-- Pilih Jenis Formulir --</option>';
+      items.forEach(function(item) {
+        html += '<option value="' + item.nama + '">' + item.nama + '</option>';
+      });
+      select.innerHTML = html;
+    }
+
+    function kirimFormulir(e) {
+      e.preventDefault();
+
+      var jenisFormulir = document.getElementById('jenisFormulir').value;
+      var namaLengkap = document.getElementById('namaLengkap').value.trim();
+      var keterangan = document.getElementById('keterangan').value.trim();
+      var asalGereja = document.querySelector('input[name="asalGereja"]:checked').value;
+
+      if (!jenisFormulir) {
+        showToast('Silakan pilih jenis formulir', 'error');
+        return;
+      }
+
+      var gerejaLabel = asalGereja === 'gereja1' ? 'Gereja 1' : asalGereja === 'gereja2' ? 'Gereja 2' : 'Gereja 3';
+
+      var pesan = '*Formulir Jemaat GKJ TU Kinasih*\n\n';
+      pesan += '*Jenis Formulir:* ' + jenisFormulir + '\n';
+      pesan += '*Nama Lengkap:* ' + namaLengkap + '\n';
+      pesan += '*Asal Gereja:* ' + gerejaLabel + '\n';
+      pesan += '*Keterangan:*\n' + keterangan;
+
+      var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(pesan);
+      window.open(url, '_blank');
+
+      // Reset form setelah kirim
+      document.getElementById('formJemaat').reset();
+      showToast('Formulir akan dikirim via WhatsApp', 'success');
+    }
+  </script>
 </body>
 </html>

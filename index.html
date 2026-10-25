@@ -70,8 +70,18 @@
           <h1>Shalom, keluarga besar Jemaat GKJTU Kinasih.</h1>
           <p>Tuhan terus bekerja di tengah-tengah kita, dan melalui warta jemaat minggu ini, kita diingatkan untuk tetap terlibat dalam pelayanan dan persekutuan.</p>
           <div class="hero-btns">
-            <a href="/jadwal" class="btn btn-peach">Jadwal Ibadah</a>
-            <a href="/warta" class="btn btn-soft">Baca Warta</a>
+            <a href="/pengumuman" class="btn btn-peach">Lihat Pengumuman</a>
+          </div>
+          <!-- Card Pengumuman Terbaru -->
+          <div id="latestAnnouncementCard" style="display: none; margin-top: 1.25rem; max-width: 480px; text-align: left; background: var(--card, #ffffff); border: 1px solid var(--border, #e5e0dc); border-left: 4px solid var(--primary, #C86D51); border-radius: var(--radius, 12px); padding: 1rem 1.15rem; box-shadow: var(--shadow, 0 4px 14px rgba(0,0,0,0.06));">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary, #C86D51);">Pengumuman Terbaru</span>
+              <span id="latestAnnouncementDate" style="font-size: 0.75rem; color: var(--muted, #666);"></span>
+            </div>
+            <p id="latestAnnouncementText" style="margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--text, #222); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"></p>
+            <div style="margin-top: 0.5rem; text-align: right;">
+              <a href="/pengumuman" style="font-size: 0.8rem; font-weight: 600; color: var(--primary, #C86D51); text-decoration: none;">Selengkapnya &rarr;</a>
+            </div>
           </div>
         </div>
         <div class="hero-image-pillars">
@@ -299,26 +309,26 @@
       <div class="footer-col">
         <h3>GKJ TU Kinasih</h3>
         <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+        <p style="margin-top: 1rem;"><strong>Lokasi:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
+        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Contact Person:</strong><br>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
-        <ul>
+        <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem;">
           <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
           <li><a href="/warta">Warta Jemaat</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
           <li><a href="/jadwal">Jadwal Ibadah</a></li>
           <li><a href="/event">Event & Kegiatan</a></li>
+          <li><a href="/pengumuman">Pengumuman</a></li>
+          <li><a href="/pelayanan">Pelayanan</a></li>
+          <li><a href="/galeri">Galeri</a></li>
+          <li><a href="/persembahan">Persembahan</a></li>
+          <li><a href="/kontak">Kontak</a></li>
+          <li><a href="/formulir-jemaat">Formulir Jemaat</a></li>
         </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Lokasi</h4>
-        <p>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
-        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
-      </div>
-      <div class="footer-col">
-        <h4>Contact Person</h4>
-        <p>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -360,6 +370,26 @@
         eHtml += '</article>';
       });
       document.getElementById('homeEventGrid').innerHTML = eHtml;
+
+      // Muat pengumuman terbaru untuk card di hero section
+      try {
+        var pengumumanList = await DB.reload('pengumuman');
+        if (pengumumanList && pengumumanList.length > 0) {
+          // Urutkan berdasarkan created_at desc (jika belum terurut)
+          pengumumanList.sort(function(a, b) {
+            return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+          });
+          var latest = pengumumanList[0];
+          var dateObj = new Date(latest.created_at);
+          var dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+          
+          document.getElementById('latestAnnouncementDate').textContent = dateStr;
+          document.getElementById('latestAnnouncementText').textContent = latest.content;
+          document.getElementById('latestAnnouncementCard').style.display = 'block';
+        }
+      } catch (err) {
+        console.warn('Pengumuman home tidak tersedia:', err.message);
+      }
     });
   </script>
 </body>

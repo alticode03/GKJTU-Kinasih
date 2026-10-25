@@ -49,6 +49,11 @@ var DB = (function () {
         method: 'DELETE', headers: headers()
       }, 'Gagal menghapus data ' + table + '.');
     },
+    update: function (table, id, item) {
+      return request('/rest/v1/' + table + '?id=eq.' + encodeURIComponent(id), {
+        method: 'PATCH', headers: headers(), body: JSON.stringify(item)
+      }, 'Gagal memperbarui data ' + table + '.');
+    },
     removeWhere: function (table, filter) {
       return request('/rest/v1/' + table + '?' + filter, {
         method: 'DELETE', headers: headers()
