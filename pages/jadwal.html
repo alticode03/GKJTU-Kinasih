@@ -51,44 +51,28 @@
 
   <main class="page-section">
     <div class="section-head section-head-left">
-      <a href="/" class="back-link">&larr; Beranda</a>
+      <a href="/" class="back-link">← Beranda</a>
       <h2>Jadwal Ibadah & Kegiatan</h2>
       <p>Shalom jemaat GKJTU Kinasih, mari persiapkan diri kita untuk menerima berkat Tuhan dalam ibadah.</p>
     </div>
     <div class="dual-section">
-      <div class="dual-col">
-        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-dark);">Jadwal Ibadah</h3>
-        <div class="schedule-grid schedule-grid-compact" id="jadwalGrid"></div>
-        <div class="view-all" style="margin-top: 1.5rem;">
-          <button id="jadwalBtn" onclick="toggleAllJadwal()" class="btn-toggle">
-            ↓ Lihat Selengkapnya
-          </button>
-        </div>
-        <div id="jadwalExpanded" style="display: none; margin-top: 1.5rem;">
-          <div class="schedule-grid schedule-grid-compact" id="jadwalGridFull"></div>
-          <div class="view-all" style="margin-top: 1rem;">
-            <button onclick="toggleAllJadwal()" class="btn-toggle">
-              ↑ Sembunyikan
-            </button>
-          </div>
-        </div>
+      <!-- Card Jadwal -->
+      <div class="expand-card">
+        <h3 class="expand-card-title">Jadwal Ibadah</h3>
+        <div id="jadwalPreview"></div>
+        <div id="jadwalMore" style="display:none;"></div>
+        <button id="jadwalBtn" class="btn-toggle" onclick="toggleJadwal()">
+          Lihat Selengkapnya
+        </button>
       </div>
-      <div class="dual-col">
-        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-dark);">Warta Jemaat</h3>
-        <div class="warta-grid warta-grid-compact" id="wartaPreview"></div>
-        <div class="view-all" style="margin-top: 1.5rem;">
-          <button id="wartaBtn" onclick="toggleAllWarta()" class="btn-toggle">
-            ↓ Lihat Selengkapnya
-          </button>
-        </div>
-        <div id="wartaExpanded" style="display: none; margin-top: 1.5rem;">
-          <div class="warta-grid warta-grid-compact" id="wartaGridFull"></div>
-          <div class="view-all" style="margin-top: 1rem;">
-            <button onclick="toggleAllWarta()" class="btn-toggle">
-              ↑ Sembunyikan
-            </button>
-          </div>
-        </div>
+      <!-- Card Warta -->
+      <div class="expand-card">
+        <h3 class="expand-card-title">Warta Jemaat</h3>
+        <div id="wartaPreview"></div>
+        <div id="wartaMore" style="display:none;"></div>
+        <button id="wartaBtn" class="btn-toggle" onclick="toggleWarta()">
+          Lihat Selengkapnya
+        </button>
       </div>
     </div>
   </main>
@@ -133,118 +117,116 @@
     var jadwalExpanded = false;
     var wartaExpanded = false;
 
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Load Jadwal Ibadah
-      try { allJadwal = await DB.reload('jadwal'); }
-      catch (error) { console.warn('Gagal memuat jadwal:', error.message); }
+    function rowJadwal(j) {
+      return '<div class="expand-row">'
+        + '<div class="expand-row-left">'
+        + '<span class="expand-row-label">' + (j.day || '') + '</span>'
+        + '<span class="expand-row-name">' + (j.name || '') + '</span>'
+        + '<span class="expand-row-sub">' + (j.location || '') + '</span>'
+        + '</div>'
+        + '<span class="expand-row-time">' + (j.time || '') + '</span>'
+        + '</div>';
+    }
+
+    function rowWarta(item) {
+      var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+      var link = (pdfUrl && pdfUrl !== '#')
+        ? '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="expand-row-pdf">Unduh PDF</a>'
+        : '<span class="expand-row-pdf muted">Cetak tersedia di gereja</span>';
+      return '<div class="expand-row">'
+        + '<div class="expand-row-left">'
+        + '<span class="expand-row-label">' + (item.date || '') + '</span>'
+        + '<span class="expand-row-name">' + (item.title || '') + '</span>'
+        + '</div>'
+        + link
+        + '</div>';
+    }
+
+    function renderJadwal() {
+      var preview = allJadwal.slice(0, 2).map(rowJadwal).join('');
+      var more = allJadwal.slice(2).map(rowJadwal).join('');
       
-      renderJadwalPreview();
-      renderJadwalFull();
-
-      // Load Warta Jemaat
-      try { allWarta = await DB.reload('warta'); }
-      catch (error) { console.warn('Gagal memuat warta:', error.message); }
+      var previewEl = document.getElementById('jadwalPreview');
+      var moreEl = document.getElementById('jadwalMore');
+      var btn = document.getElementById('jadwalBtn');
       
-      // Urutkan warta dari terbaru
-      allWarta.sort(function(a, b) {
-        var dateA = new Date(a.date || 0);
-        var dateB = new Date(b.date || 0);
-        return dateB - dateA;
-      });
+      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada jadwal.</p>';
+      if (moreEl) moreEl.innerHTML = more;
       
-      renderWartaPreview();
-      renderWartaFull();
-    });
-
-    function renderJadwalPreview() {
-      var html = '';
-      allJadwal.slice(0, 2).forEach(function(j) {
-        html += '<div class="schedule-card">';
-        html += '<div style="font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--primary); margin-bottom:.5rem;">' + j.day + '</div>';
-        html += '<div style="font-family:\'Playfair Display\',serif; font-size:1.9rem; color:var(--primary-dark); margin-bottom:.4rem;">' + j.time + '</div>';
-        html += '<h3>' + j.name + '</h3>';
-        html += '<p>Lokasi: ' + j.location + '</p>';
-        html += '</div>';
-      });
-      document.getElementById('jadwalGrid').innerHTML = html;
+      if (btn) {
+        btn.style.display = 'block';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+      
+      jadwalExpanded = false;
+      if (moreEl) moreEl.style.display = 'none';
     }
 
-    function renderJadwalFull() {
-      var html = '';
-      allJadwal.slice(2).forEach(function(j) {
-        html += '<div class="schedule-card">';
-        html += '<div style="font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--primary); margin-bottom:.5rem;">' + j.day + '</div>';
-        html += '<div style="font-family:\'Playfair Display\',serif; font-size:1.9rem; color:var(--primary-dark); margin-bottom:.4rem;">' + j.time + '</div>';
-        html += '<h3>' + j.name + '</h3>';
-        html += '<p>Lokasi: ' + j.location + '</p>';
-        html += '</div>';
-      });
-      document.getElementById('jadwalGridFull').innerHTML = html;
+    function renderWarta() {
+      var preview = allWarta.slice(0, 2).map(rowWarta).join('');
+      var more = allWarta.slice(2).map(rowWarta).join('');
+      
+      var previewEl = document.getElementById('wartaPreview');
+      var moreEl = document.getElementById('wartaMore');
+      var btn = document.getElementById('wartaBtn');
+      
+      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada warta.</p>';
+      if (moreEl) moreEl.innerHTML = more;
+      
+      if (btn) {
+        btn.style.display = 'block';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+      
+      wartaExpanded = false;
+      if (moreEl) moreEl.style.display = 'none';
     }
 
-    function renderWartaPreview() {
-      var html = '';
-      allWarta.slice(0, 2).forEach(function(item) {
-        var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
-        html += '<article class="warta-card">';
-        html += '<div class="warta-link">';
-        html += '<span class="warta-date">' + item.date + '</span>';
-        html += '<span class="warta-title">' + item.title + '</span>';
-        if (pdfUrl && pdfUrl !== '#') {
-          html += '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF →</a>';
-        } else {
-          html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
-        }
-        html += '</div></article>';
-      });
-      document.getElementById('wartaPreview').innerHTML = html;
-    }
-
-    function renderWartaFull() {
-      var html = '';
-      allWarta.slice(2).forEach(function(item) {
-        var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
-        html += '<article class="warta-card">';
-        html += '<div class="warta-link">';
-        html += '<span class="warta-date">' + item.date + '</span>';
-        html += '<span class="warta-title">' + item.title + '</span>';
-        if (pdfUrl && pdfUrl !== '#') {
-          html += '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF →</a>';
-        } else {
-          html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
-        }
-        html += '</div></article>';
-      });
-      document.getElementById('wartaGridFull').innerHTML = html;
-    }
-
-    function toggleAllJadwal() {
+    function toggleJadwal() {
       jadwalExpanded = !jadwalExpanded;
-      var expanded = document.getElementById('jadwalExpanded');
+      var more = document.getElementById('jadwalMore');
       var btn = document.getElementById('jadwalBtn');
       
       if (jadwalExpanded) {
-        expanded.style.display = 'block';
-        btn.style.display = 'none';
+        more.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
       } else {
-        expanded.style.display = 'none';
-        btn.style.display = 'inline-flex';
+        more.style.display = 'none';
+        btn.textContent = 'Lihat Selengkapnya';
       }
     }
 
-    function toggleAllWarta() {
+    function toggleWarta() {
       wartaExpanded = !wartaExpanded;
-      var expanded = document.getElementById('wartaExpanded');
+      var more = document.getElementById('wartaMore');
       var btn = document.getElementById('wartaBtn');
       
       if (wartaExpanded) {
-        expanded.style.display = 'block';
-        btn.style.display = 'none';
+        more.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
       } else {
-        expanded.style.display = 'none';
-        btn.style.display = 'inline-flex';
+        more.style.display = 'none';
+        btn.textContent = 'Lihat Selengkapnya';
       }
     }
+
+    // Expose functions globally for debugging
+    window.renderJadwal = renderJadwal;
+    window.renderWarta = renderWarta;
+    window.toggleJadwal = toggleJadwal;
+    window.toggleWarta = toggleWarta;
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      try { allJadwal = await DB.reload('jadwal'); } catch(e) { console.warn('Jadwal error:', e); }
+      try { allWarta = await DB.reload('warta'); } catch(e) { console.warn('Warta error:', e); }
+
+      allWarta.sort(function(a, b) {
+        return new Date(b.date || 0) - new Date(a.date || 0);
+      });
+
+      renderJadwal();
+      renderWarta();
+    });
   </script>
 </body>
 </html>
