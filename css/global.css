@@ -723,14 +723,144 @@ body { overflow-x: hidden; }
   display: none;
 }
 
-@media (max-width: 768px) {
-  .dual-section { grid-template-columns: 1fr; gap: 2.5rem; }
-  .expand-row {
-    flex-direction: column;
-    gap: 0.8rem;
+/* ===== WARTA MODAL ===== */
+.warta-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.warta-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.warta-modal-content {
+  position: relative;
+  background: var(--card);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  .expand-row-time {
-    align-self: flex-start;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.warta-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.warta-modal-close:hover {
+  background: var(--bg-alt);
+  color: var(--primary);
+}
+
+.warta-modal-header {
+  padding: 2rem 2rem 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.warta-modal-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+}
+
+.warta-modal-date {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.warta-modal-body {
+  padding: 2rem;
+  line-height: 1.8;
+}
+
+.warta-modal-body p {
+  color: var(--text);
+  margin: 0;
+}
+
+.warta-modal-footer {
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 2rem;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200, 109, 81, 0.25);
+}
+
+@media (max-width: 768px) {
+  .warta-modal-content {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+  
+  .warta-modal-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+  
+  .warta-modal-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .warta-modal-body,
+  .warta-modal-footer {
+    padding: 1.5rem;
   }
 }
 

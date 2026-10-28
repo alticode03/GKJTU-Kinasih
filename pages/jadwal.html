@@ -75,6 +75,24 @@
         </button>
       </div>
     </div>
+
+    <!-- Modal untuk Preview Warta -->
+    <div id="wartaModal" class="warta-modal" style="display:none;">
+      <div class="warta-modal-overlay" onclick="closeWartaModal()"></div>
+      <div class="warta-modal-content">
+        <button class="warta-modal-close" onclick="closeWartaModal()">✕</button>
+        <div class="warta-modal-header">
+          <h2 id="wartaModalTitle"></h2>
+          <p id="wartaModalDate" class="warta-modal-date"></p>
+        </div>
+        <div class="warta-modal-body">
+          <p id="wartaModalContent"></p>
+        </div>
+        <div class="warta-modal-footer">
+          <a id="wartaModalPdfLink" href="#" target="_blank" rel="noopener" class="btn-primary" style="display:none;">Unduh PDF Lengkap</a>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -130,11 +148,12 @@
 
     function rowWarta(item) {
       var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+      var itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
       var link = (pdfUrl && pdfUrl !== '#')
-        ? '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="expand-row-pdf">Unduh PDF</a>'
-        : '<span class="expand-row-pdf muted">Cetak tersedia di gereja</span>';
-      return '<div class="expand-row">'
-        + '<div class="expand-row-left">'
+        ? '<a href="#" class="expand-row-pdf" onclick="openWartaModal(event, ' + itemJson + ')">Lihat Detail</a>'
+        : '<span class="expand-row-pdf muted">Lihat detail di gereja</span>';
+      return '<div class="expand-row" style="cursor:pointer;" onclick="openWartaModal(event, ' + itemJson + ')">' +
+        '<div class="expand-row-left">'
         + '<span class="expand-row-label">' + (item.date || '') + '</span>'
         + '<span class="expand-row-name">' + (item.title || '') + '</span>'
         + '</div>'
@@ -208,6 +227,34 @@
         more.style.display = 'none';
         btn.textContent = 'Lihat Selengkapnya';
       }
+    }
+
+    function openWartaModal(event, item) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const modal = document.getElementById('wartaModal');
+      document.getElementById('wartaModalTitle').textContent = item.title || 'Warta';
+      document.getElementById('wartaModalDate').textContent = item.date || '';
+      document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
+      
+      const pdfLink = document.getElementById('wartaModalPdfLink');
+      const pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+      if (pdfUrl && pdfUrl !== '#') {
+        pdfLink.href = pdfUrl;
+        pdfLink.style.display = 'inline-block';
+      } else {
+        pdfLink.style.display = 'none';
+      }
+      
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWartaModal() {
+      const modal = document.getElementById('wartaModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
     }
 
     // Expose functions globally for debugging
