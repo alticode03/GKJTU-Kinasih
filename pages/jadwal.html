@@ -6,7 +6,6 @@
   <link rel="icon" type="image/png" href="/assets/images/icon.png">
   <link rel="apple-touch-icon" href="/assets/images/icon.png">
   <title>Jadwal Ibadah - GKJ TU Kinasih</title>
-  <title>Jadwal Ibadah - GKJ TU Kinasih</title>
   <meta name="description" content="Lihat jadwal ibadah dan kegiatan rutin GKJ TU Kinasih.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://gkjtu-kinasih.web.app/jadwal">
@@ -56,14 +55,43 @@
       <h2>Jadwal Ibadah & Kegiatan</h2>
       <p>Shalom jemaat GKJTU Kinasih, mari persiapkan diri kita untuk menerima berkat Tuhan dalam ibadah.</p>
     </div>
-    <div class="schedule-grid" id="jadwalGrid"></div>
+    <div class="dual-section">
+      <div class="dual-col">
+        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-dark);">Jadwal Ibadah</h3>
+        <div class="schedule-grid schedule-grid-compact" id="jadwalGrid"></div>
+        <div class="view-all" style="margin-top: 1.5rem;">
+          <button id="jadwalBtn" onclick="toggleAllJadwal()" class="btn-toggle">
+            ↓ Lihat Selengkapnya
+          </button>
+        </div>
+        <div id="jadwalExpanded" style="display: none; margin-top: 1.5rem;">
+          <div class="schedule-grid schedule-grid-compact" id="jadwalGridFull"></div>
+          <div class="view-all" style="margin-top: 1rem;">
+            <button onclick="toggleAllJadwal()" class="btn-toggle">
+              ↑ Sembunyikan
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="dual-col">
+        <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--primary-dark);">Warta Jemaat</h3>
+        <div class="warta-grid warta-grid-compact" id="wartaPreview"></div>
+        <div class="view-all" style="margin-top: 1.5rem;">
+          <button id="wartaBtn" onclick="toggleAllWarta()" class="btn-toggle">
+            ↓ Lihat Selengkapnya
+          </button>
+        </div>
+        <div id="wartaExpanded" style="display: none; margin-top: 1.5rem;">
+          <div class="warta-grid warta-grid-compact" id="wartaGridFull"></div>
+          <div class="view-all" style="margin-top: 1rem;">
+            <button onclick="toggleAllWarta()" class="btn-toggle">
+              ↑ Sembunyikan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-
-  <div class="warm-banner">
-    <h3>Punya Pertanyaan Seputar Pelayanan?</h3>
-    <p>Sekretariat Kinasih menerima informasi dari warga yang akan ditampilkan di Warta Kinasih. Paling lambat diterima Redaksi setiap hari Kamis pukul 14.00 WIB. Info lebih lanjut dapat menghubungi Sdr. Eko Setiyanto.</p>
-    <a href="https://wa.me/6283842070508" class="btn btn-peach" target="_blank" rel="noopener">Hubungi Kami</a>
-  </div>
 
   <footer>
     <div class="footer-grid">
@@ -76,16 +104,15 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/tentang">Tentang Kami</a></li>
-          <li><a href="/warta">Warta Jemaat</a></li>
+          <li><a href="/jadwal">Jadwal & Warta</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
-          <li><a href="/jadwal">Jadwal Ibadah</a></li>
           <li><a href="/event">Event & Kegiatan</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Lokasi</h4>
         <p>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
-        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
+        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
       </div>
       <div class="footer-col">
         <h4>Contact Person</h4>
@@ -101,10 +128,37 @@
   <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
   <script>
+    var allJadwal = [];
+    var allWarta = [];
+    var jadwalExpanded = false;
+    var wartaExpanded = false;
+
     document.addEventListener('DOMContentLoaded', async function() {
-      var jadwal = await DB.reload('jadwal');
+      // Load Jadwal Ibadah
+      try { allJadwal = await DB.reload('jadwal'); }
+      catch (error) { console.warn('Gagal memuat jadwal:', error.message); }
+      
+      renderJadwalPreview();
+      renderJadwalFull();
+
+      // Load Warta Jemaat
+      try { allWarta = await DB.reload('warta'); }
+      catch (error) { console.warn('Gagal memuat warta:', error.message); }
+      
+      // Urutkan warta dari terbaru
+      allWarta.sort(function(a, b) {
+        var dateA = new Date(a.date || 0);
+        var dateB = new Date(b.date || 0);
+        return dateB - dateA;
+      });
+      
+      renderWartaPreview();
+      renderWartaFull();
+    });
+
+    function renderJadwalPreview() {
       var html = '';
-      jadwal.forEach(function(j) {
+      allJadwal.slice(0, 2).forEach(function(j) {
         html += '<div class="schedule-card">';
         html += '<div style="font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--primary); margin-bottom:.5rem;">' + j.day + '</div>';
         html += '<div style="font-family:\'Playfair Display\',serif; font-size:1.9rem; color:var(--primary-dark); margin-bottom:.4rem;">' + j.time + '</div>';
@@ -113,7 +167,84 @@
         html += '</div>';
       });
       document.getElementById('jadwalGrid').innerHTML = html;
-    });
+    }
+
+    function renderJadwalFull() {
+      var html = '';
+      allJadwal.slice(2).forEach(function(j) {
+        html += '<div class="schedule-card">';
+        html += '<div style="font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--primary); margin-bottom:.5rem;">' + j.day + '</div>';
+        html += '<div style="font-family:\'Playfair Display\',serif; font-size:1.9rem; color:var(--primary-dark); margin-bottom:.4rem;">' + j.time + '</div>';
+        html += '<h3>' + j.name + '</h3>';
+        html += '<p>Lokasi: ' + j.location + '</p>';
+        html += '</div>';
+      });
+      document.getElementById('jadwalGridFull').innerHTML = html;
+    }
+
+    function renderWartaPreview() {
+      var html = '';
+      allWarta.slice(0, 2).forEach(function(item) {
+        var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+        html += '<article class="warta-card">';
+        html += '<div class="warta-link">';
+        html += '<span class="warta-date">' + item.date + '</span>';
+        html += '<span class="warta-title">' + item.title + '</span>';
+        if (pdfUrl && pdfUrl !== '#') {
+          html += '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF →</a>';
+        } else {
+          html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
+        }
+        html += '</div></article>';
+      });
+      document.getElementById('wartaPreview').innerHTML = html;
+    }
+
+    function renderWartaFull() {
+      var html = '';
+      allWarta.slice(2).forEach(function(item) {
+        var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+        html += '<article class="warta-card">';
+        html += '<div class="warta-link">';
+        html += '<span class="warta-date">' + item.date + '</span>';
+        html += '<span class="warta-title">' + item.title + '</span>';
+        if (pdfUrl && pdfUrl !== '#') {
+          html += '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="warta-action">📄 Unduh Warta PDF →</a>';
+        } else {
+          html += '<span class="warta-action">Warta Cetak Tersedia di Gereja</span>';
+        }
+        html += '</div></article>';
+      });
+      document.getElementById('wartaGridFull').innerHTML = html;
+    }
+
+    function toggleAllJadwal() {
+      jadwalExpanded = !jadwalExpanded;
+      var expanded = document.getElementById('jadwalExpanded');
+      var btn = document.getElementById('jadwalBtn');
+      
+      if (jadwalExpanded) {
+        expanded.style.display = 'block';
+        btn.style.display = 'none';
+      } else {
+        expanded.style.display = 'none';
+        btn.style.display = 'inline-flex';
+      }
+    }
+
+    function toggleAllWarta() {
+      wartaExpanded = !wartaExpanded;
+      var expanded = document.getElementById('wartaExpanded');
+      var btn = document.getElementById('wartaBtn');
+      
+      if (wartaExpanded) {
+        expanded.style.display = 'block';
+        btn.style.display = 'none';
+      } else {
+        expanded.style.display = 'none';
+        btn.style.display = 'inline-flex';
+      }
+    }
   </script>
 </body>
 </html>

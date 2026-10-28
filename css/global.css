@@ -232,8 +232,10 @@ img { display: block; max-width: 100%; }
 
 .section-head { text-align: center; margin-bottom: 3.5rem; }
 .section-head-left { text-align: left; margin-bottom: 2.5rem; }
-.section-head-left p { margin-left: 0; margin-right: 0; }
-.section-head h2 { font-size: clamp(1.9rem, 3.5vw, 2.7rem); margin-bottom: .6rem; }
+.section-head-left h1,
+.section-head-left h2 { text-align: left; }
+.section-head-left p { margin-left: 0; margin-right: 0; max-width: none; text-align: left; margin: 0 !important; }
+.section-head h2, .section-head h1 { font-size: clamp(1.9rem, 3.5vw, 2.7rem); margin-bottom: .6rem; }
 .section-head p { color: var(--muted); font-size: 1.05rem; max-width: 580px; margin: 0 auto; }
 .page-section { max-width: 1200px; margin: 0 auto; padding: 4rem 6%; }
 .page-section .section-title { font-size: clamp(1.9rem, 3.5vw, 2.7rem); margin-bottom: 2rem; }
@@ -607,5 +609,39 @@ body { overflow-x: hidden; }
 @keyframes heroImageIn { from { opacity: 0; transform: translateX(1.5rem) scale(.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) {
   .hero-text, .hero-image { animation: none; }
+}
+
+/* ===== DUAL COLUMN LAYOUT (Jadwal & Warta) ===== */
+.dual-section { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+.dual-col { }
+.schedule-grid-compact { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+.warta-grid-compact { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+
+/* ===== TOGGLE BUTTON ===== */
+.btn-toggle {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-toggle:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200, 109, 81, 0.25);
+}
+.btn-toggle:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .dual-section { grid-template-columns: 1fr; gap: 2.5rem; }
 }
 
