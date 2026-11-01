@@ -1,26 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/assets/images/icon.png">
   <link rel="apple-touch-icon" href="/assets/images/icon.png">
-  <title>GKJ TU Kinasih - Beranda</title>
-  <title>GKJ TU Kinasih - Beranda</title>
-  <meta name="description" content="Website resmi GKJ TU Kinasih: warta jemaat, renungan, jadwal ibadah, event, dan informasi pelayanan gereja.">
+  <title>GKJTU Kinasih - Beranda</title>
+  <meta name="description" content="Website resmi GKJTU Kinasih: jadwal ibadah, renungan, informasi, event, dan kegiatan gereja.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://gkjtu-kinasih.web.app/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="GKJ TU Kinasih">
-  <meta property="og:title" content="GKJ TU Kinasih - Beranda">
-  <meta property="og:description" content="Informasi jemaat, ibadah, renungan, warta, dan kegiatan GKJ TU Kinasih.">
+  <meta property="og:site_name" content="GKJTU Kinasih">
+  <meta property="og:title" content="GKJTU Kinasih - Beranda">
+  <meta property="og:description" content="Jadwal ibadah, renungan harian, informasi gereja, dan kegiatan GKJTU Kinasih.">
   <meta property="og:url" content="https://gkjtu-kinasih.web.app/">
   <meta property="og:image" content="https://gkjtu-kinasih.web.app/assets/images/icon.png">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Church",
-      "name": "GKJ TU Kinasih",
+      "name": "GKJTU Kinasih",
       "url": "https://gkjtu-kinasih.web.app/",
       "logo": "https://gkjtu-kinasih.web.app/assets/images/icon.png",
       "sameAs": []
@@ -38,26 +37,24 @@
 <body>
   <header class="navbar">
     <a href="/" class="brand">
-      <img src="assets/images/icon.png" alt="Logo GKJ TU Kinasih" class="brand-logo" />
-      <span>GKJ TU Kinasih</span>
+      <img src="assets/images/icon.png" alt="Logo GKJTU Kinasih" class="brand-logo" />
+      <span>GKJTU Kinasih</span>
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
     <nav class="nav-menu nav-menu-single" id="navMenu">
       <a href="/" class="nav-link active">Home</a>
-      <a href="/tentang" class="nav-link">Tentang</a>
       <a href="/jadwal" class="nav-link">Jadwal & Warta</a>
+      <a href="/informasi" class="nav-link">Informasi</a>
       <a href="/renungan" class="nav-link">Renungan</a>
-      <a href="/pages/kontak.html" class="nav-link">Kontak</a>
       <div class="nav-dropdown">
         <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">▾</span></button>
         <div class="dropdown-menu">
-          <a href="/pages/pengumuman.html" class="dropdown-item">Pengumuman</a>
-          <a href="/pages/pelayanan.html" class="dropdown-item">Pelayanan</a>
+          <a href="/pages/admin.html" class="dropdown-item">Admin</a>
           <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
           <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
-          <a href="/pages/persembahan.html" class="dropdown-item">Persembahan</a>
+          <a href="/pages/event.html" class="dropdown-item">Event & Kegiatan</a>
         </div>
       </div>
     </nav>
@@ -67,10 +64,10 @@
     <section class="hero">
       <div class="hero-content">
         <div class="hero-text">
-          <h1>Shalom, keluarga besar Jemaat GKJTU Kinasih.</h1>
-          <p>Tuhan terus bekerja di tengah-tengah kita, dan melalui warta jemaat minggu ini, kita diingatkan untuk tetap terlibat dalam pelayanan dan persekutuan.</p>
+          <h1>Shalom, selamat datang di GKJTU Kinasih</h1>
+          
           <div class="hero-btns">
-            <a href="/pengumuman" class="btn btn-peach">Lihat Pengumuman</a>
+            <a href="/informasi" class="btn btn-peach">Lihat Informasi</a>
           </div>
           <!-- Card Pengumuman Terbaru -->
           <div id="latestAnnouncementCard" style="display: none; margin-top: 1.25rem; max-width: 480px; text-align: left; background: var(--card, #ffffff); border: 1px solid var(--border, #e5e0dc); border-left: 4px solid var(--primary, #C86D51); border-radius: var(--radius, 12px); padding: 1rem 1.15rem; box-shadow: var(--shadow, 0 4px 14px rgba(0,0,0,0.06));">
@@ -80,16 +77,16 @@
             </div>
             <p id="latestAnnouncementText" style="margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--text, #222); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"></p>
             <div style="margin-top: 0.5rem; text-align: right;">
-              <a href="/pengumuman" style="font-size: 0.8rem; font-weight: 600; color: var(--primary, #C86D51); text-decoration: none;">Selengkapnya &rarr;</a>
+              <a href="/informasi" style="font-size: 0.8rem; font-weight: 600; color: var(--primary, #C86D51); text-decoration: none;">Selengkapnya →</a>
             </div>
           </div>
         </div>
         <div class="hero-image-pillars">
           <div class="pillar pillar-left">
-            <img src="assets/images/hero-1.webp" alt="Pelayanan GKJ TU Kinasih" />
+            <img src="assets/images/hero-1.webp" alt="Pelayanan GKJTU Kinasih" />
           </div>
           <div class="pillar pillar-center">
-            <img src="assets/images/hero-2.webp" alt="Gedung GKJ TU Kinasih" />
+            <img src="assets/images/hero-2.webp" alt="Gedung GKJTU Kinasih" />
           </div>
           <div class="pillar pillar-right">
             <img src="assets/images/hero-3.webp" alt="Persekutuan Jemaat" />
@@ -98,207 +95,33 @@
       </div>
     </section>
 
-    <!-- MENU LAYANAN GEREJA (KARTU NAVIGASI UNTUK LANSIA / JEMAAT AWAM) -->
-    <section class="section" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <!-- TENTANG SECTION (from tentang.html) -->
+    <section class="about-section" style="padding: 3rem 6%; background: var(--bg);">
       <div class="section-head">
-        <h2>Menu Layanan Gereja</h2>
-        <p>Pilih halaman yang ingin Anda buka dengan menekan salah satu kartu di bawah ini</p>
+        <h2>Tentang GKJTU Kinasih</h2>
+        <p>Mengenal lebih dekat visi, misi, dan perjalanan persekutuan jemaat kami</p>
       </div>
-      <div class="nav-cards-grid">
-        <!-- 1. Jadwal Ibadah -->
-        <a href="/jadwal" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-              <circle cx="8" cy="14" r="1" fill="currentColor"></circle>
-              <circle cx="12" cy="14" r="1" fill="currentColor"></circle>
-              <circle cx="16" cy="14" r="1" fill="currentColor"></circle>
-            </svg>
-          </div>
-          <div class="nav-card-title">Jadwal Ibadah</div>
-          <div class="nav-card-desc">Waktu dan tempat ibadah</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
 
-        <!-- 2. Warta Gereja -->
-        <a href="/warta" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path>
-              <path d="M18 14h-8"></path>
-              <path d="M15 18h-5"></path>
-              <path d="M10 6h8v4h-8V6Z"></path>
-            </svg>
-          </div>
-          <div class="nav-card-title">Warta Gereja</div>
-          <div class="nav-card-desc">Informasi terbaru jemaat</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
+      <div class="content-card">
+        <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text); margin-bottom: 2rem;">
+          GKJTU Kinasih adalah persekutuan jemaat yang berakar dalam firman Tuhan dan bertumbuh dalam kasih Kristus untuk menjadi berkat nyata bagi sesama di tengah masyarakat.
+        </p>
 
-        <!-- 3. Renungan -->
-        <a href="/renungan" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-              <path d="M12 7c-1.5-1.5-3 0-3 1.5 0 2 3 4 3 4s3-2 3-4c0-1.5-1.5-3-3-1.5z" fill="currentColor"></path>
-            </svg>
-          </div>
-          <div class="nav-card-title">Renungan</div>
-          <div class="nav-card-desc">Bacaan rohani harian</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
+        <h2>Visi</h2>
+        <p>Menuju Gereja yang Dewasa, Mandiri dan Misioner.</p>
 
-        <!-- 4. Kegiatan Gereja (Galeri / Event) -->
-        <a href="/pages/galeri.html" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="3" ry="3"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-          </div>
-          <div class="nav-card-title">Kegiatan Gereja</div>
-          <div class="nav-card-desc">Foto dan dokumentasi</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
+        <h2>Misi</h2>
+        <p>
+          1. Memantapkan kehidupan bergereja yang benar-benar dewasa dalam pelaksanaan persekutuan, pelayanan dan kesaksian<br>
+          2. Mengupayakan terwujudnya kemandirian dalam bidang teologi, dana dan daya<br>
+          3. Mewujudkan gereja yang semakin missioner
+        </p>
+      </div>
 
-        <!-- 5. Tentang Gereja -->
-        <a href="/tentang" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v4"></path>
-              <path d="M10 4h4"></path>
-              <path d="M18 10l-6-4-6 4v12h12V10z"></path>
-              <path d="M10 22v-5a2 2 0 0 1 4 0v5"></path>
-            </svg>
-          </div>
-          <div class="nav-card-title">Tentang Gereja</div>
-          <div class="nav-card-desc">Visi, misi, dan kepengurusan</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- 6. Beranda / Home -->
-        <a href="/" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </div>
-          <div class="nav-card-title">Beranda Utama</div>
-          <div class="nav-card-desc">Halaman utama website</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- 7. Pengumuman -->
-        <a href="/pages/pengumuman.html" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
-            </svg>
-          </div>
-          <div class="nav-card-title">Pengumuman</div>
-          <div class="nav-card-desc">Berita khusus & mendesak</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- 8. Pelayanan -->
-        <a href="/pages/pelayanan.html" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </div>
-          <div class="nav-card-title">Pelayanan</div>
-          <div class="nav-card-desc">Komisi kategorial & panitia</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- 9. Formulir Jemaat -->
-        <a href="/pages/formulir-jemaat.html" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-              <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
-          </div>
-          <div class="nav-card-title">Formulir Jemaat</div>
-          <div class="nav-card-desc">Pendaftaran dan data warga</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- 10. Persembahan & Kontak -->
-        <a href="/pages/persembahan.html" class="nav-card">
-          <div class="nav-card-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-              <line x1="2" y1="10" x2="22" y2="10"></line>
-            </svg>
-          </div>
-          <div class="nav-card-title">Persembahan</div>
-          <div class="nav-card-desc">Informasi rekening & QRIS</div>
-          <div class="nav-card-bottom">
-            <span></span>
-            <span class="nav-card-arrow">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </span>
-          </div>
-        </a>
+      <div style="margin-top: 3rem;">
+        <h2>Kepengurusan</h2>
+        <p style="margin-bottom: 2rem;">Pengurus pelayanan GKJTU Kinasih</p>
+        <div id="pengurusanContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;"></div>
       </div>
     </section>
 
@@ -307,32 +130,35 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
-        <h3>GKJ TU Kinasih</h3>
+        <h3>GKJTU Kinasih</h3>
         <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
-        <p style="margin-top: 1rem;"><strong>Lokasi:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772</p>
-        <p style="margin-top: 8px;"><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps &rarr;</a></p>
-        <p style="margin-top: 1.5rem;"><strong>Contact Person:</strong><br>IG: @gkjtu.kinasih<br>Email: gkjtukinasihgetas@gmail.com</p>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
-        <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem;">
+        <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/tentang">Tentang Kami</a></li>
-          <li><a href="/warta">Warta Jemaat</a></li>
+          <li><a href="/jadwal">Jadwal & Warta</a></li>
+          <li><a href="/informasi">Informasi</a></li>
           <li><a href="/renungan">Renungan Harian</a></li>
-          <li><a href="/jadwal">Jadwal Ibadah</a></li>
-          <li><a href="/event">Event & Kegiatan</a></li>
-          <li><a href="/pengumuman">Pengumuman</a></li>
-          <li><a href="/pelayanan">Pelayanan</a></li>
-          <li><a href="/galeri">Galeri</a></li>
-          <li><a href="/persembahan">Persembahan</a></li>
-          <li><a href="/kontak">Kontak</a></li>
-          <li><a href="/formulir-jemaat">Formulir Jemaat</a></li>
         </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sosial Media</h4>
+        <ul>
+          <li><a href="https://instagram.com/gkjtu.kinasih" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="mailto:gkjtukinasihgetas@gmail.com" target="_blank" rel="noopener">Email</a></li>
+          <li><a href="https://wa.me/6285868686868" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p><strong>Lokasi 1:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 2:</strong><br><em>Alamat gereja 2 (segera diisi)</em></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 3:</strong><br><em>Alamat gereja 3 (segera diisi)</em></p>
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; 2026 GKJ TU Kinasih. All rights reserved.
+      &copy; 2026 KPK GKJTU Kinasih. All rights reserved.
     </div>
   </footer>
 
@@ -340,42 +166,36 @@
   <script src="js/db.js"></script>
   <script src="js/ui.js"></script>
   <script>
+    // Kepengurusan
     document.addEventListener('DOMContentLoaded', async function() {
-      var warta = [];
-      try { warta = await DB.reload('warta'); }
-      catch (error) { console.warn('Warta Supabase tidak tersedia:', error.message); }
-      var wHtml = '';
-      warta.slice(0, 3).forEach(function(w) {
-        wHtml += '<article class="warta-card"><a href="/warta" class="warta-link"><span class="warta-date">' + w.date + '</span><span class="warta-title">' + w.title + '</span><span class="warta-action">Baca Selengkapnya &rarr;</span></a></article>';
-      });
-      document.getElementById('homeWartaGrid').innerHTML = wHtml;
+      var container = document.getElementById('pengurusanContainer');
+      var iconUrl = '/assets/images/blank-profile-picture.webp';
+      
+      function createPersonCard(person) {
+        var photo = person.photo_url || iconUrl;
+        return '<article class="person-card">' +
+          '<img src="' + photo + '" alt="Foto ' + escapeHtml(person.name) + '" loading="lazy" />' +
+          '<h3>' + escapeHtml(person.position) + '</h3>' +
+          '<p style="margin:0;color:#555;line-height:1.5;">' + escapeHtml(person.name) + '</p>' +
+          '</article>';
+      }
+      
+      try {
+        var allLeaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,position.asc,created_at.asc');
+        if (!allLeaders.length) { 
+          container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>'; 
+          return; 
+        }
+        container.innerHTML = allLeaders.map(createPersonCard).join('');
+      } catch (err) {
+        container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum dapat dimuat.</p>';
+        console.error('Gagal memuat kepengurusan:', err);
+      }
 
-      var events = [];
-      var eventPhotos = [];
-      try { events = await DB.reload('event'); eventPhotos = await DB.reload('event_photo', '?select=*'); }
-      catch (error) { console.warn('Event Supabase tidak tersedia:', error.message); }
-      var photosByEvent = {};
-      eventPhotos.forEach(function(p) { (photosByEvent[p.event_id] = photosByEvent[p.event_id] || []).push(p.photo_url); });
-      var eHtml = '';
-      events.slice(0, 2).forEach(function(e) {
-        eHtml += '<article class="event-card">';
-        eHtml += '<div class="event-images">';
-        var imgs = photosByEvent[e.id] || [];
-        imgs.slice(0, 2).forEach(function(img) {
-          eHtml += '<img src="' + img + '" alt="' + e.title + '" />'; });
-        if (imgs.length === 0) {
-          eHtml += '<img src="/assets/images/hero-image.webp" alt="Kegiatan GKJ TU Kinasih" />'; }
-        eHtml += '</div>';
-        eHtml += '<div class="event-info"><h3>' + e.title + '</h3><p class="event-date">' + (e.date || '-') + '</p><p class="event-location">Lokasi: ' + (e.location || '-') + '</p><p>' + (e.description || '') + '</p></div>';
-        eHtml += '</article>';
-      });
-      document.getElementById('homeEventGrid').innerHTML = eHtml;
-
-      // Muat pengumuman terbaru untuk card di hero section
+      // Latest announcement
       try {
         var pengumumanList = await DB.reload('pengumuman');
         if (pengumumanList && pengumumanList.length > 0) {
-          // Urutkan berdasarkan created_at desc (jika belum terurut)
           pengumumanList.sort(function(a, b) {
             return new Date(b.created_at || 0) - new Date(a.created_at || 0);
           });
@@ -391,6 +211,12 @@
         console.warn('Pengumuman home tidak tersedia:', err.message);
       }
     });
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function(c) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "\'": '&#39;' })[c];
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/assets/images/icon.png">
+  <link rel="apple-touch-icon" href="/assets/images/icon.png">
+  <title>Informasi - GKJTU Kinasih</title>
+  <meta name="description" content="Warta gereja, pengumuman, dan informasi pelayanan GKJTU Kinasih.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://gkjtu-kinasih.web.app/informasi">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GKJTU Kinasih">
+  <meta property="og:title" content="Informasi - GKJTU Kinasih">
+  <meta property="og:description" content="Warta gereja, pengumuman, dan informasi pelayanan.">
+  <meta property="og:url" content="https://gkjtu-kinasih.web.app/informasi">
+  <meta property="og:image" content="https://gkjtu-kinasih.web.app/assets/images/icon.png">
+  <script src="/config/settings.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/global.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="brand">
+      <img src="/assets/images/icon.png" alt="Logo GKJTU Kinasih" class="brand-logo" />
+      <span>GKJTU Kinasih</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu nav-menu-single" id="navMenu">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/jadwal" class="nav-link">Jadwal & Warta</a>
+      <a href="/informasi" class="nav-link active">Informasi</a>
+      <a href="/renungan" class="nav-link">Renungan</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/pages/admin.html" class="dropdown-item">Admin</a>
+          <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
+          <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
+          <a href="/pages/event.html" class="dropdown-item">Event & Kegiatan</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-section">
+    <div class="section-head section-head-left">
+      <a href="/" class="back-link">← Beranda</a>
+      <h2>Informasi Gereja</h2>
+      <p style="margin: 0;">Warta, pengumuman, dan informasi pelayanan GKJTU Kinasih</p>
+    </div>
+
+    <!-- Dual Section: Warta & Pengumuman & Pelayanan in Accordion -->
+    <div class="dual-section">
+      <!-- Warta Section -->
+      <div class="expand-card">
+        <div class="expand-card-title" onclick="toggleWarta()">
+          <span>Warta Gereja</span>
+          <button id="wartaBtn" class="btn-toggle" onclick="toggleWarta()">Lihat Selengkapnya</button>
+        </div>
+        <div id="wartaPreview"></div>
+        <div id="wartaMore" style="display:none;"></div>
+      </div>
+
+      <!-- Pengumuman Section -->
+      <div class="expand-card">
+        <div class="expand-card-title" onclick="togglePengumuman()">
+          <span>Pengumuman</span>
+          <button id="pengumumanBtn" class="btn-toggle" onclick="togglePengumuman()">Lihat Selengkapnya</button>
+        </div>
+        <div id="pengumumanPreview"></div>
+        <div id="pengumumanMore" style="display:none;"></div>
+      </div>
+
+      <!-- Pelayanan Section -->
+      <div class="expand-card">
+        <div class="expand-card-title" onclick="togglePelayanan()">
+          <span>Pelayanan</span>
+          <button id="pelayananBtn" class="btn-toggle" onclick="togglePelayanan()">Lihat Selengkapnya</button>
+        </div>
+        <div id="pelayananPreview"></div>
+        <div id="pelayananMore" style="display:none;"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>GKJTU Kinasih</h3>
+        <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/jadwal">Jadwal & Warta</a></li>
+          <li><a href="/informasi">Informasi</a></li>
+          <li><a href="/renungan">Renungan Harian</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sosial Media</h4>
+        <ul>
+          <li><a href="https://instagram.com/gkjtu.kinasih" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="mailto:gkjtukinasihgetas@gmail.com" target="_blank" rel="noopener">Email</a></li>
+          <li><a href="https://wa.me/6285868686868" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Lokasi</h4>
+        <p><strong>Lokasi 1:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 2:</strong><br><em>Alamat gereja 2 (segera diisi)</em></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 3:</strong><br><em>Alamat gereja 3 (segera diisi)</em></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 KPK GKJTU Kinasih. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/js/db.js"></script>
+  <script src="/js/ui.js"></script>
+  <script>
+    var allWarta = [];
+    var allPengumuman = [];
+    var allPelayanan = [];
+    
+    var wartaExpanded = false;
+    var pengumumanExpanded = false;
+    var pelayananExpanded = false;
+
+    // ===== WARTA =====
+    function rowWarta(item) {
+      var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+      var itemJson = JSON.stringify(item).replace(/\"/g, '&quot;');
+      var link = (pdfUrl && pdfUrl !== '#')
+        ? '<a href="#" class="expand-row-pdf" onclick="openWartaModal(event, ' + itemJson + ')">Lihat Detail</a>'
+        : '<span class="expand-row-pdf muted">Lihat detail di gereja</span>';
+      return '<div class="expand-row" style="cursor:pointer;" onclick="openWartaModal(event, ' + itemJson + ')">' +
+        '<div class="expand-row-left">'
+        + '<span class="expand-row-label">' + (item.date || '') + '</span>'
+        + '<span class="expand-row-name">' + (item.title || '') + '</span>'
+        + '</div>'
+        + link
+        + '</div>';
+    }
+
+    function renderWarta() {
+      var preview = allWarta.slice(0, 2).map(rowWarta).join('');
+      var more = allWarta.slice(2).map(rowWarta).join('');
+      
+      var previewEl = document.getElementById('wartaPreview');
+      var moreEl = document.getElementById('wartaMore');
+      var btn = document.getElementById('wartaBtn');
+      
+      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada warta.</p>';
+      if (moreEl) moreEl.innerHTML = more;
+      
+      if (btn) {
+        btn.style.display = 'block';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+      
+      wartaExpanded = false;
+      if (moreEl) moreEl.style.display = 'none';
+    }
+
+    function toggleWarta() {
+      wartaExpanded = !wartaExpanded;
+      var more = document.getElementById('wartaMore');
+      var btn = document.getElementById('wartaBtn');
+      
+      if (wartaExpanded) {
+        more.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
+      } else {
+        more.style.display = 'none';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+    }
+
+    // ===== PENGUMUMAN =====
+    function rowPengumuman(item) {
+      return '<div class="expand-row">'
+        + '<div class="expand-row-left">'
+        + '<span class="expand-row-label">' + (item.date || '') + '</span>'
+        + '<span class="expand-row-name">' + (item.title || '') + '</span>'
+        + '<span class="expand-row-sub">' + (item.content || '') + '</span>'
+        + '</div>'
+        + '</div>';
+    }
+
+    function renderPengumuman() {
+      var preview = allPengumuman.slice(0, 2).map(rowPengumuman).join('');
+      var more = allPengumuman.slice(2).map(rowPengumuman).join('');
+      
+      var previewEl = document.getElementById('pengumumanPreview');
+      var moreEl = document.getElementById('pengumumanMore');
+      var btn = document.getElementById('pengumumanBtn');
+      
+      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada pengumuman.</p>';
+      if (moreEl) moreEl.innerHTML = more;
+      
+      if (btn) {
+        btn.style.display = 'block';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+      
+      pengumumanExpanded = false;
+      if (moreEl) moreEl.style.display = 'none';
+    }
+
+    function togglePengumuman() {
+      pengumumanExpanded = !pengumumanExpanded;
+      var more = document.getElementById('pengumumanMore');
+      var btn = document.getElementById('pengumumanBtn');
+      
+      if (pengumumanExpanded) {
+        more.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
+      } else {
+        more.style.display = 'none';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+    }
+
+    // ===== PELAYANAN =====
+    function rowPelayanan(item) {
+      return '<div class="expand-row">'
+        + '<div class="expand-row-left">'
+        + '<span class="expand-row-name">' + (item.name || '') + '</span>'
+        + '<span class="expand-row-sub">' + (item.description || '') + '</span>'
+        + '</div>'
+        + '</div>';
+    }
+
+    function renderPelayanan() {
+      var preview = allPelayanan.slice(0, 2).map(rowPelayanan).join('');
+      var more = allPelayanan.slice(2).map(rowPelayanan).join('');
+      
+      var previewEl = document.getElementById('pelayananPreview');
+      var moreEl = document.getElementById('pelayananMore');
+      var btn = document.getElementById('pelayananBtn');
+      
+      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada pelayanan.</p>';
+      if (moreEl) moreEl.innerHTML = more;
+      
+      if (btn) {
+        btn.style.display = 'block';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+      
+      pelayananExpanded = false;
+      if (moreEl) moreEl.style.display = 'none';
+    }
+
+    function togglePelayanan() {
+      pelayananExpanded = !pelayananExpanded;
+      var more = document.getElementById('pelayananMore');
+      var btn = document.getElementById('pelayananBtn');
+      
+      if (pelayananExpanded) {
+        more.style.display = 'block';
+        btn.textContent = 'Sembunyikan';
+      } else {
+        more.style.display = 'none';
+        btn.textContent = 'Lihat Selengkapnya';
+      }
+    }
+
+    // ===== MODAL WARTA =====
+    function openWartaModal(event, item) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const modal = document.getElementById('wartaModal');
+      if (!modal) {
+        console.error('Modal element not found');
+        return;
+      }
+      document.getElementById('wartaModalTitle').textContent = item.title || 'Warta';
+      document.getElementById('wartaModalDate').textContent = item.date || '';
+      document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
+      
+      const pdfLink = document.getElementById('wartaModalPdfLink');
+      const pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
+      if (pdfUrl && pdfUrl !== '#') {
+        pdfLink.href = pdfUrl;
+        pdfLink.style.display = 'inline-block';
+      } else {
+        pdfLink.style.display = 'none';
+      }
+      
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWartaModal() {
+      const modal = document.getElementById('wartaModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // ===== LOAD DATA =====
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        allWarta = await DB.reload('warta', '?select=*&order=date.desc&limit=10');
+        renderWarta();
+      } catch (err) {
+        console.error('Gagal memuat warta:', err);
+      }
+
+      try {
+        allPengumuman = await DB.reload('pengumuman', '?select=*&order=date.desc&limit=10');
+        renderPengumuman();
+      } catch (err) {
+        console.error('Gagal memuat pengumuman:', err);
+      }
+
+      try {
+        allPelayanan = await DB.reload('pelayanan', '?select=*&order=name.asc&limit=10');
+        renderPelayanan();
+      } catch (err) {
+        console.error('Gagal memuat pelayanan:', err);
+      }
+    });
+
+    // Modal overlay close
+    document.addEventListener('DOMContentLoaded', function() {
+      const overlay = document.querySelector('.warta-modal-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', closeWartaModal);
+      }
+      const closeBtn = document.querySelector('.warta-modal-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeWartaModal);
+      }
+    });
+  </script>
+
+  <!-- Warta Modal HTML -->
+  <div id="wartaModal" class="warta-modal" style="display: none;">
+    <div class="warta-modal-overlay"></div>
+    <div class="warta-modal-content">
+      <button class="warta-modal-close" onclick="closeWartaModal()">&times;</button>
+      <div class="warta-modal-header">
+        <h2 id="wartaModalTitle">Warta Gereja</h2>
+        <p class="warta-modal-date" id="wartaModalDate"></p>
+      </div>
+      <div class="warta-modal-body">
+        <p id="wartaModalContent"></p>
+      </div>
+      <div class="warta-modal-footer">
+        <a id="wartaModalPdfLink" href="#" target="_blank" rel="noopener" class="btn-primary">Unduh PDF</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
