@@ -13,6 +13,7 @@
       { "source": "/admin", "destination": "/pages/admin.html" },
       { "source": "/event", "destination": "/pages/event.html" },
       { "source": "/jadwal", "destination": "/pages/jadwal.html" },
+      { "source": "/informasi", "destination": "/pages/informasi.html" },
       { "source": "/renungan", "destination": "/pages/renungan.html" },
       { "source": "/tentang", "destination": "/pages/tentang.html" },
       { "source": "/pengumuman", "destination": "/pages/pengumuman.html" },
