@@ -56,34 +56,12 @@
 
     <!-- Dual Section: Warta & Pengumuman & Pelayanan in Accordion -->
     <div class="dual-section">
-      <!-- Warta Section -->
+      <!-- Informasi Section Only -->
       <div class="expand-card">
-        <div class="expand-card-title" onclick="toggleWarta()">
-          <span>Warta Gereja</span>
-          <button id="wartaBtn" class="btn-toggle" onclick="toggleWarta()">Lihat Selengkapnya</button>
+        <div class="expand-card-title">
+          <span>Informasi</span>
         </div>
-        <div id="wartaPreview"></div>
-        <div id="wartaMore" style="display:none;"></div>
-      </div>
-
-      <!-- Pengumuman Section -->
-      <div class="expand-card">
-        <div class="expand-card-title" onclick="togglePengumuman()">
-          <span>Pengumuman</span>
-          <button id="pengumumanBtn" class="btn-toggle" onclick="togglePengumuman()">Lihat Selengkapnya</button>
-        </div>
-        <div id="pengumumanPreview"></div>
-        <div id="pengumumanMore" style="display:none;"></div>
-      </div>
-
-      <!-- Pelayanan Section -->
-      <div class="expand-card">
-        <div class="expand-card-title" onclick="togglePelayanan()">
-          <span>Pelayanan</span>
-          <button id="pelayananBtn" class="btn-toggle" onclick="togglePelayanan()">Lihat Selengkapnya</button>
-        </div>
-        <div id="pelayananPreview"></div>
-        <div id="pelayananMore" style="display:none;"></div>
+        <div id="informasiList"></div>
       </div>
     </div>
   </main>
@@ -127,240 +105,39 @@
   <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
   <script>
-    var allWarta = [];
-    var allPengumuman = [];
-    var allPelayanan = [];
-    
-    var wartaExpanded = false;
-    var pengumumanExpanded = false;
-    var pelayananExpanded = false;
+    var allInformasi = [];
 
-    // ===== WARTA =====
-    function rowWarta(item) {
-      var pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
-      var itemJson = JSON.stringify(item).replace(/\"/g, '&quot;');
-      var link = (pdfUrl && pdfUrl !== '#')
-        ? '<a href="#" class="expand-row-pdf" onclick="openWartaModal(event, ' + itemJson + ')">Lihat Detail</a>'
-        : '<span class="expand-row-pdf muted">Lihat detail di gereja</span>';
-      return '<div class="expand-row" style="cursor:pointer;" onclick="openWartaModal(event, ' + itemJson + ')">' +
-        '<div class="expand-row-left">'
-        + '<span class="expand-row-label">' + (item.date || '') + '</span>'
-        + '<span class="expand-row-name">' + (item.title || '') + '</span>'
-        + '</div>'
-        + link
-        + '</div>';
-    }
-
-    function renderWarta() {
-      var preview = allWarta.slice(0, 2).map(rowWarta).join('');
-      var more = allWarta.slice(2).map(rowWarta).join('');
-      
-      var previewEl = document.getElementById('wartaPreview');
-      var moreEl = document.getElementById('wartaMore');
-      var btn = document.getElementById('wartaBtn');
-      
-      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada warta.</p>';
-      if (moreEl) moreEl.innerHTML = more;
-      
-      if (btn) {
-        btn.style.display = 'block';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-      
-      wartaExpanded = false;
-      if (moreEl) moreEl.style.display = 'none';
-    }
-
-    function toggleWarta() {
-      wartaExpanded = !wartaExpanded;
-      var more = document.getElementById('wartaMore');
-      var btn = document.getElementById('wartaBtn');
-      
-      if (wartaExpanded) {
-        more.style.display = 'block';
-        btn.textContent = 'Sembunyikan';
-      } else {
-        more.style.display = 'none';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-    }
-
-    // ===== PENGUMUMAN =====
-    function rowPengumuman(item) {
-      return '<div class="expand-row">'
-        + '<div class="expand-row-left">'
-        + '<span class="expand-row-label">' + (item.date || '') + '</span>'
-        + '<span class="expand-row-name">' + (item.title || '') + '</span>'
-        + '<span class="expand-row-sub">' + (item.content || '') + '</span>'
-        + '</div>'
-        + '</div>';
-    }
-
-    function renderPengumuman() {
-      var preview = allPengumuman.slice(0, 2).map(rowPengumuman).join('');
-      var more = allPengumuman.slice(2).map(rowPengumuman).join('');
-      
-      var previewEl = document.getElementById('pengumumanPreview');
-      var moreEl = document.getElementById('pengumumanMore');
-      var btn = document.getElementById('pengumumanBtn');
-      
-      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada pengumuman.</p>';
-      if (moreEl) moreEl.innerHTML = more;
-      
-      if (btn) {
-        btn.style.display = 'block';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-      
-      pengumumanExpanded = false;
-      if (moreEl) moreEl.style.display = 'none';
-    }
-
-    function togglePengumuman() {
-      pengumumanExpanded = !pengumumanExpanded;
-      var more = document.getElementById('pengumumanMore');
-      var btn = document.getElementById('pengumumanBtn');
-      
-      if (pengumumanExpanded) {
-        more.style.display = 'block';
-        btn.textContent = 'Sembunyikan';
-      } else {
-        more.style.display = 'none';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-    }
-
-    // ===== PELAYANAN =====
-    function rowPelayanan(item) {
-      return '<div class="expand-row">'
-        + '<div class="expand-row-left">'
-        + '<span class="expand-row-name">' + (item.name || '') + '</span>'
-        + '<span class="expand-row-sub">' + (item.description || '') + '</span>'
-        + '</div>'
-        + '</div>';
-    }
-
-    function renderPelayanan() {
-      var preview = allPelayanan.slice(0, 2).map(rowPelayanan).join('');
-      var more = allPelayanan.slice(2).map(rowPelayanan).join('');
-      
-      var previewEl = document.getElementById('pelayananPreview');
-      var moreEl = document.getElementById('pelayananMore');
-      var btn = document.getElementById('pelayananBtn');
-      
-      if (previewEl) previewEl.innerHTML = preview || '<p style="color:var(--muted);padding:1rem 0;">Belum ada pelayanan.</p>';
-      if (moreEl) moreEl.innerHTML = more;
-      
-      if (btn) {
-        btn.style.display = 'block';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-      
-      pelayananExpanded = false;
-      if (moreEl) moreEl.style.display = 'none';
-    }
-
-    function togglePelayanan() {
-      pelayananExpanded = !pelayananExpanded;
-      var more = document.getElementById('pelayananMore');
-      var btn = document.getElementById('pelayananBtn');
-      
-      if (pelayananExpanded) {
-        more.style.display = 'block';
-        btn.textContent = 'Sembunyikan';
-      } else {
-        more.style.display = 'none';
-        btn.textContent = 'Lihat Selengkapnya';
-      }
-    }
-
-    // ===== MODAL WARTA =====
-    function openWartaModal(event, item) {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      const modal = document.getElementById('wartaModal');
-      if (!modal) {
-        console.error('Modal element not found');
+    // ===== INFORMASI =====
+    function renderInformasi() {
+      var container = document.getElementById('informasiList');
+      container.innerHTML = '';
+      if (!Array.isArray(allInformasi) || allInformasi.length === 0) {
+        container.innerHTML = '<p style="color:var(--muted);padding:1rem 0;">Belum ada informasi.</p>';
         return;
       }
-      document.getElementById('wartaModalTitle').textContent = item.title || 'Warta';
-      document.getElementById('wartaModalDate').textContent = item.date || '';
-      document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
-      
-      const pdfLink = document.getElementById('wartaModalPdfLink');
-      const pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
-      if (pdfUrl && pdfUrl !== '#') {
-        pdfLink.href = pdfUrl;
-        pdfLink.style.display = 'inline-block';
-      } else {
-        pdfLink.style.display = 'none';
-      }
-      
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeWartaModal() {
-      const modal = document.getElementById('wartaModal');
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto';
+      allInformasi.forEach(function(item) {
+        var row = document.createElement('div');
+        row.className = 'expand-row';
+        row.innerHTML = '<div class="expand-row-left">' +
+          '<span class="expand-row-label">' + (item.date || '') + '</span>' +
+          '<span class="expand-row-name">' + (item.title || '') + '</span>' +
+          '<span class="expand-row-sub">' + (item.content || '') + '</span>' +
+          '</div>';
+        container.appendChild(row);
+      });
     }
 
     // ===== LOAD DATA =====
     document.addEventListener('DOMContentLoaded', async function() {
       try {
-        allWarta = await DB.reload('warta', '?select=*&order=date.desc&limit=10');
-        renderWarta();
+        allInformasi = await DB.reload('informasi', '?select=*&order=date.desc&limit=20');
+        renderInformasi();
       } catch (err) {
-        console.error('Gagal memuat warta:', err);
-      }
-
-      try {
-        allPengumuman = await DB.reload('pengumuman', '?select=*&order=date.desc&limit=10');
-        renderPengumuman();
-      } catch (err) {
-        console.error('Gagal memuat pengumuman:', err);
-      }
-
-      try {
-        allPelayanan = await DB.reload('pelayanan', '?select=*&order=name.asc&limit=10');
-        renderPelayanan();
-      } catch (err) {
-        console.error('Gagal memuat pelayanan:', err);
-      }
-    });
-
-    // Modal overlay close
-    document.addEventListener('DOMContentLoaded', function() {
-      const overlay = document.querySelector('.warta-modal-overlay');
-      if (overlay) {
-        overlay.addEventListener('click', closeWartaModal);
-      }
-      const closeBtn = document.querySelector('.warta-modal-close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', closeWartaModal);
+        console.error('Gagal memuat informasi:', err);
       }
     });
   </script>
 
-  <!-- Warta Modal HTML -->
-  <div id="wartaModal" class="warta-modal" style="display: none;">
-    <div class="warta-modal-overlay"></div>
-    <div class="warta-modal-content">
-      <button class="warta-modal-close" onclick="closeWartaModal()">&times;</button>
-      <div class="warta-modal-header">
-        <h2 id="wartaModalTitle">Warta Gereja</h2>
-        <p class="warta-modal-date" id="wartaModalDate"></p>
-      </div>
-      <div class="warta-modal-body">
-        <p id="wartaModalContent"></p>
-      </div>
-      <div class="warta-modal-footer">
-        <a id="wartaModalPdfLink" href="#" target="_blank" rel="noopener" class="btn-primary">Unduh PDF</a>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
 
