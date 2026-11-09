@@ -131,6 +131,7 @@
   <div id="toastContainer" class="toast-container"></div>
   <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
+  <script src="/js/warta-preview.js"></script>
   <script>
     var allJadwal = [];
     var allWarta = [];
@@ -184,8 +185,8 @@
     }
 
     function renderWarta() {
-      var preview = allWarta.slice(0, 2).map(rowWarta).join('');
-      var more = allWarta.slice(2).map(rowWarta).join('');
+      var preview = allWarta.slice(0, 2).map(rowWartaWithPreview).join('');
+      var more = allWarta.slice(2).map(rowWartaWithPreview).join('');
       
       var previewEl = document.getElementById('wartaPreview');
       var moreEl = document.getElementById('wartaMore');

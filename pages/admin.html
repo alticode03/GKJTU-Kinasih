@@ -30,6 +30,8 @@
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('informasi')">Informasi</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('galeri')">Galeri</a>
+      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kepemimpinan')">Kepemimpinan</a>
       
       <!-- Dropdown Lainnya -->
       <div class="admin-dropdown-wrapper">
@@ -147,9 +149,9 @@
               <div class="form-group">
                 <label>Gereja</label>
                 <div class="schedule-type-options">
-                  <label><input type="radio" name="jadwalChurch" value="gereja1" checked> Gereja 1</label>
-                  <label><input type="radio" name="jadwalChurch" value="gereja2"> Gereja 2</label>
-                  <label><input type="radio" name="jadwalChurch" value="gereja3"> Gereja 3</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja1" checked> Getas</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja2"> Gentan</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja3"> Kadirejo</label>
                 </div>
               </div>
               <div class="form-group">
@@ -272,14 +274,7 @@
               <label>Judul Informasi</label>
               <input type="text" id="informasiTitle" required placeholder="Contoh: Jadwal Ibadah Bulan November 2026">
             </div>
-            <div class="form-group">
-              <label>Status</label>
-              <select id="informasiStatus" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--border, #ddd); border-radius: 4px; font-family: inherit;">
-                <option value="pending">Pending (Belum Published)</option>
-                <option value="published">Published (Langsung Tayang)</option>
-              </select>
-              <small style="color:var(--muted);display:block;margin-top:4px">Pending = Informasi akan tayang pada tanggal yang ditentukan. Published = Informasi tayang segera.</small>
-            </div>
+
             <div class="form-group">
               <label>Deskripsi Informasi</label>
               <!-- Toolbar -->
@@ -318,10 +313,31 @@
       <!-- PANEL GALERI -->
       <div id="panel-galeri" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Upload Foto Galeri</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk upload dan kelola foto galeri kegiatan gereja akan ditambahkan di sini.</p>
+          <h3 style="margin-bottom: 1rem;">Tambah Galeri</h3>
+          <form class="auth-form" onsubmit="saveGaleri(event)">
+            <input type="hidden" id="galeriId">
+            <div class="form-group">
+              <label>Judul Galeri</label>
+              <input type="text" id="galeriTitle" required placeholder="Contoh: Kegiatan Natal 2026">
+            </div>
+            <div class="form-group">
+              <label>Deskripsi</label>
+              <textarea id="galeriDesc" rows="3" required placeholder="Deskripsi singkat tentang galeri ini..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Foto Galeri (max 10)</label>
+              <input type="file" id="galeriPhotos" accept="image/*" multiple class="file-input" hidden>
+              <label for="galeriPhotos" class="file-input-label">📎 Pilih foto galeri</label>
+              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 10 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
+              <div id="galeriPhotoPreview" class="photo-preview-grid"></div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="submit" class="btn-primary" id="saveGaleriButton">Simpan Galeri</button>
+              <button type="button" class="btn-soft" id="cancelEditGaleri" style="display: none;" onclick="cancelEditGaleri()">Batal</button>
+            </div>
+          </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Foto Galeri</h3>
+        <h3 style="margin-bottom: 1rem;">Daftar Galeri</h3>
         <div id="adminGaleriList"></div>
       </div>
 
@@ -416,6 +432,7 @@
   <script src="/js/image-compressor.js"></script>
   <script src="/js/ui.js"></script>
   <script src="/js/admin-informasi.js"></script>
+  <script src="/js/admin-galeri.js"></script>
   <script>
     // Firebase Hosting tidak menjalankan endpoint server-side lokal.
     // Gunakan Google Apps Script langsung agar upload event tidak mendapat 404.

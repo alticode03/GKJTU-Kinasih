@@ -209,4 +209,21 @@
 #jadwalCalendar button:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(200,109,81,.16); }
 #jadwalCalendar button:active { transform: translateY(0) scale(.95); }
 
+/* ===== CONTENTEDITABLE INFORMASI ===== */
+#informasiContent {
+  outline: none;
+}
+#informasiContent ul, #informasiContent ol {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  padding: 0;
+}
+#informasiContent li {
+  margin: 0.25rem 0;
+  padding-left: 0.5rem;
+  line-height: 1.6;
+}
+#informasiContent ul li:first-line, #informasiContent ol li:first-line {
+  line-height: 1.6;
+}
+
 

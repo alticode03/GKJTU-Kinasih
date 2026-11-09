@@ -31,36 +31,30 @@ async function saveInformasi(e) {
   var date = document.getElementById('informasiDate').value.trim();
   var title = document.getElementById('informasiTitle').value.trim();
   var content = document.getElementById('informasiContent').innerHTML.trim();
-  var status = document.getElementById('informasiStatus').value.trim();
   var id = document.getElementById('informasiId').value.trim();
   var today = getTodayDate();
 
-  if (!date || !title || !content || !status) {
-    showToast('Tanggal, judul, status, dan isi tidak boleh kosong', 'error');
+  if (!date || !title || !content) {
+    showToast('Tanggal, judul, dan isi tidak boleh kosong', 'error');
     return;
   }
 
-  if (!id && date < today) {
-    showToast('Tidak bisa membuat informasi dengan tanggal yang sudah lewat. Tanggal harus hari ini atau hari mendatang.', 'error');
-    return;
-  }
-
-  var finalStatus = status === 'published' || date <= today ? 'published' : 'pending';
+  var finalStatus = date <= today ? 'published' : 'pending';
 
   button.disabled = true;
   try {
-    var item = { date: date, title: title, content: content, status: finalStatus };
-    if (id) {
-      await DB.update('informasi', id, item);
-      showToast('Informasi berhasil diperbarui', 'success');
-    } else {
+    var item = { date: date, title: title, content: content };
+    if (!id) {
+      item.status = finalStatus;
       await DB.add('informasi', item);
       showToast('Informasi berhasil ditambahkan', 'success');
+    } else {
+      await DB.update('informasi', id, item);
+      showToast('Informasi berhasil diperbarui', 'success');
     }
     document.getElementById('informasiDate').value = today;
     document.getElementById('informasiTitle').value = '';
     document.getElementById('informasiContent').innerHTML = '';
-    document.getElementById('informasiStatus').value = 'published';
     document.getElementById('informasiId').value = '';
     document.getElementById('informasiFormTitle').textContent = 'Tambah Informasi';
     document.getElementById('cancelEditInformasi').style.display = 'none';
@@ -112,7 +106,6 @@ async function editInformasi(id) {
     document.getElementById('informasiDate').value = item.date || '';
     document.getElementById('informasiTitle').value = item.title || '';
     document.getElementById('informasiContent').innerHTML = item.content || '';
-    document.getElementById('informasiStatus').value = item.status || 'published';
     document.getElementById('informasiFormTitle').textContent = 'Edit Informasi';
     document.getElementById('cancelEditInformasi').style.display = 'inline-block';
     document.getElementById('panel-informasi').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -127,7 +120,6 @@ function cancelEditInformasi() {
   document.getElementById('informasiDate').value = today;
   document.getElementById('informasiTitle').value = '';
   document.getElementById('informasiContent').innerHTML = '';
-  document.getElementById('informasiStatus').value = 'published';
   document.getElementById('informasiFormTitle').textContent = 'Tambah Informasi';
   document.getElementById('cancelEditInformasi').style.display = 'none';
 }
