@@ -46,6 +46,63 @@
       transform: translateY(-2px) !important;
       box-shadow: 0 6px 24px rgba(0,0,0,0.2) !important;
     }
+    
+    /* Responsive Layout */
+    @media (max-width: 768px) {
+      .about-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+      }
+      
+      .carousel-container {
+        width: 100% !important;
+        max-width: 280px !important;
+        height: auto !important;
+        margin: 0 auto !important;
+      }
+      
+      .carousel-container img {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 3 / 4 !important;
+      }
+      
+      .about-content h1 {
+        font-size: 1.8rem !important;
+      }
+      
+      .about-content p {
+        font-size: 0.95rem !important;
+      }
+      
+      .visi-misi-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+      
+      .visi-misi-item h3 {
+        font-size: 1rem !important;
+      }
+      
+      .visi-misi-item p {
+        font-size: 0.95rem !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      section.about-section {
+        padding: 1.5rem 4% !important;
+      }
+      
+      .carousel-container {
+        max-width: 100% !important;
+      }
+      
+      .about-content h1 {
+        font-size: 1.5rem !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -65,7 +122,6 @@
       <div class="nav-dropdown">
         <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">▾</span></button>
         <div class="dropdown-menu">
-          <a href="/pages/admin.html" class="dropdown-item">Admin</a>
           <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
           <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
           <a href="/pages/event.html" class="dropdown-item">Event & Kegiatan</a>
@@ -95,30 +151,52 @@
       </div>
     </section>
 
-    <!-- TENTANG SECTION (from tentang.html) -->
+    <!-- TENTANG SECTION dengan Carousel -->
     <section class="about-section" style="padding: 3rem 6%; background: var(--bg);">
-      <div class="section-head">
-
-      <div class="content-card">
-        <h2>Sejarah Singkat</h2>
-        <p style="font-size: 1rem; line-height: 1.8; color: var(--text); margin-bottom: 2rem; text-align: justify;">
-          GKJTU Kinasih adalah persekutuan jemaat yang berakar dalam firman Tuhan dan bertumbuh dalam kasih Kristus untuk menjadi berkat nyata bagi sesama di tengah masyarakat. Sejak didirikan, GKJTU Kinasih telah menjadi wadah bagi generasi-generasi jemaat untuk mengalami persekutuan yang dalam, pelayanan yang penuh dedikasi, dan kesaksian yang nyata dalam kehidupan sehari-hari. Kami percaya bahwa gereja adalah tubuh Kristus yang hidup, dipanggil untuk terus berkembang dan berdampak positif bagi komunitas sekitar dengan semangat kebersamaan dan kasih sejati.
-        </p>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
-          <div>
-            <h2 style="margin-top: 0;">Visi</h2>
-            <p style="text-align: justify; line-height: 1.8;">
-              Menuju Gereja yang Dewasa, Mandiri dan Misioner.
-            </p>
+      <div class="about-grid" style="display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; margin-bottom: 3rem;">
+        <!-- Carousel di sebelah kiri (3:4 aspect ratio, 480px x 360px) -->
+        <div class="carousel-container" style="position: relative; width: 360px; height: 480px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
+          <div id="carouselContainer" style="position: relative; width: 100%; height: 100%; background: #f0f0f0;">
+            <img id="carouselImage" src="/assets/images/Gereja-1.webp" alt="Foto Gereja" style="width: 100%; height: 100%; object-fit: cover;" />
           </div>
-          <div>
-            <h2 style="margin-top: 0;">Misi</h2>
-            <p style="text-align: justify; line-height: 1.8; font-size: 0.95rem;">
-              1. Memantapkan kehidupan bergereja yang benar-benar dewasa dalam pelaksanaan persekutuan, pelayanan dan kesaksian<br><br>
-              2. Mengupayakan terwujudnya kemandirian dalam bidang teologi, dana dan daya<br><br>
-              3. Mewujudkan gereja yang semakin missioner
-            </p>
+          <div style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10;">
+            <button class="carousel-dot active" onclick="switchCarouselImage(0)" style="width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid rgba(255,255,255,0.5); cursor: pointer;"></button>
+            <button class="carousel-dot" onclick="switchCarouselImage(1)" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); border: 2px solid rgba(255,255,255,0.5); cursor: pointer;"></button>
+            <button class="carousel-dot" onclick="switchCarouselImage(2)" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); border: 2px solid rgba(255,255,255,0.5); cursor: pointer;"></button>
+          </div>
+        </div>
+
+        <!-- Konten di sebelah kanan -->
+        <div class="about-content">
+          <h2 style="color: var(--primary); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 1rem 0;">TENTANG GEREJA</h2>
+          <h1 style="margin: 0 0 1.25rem 0; font-size: 2.2rem; color: var(--text);">Sejarah Singkat</h1>
+          <p style="font-size: 1rem; line-height: 1.65; color: var(--text); margin-bottom: 1.5rem; text-align: justify;">
+            GKJTU Kinasih adalah persekutuan jemaat yang berakar dalam firman Tuhan dan bertumbuh dalam kasih Kristus untuk menjadi berkat nyata bagi sesama di tengah masyarakat. Sejak didirikan, GKJTU Kinasih telah menjadi wadah bagi generasi-generasi jemaat untuk mengalami persekutuan yang dalam, pelayanan yang penuh dedikasi, dan kesaksian yang nyata dalam kehidupan sehari-hari. Kami percaya bahwa gereja adalah tubuh Kristus yang hidup, dipanggil untuk terus berkembang dan berdampak positif bagi komunitas sekitar dengan semangat kebersamaan dan kasih sejati.
+          </p>
+
+          <div class="visi-misi-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+            <div class="visi-misi-item" style="display: flex; align-items: flex-start; gap: 1rem;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="color: #fff; font-size: 1.3rem; font-weight: 700;">✓</span>
+              </div>
+              <div>
+                <h3 style="margin: 0 0 0.75rem 0; color: var(--text); font-size: 1.15rem;">Visi</h3>
+                <p style="margin: 0; font-size: 1.05rem; color: var(--text); line-height: 1.7; text-align: left;">Menuju Gereja yang Dewasa, Mandiri dan Misioner.</p>
+              </div>
+            </div>
+            <div class="visi-misi-item" style="display: flex; align-items: flex-start; gap: 1rem;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="color: #fff; font-size: 1.3rem; font-weight: 700;">◉</span>
+              </div>
+              <div>
+                <h3 style="margin: 0 0 0.75rem 0; color: var(--text); font-size: 1.15rem;">Misi</h3>
+                <p style="margin: 0; font-size: 1.05rem; color: var(--text); line-height: 1.7; text-align: left;">
+                  1. Memantapkan kehidupan bergereja yang dewasa<br>
+                  2. Mengupayakan kemandirian<br>
+                  3. Mewujudkan gereja yang misioner
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,6 +248,7 @@
   <div id="toastContainer" class="toast-container"></div>
   <script src="js/db.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/carousel.js"></script>
   <script>
     // Kepengurusan
     document.addEventListener('DOMContentLoaded', async function() {
