@@ -199,17 +199,13 @@
 
       // Latest announcement
       try {
-        var informasiList = await DB.reload('informasi');
+        var informasiList = await DB.reload('informasi', '?select=*&status=eq.published&order=date.desc,id.desc&limit=1');
         if (informasiList && informasiList.length > 0) {
-          informasiList.sort(function(a, b) {
-            return new Date(b.date || 0) - new Date(a.date || 0);
-          });
           var latest = informasiList[0];
           var dateObj = new Date(latest.date);
-          var dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-          
+          var dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
           document.getElementById('latestAnnouncementDate').textContent = dateStr;
-          document.getElementById('latestAnnouncementText').textContent = latest.content;
+          document.getElementById('latestAnnouncementText').textContent = latest.title || latest.content;
           document.getElementById('latestAnnouncementCard').style.display = 'block';
         }
       } catch (err) {

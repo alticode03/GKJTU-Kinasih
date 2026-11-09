@@ -78,7 +78,7 @@ async function loadInformasi() {
     data.forEach(function(item) {
       var row = document.createElement('div');
       row.style.cssText = 'background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;';
-      var statusBadge = '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; background: ' + (item.status === 'published' ? '#4caf50' : '#ff9800') + '; color: #fff;">' + (item.status === 'published' ? 'Published' : 'Pending') + '</span>';
+      var statusBadge = '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; background: ' + (item.status === 'published' ? 'var(--primary-light)' : '#fff3cd') + '; color: ' + (item.status === 'published' ? 'var(--primary-dark)' : '#856404') + ';">' + (item.status === 'published' ? 'Published' : 'Pending') + '</span>';
       row.innerHTML = '<div>' +
         '<div style="font-weight: 600; margin-bottom: 0.25rem;">' + (item.title || 'Tanpa judul') + statusBadge + '</div>' +
         '<div style="font-size: 0.9rem; color: var(--muted);">' + (item.date || '') + '</div>' +
