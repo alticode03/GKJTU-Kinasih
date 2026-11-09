@@ -250,7 +250,7 @@
   <script src="js/ui.js"></script>
   <script src="js/carousel.js"></script>
   <script>
-    // Kepengurusan
+    // Kepengurusan - Grouped by Position/Jabatan
     document.addEventListener('DOMContentLoaded', async function() {
       var container = document.getElementById('pengurusanContainer');
       var iconUrl = '/assets/images/blank-profile-picture.webp';
@@ -265,15 +265,38 @@
       }
       
       try {
-        var allLeaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,position.asc,created_at.asc');
+        var allLeaders = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=position.asc,sort_order.asc,created_at.asc');
         if (!allLeaders.length) { 
           container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum tersedia.</p>'; 
           return; 
         }
-        container.innerHTML = allLeaders.map(createPersonCard).join('');
+        
+        // Group by position/jabatan
+        var groupedByPosition = {};
+        allLeaders.forEach(function(leader) {
+          var position = leader.position || 'Lainnya';
+          if (!groupedByPosition[position]) {
+            groupedByPosition[position] = [];
+          }
+          groupedByPosition[position].push(leader);
+        });
+        
+        // Build HTML grouped by position
+        var html = '';
+        Object.keys(groupedByPosition).forEach(function(position) {
+          html += '<div style="margin-bottom: 2.5rem;">';
+          html += '<h3 style="margin: 0 0 1.5rem 0; color: var(--primary); font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.5px;">' + escapeHtml(position) + '</h3>';
+          html += '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">';
+          groupedByPosition[position].forEach(function(leader) {
+            html += createPersonCard(leader);
+          });
+          html += '</div></div>';
+        });
+        
+        container.innerHTML = html;
       } catch (err) {
         container.innerHTML = '<p style="color:var(--muted);">Data kepengurusan belum dapat dimuat.</p>';
-        console.error('Gagal memuat kepengurusan:', err);
+        console.error('Gagal memload kepengurusan:', err);
       }
 
       // Latest announcement
