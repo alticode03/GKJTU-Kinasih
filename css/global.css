@@ -659,6 +659,11 @@ footer { position: relative; z-index: 100; background: var(--primary-dark); colo
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   footer { padding: 3rem 4% 1.5rem; }
   .dual-section { grid-template-columns: 1fr; gap: 1.5rem; }
+  .expand-card { padding: 1.2rem 1rem; }
+  .expand-row { flex-direction: column; align-items: stretch; gap: 0.4rem; }
+  .expand-row-time { font-size: 1.1rem; white-space: normal; }
+  .expand-row-pdf { white-space: normal; }
+  .page-section { max-width: 100%; width: 100%; box-sizing: border-box; }
 }
 
 /* ===== HOME MOTION & FINISHING DETAILS ===== */
@@ -994,4 +999,14 @@ body { overflow-x: hidden; }
     padding: 1.5rem;
   }
 }
-
+/* ===== EXTRA SMALL PHONE (<480px) ===== */
+@media (max-width: 480px) {
+  .navbar { padding: 0.8rem 4%; }
+  .brand { font-size: 1.1rem; }
+  .brand-logo { width: 36px; height: 36px; }
+  .expand-card { padding: 1rem 0.8rem; }
+  .expand-row-time { font-size: 1rem; }
+  .expand-card-title { font-size: 1.1rem; }
+  .btn-toggle { padding: 1rem 0.8rem; font-size: 0.95rem; }
+  .section, .page-section { padding: 1.5rem 4%; }
+}
