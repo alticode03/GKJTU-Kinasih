@@ -53,16 +53,10 @@
       <p style="margin: 0;">Warta, pengumuman, dan informasi pelayanan GKJTU Kinasih</p>
     </div>
 
-    <!-- Dual Section: Warta & Pengumuman & Pelayanan in Accordion -->
-    <div class="dual-section">
-      <!-- Informasi Section Only -->
-      <div class="expand-card">
-        <div class="expand-card-title">
-          <span>Informasi</span>
-        </div>
-        <div id="informasiList"></div>
-      </div>
-    </div>
+    <section class="informasi-section">
+      <h3 class="informasi-section-title">Informasi</h3>
+      <div id="informasiList"></div>
+    </section>
   </main>
 
   <footer>
@@ -115,14 +109,12 @@
         return;
       }
       allInformasi.forEach(function(item) {
-        var row = document.createElement('div');
-        row.className = 'expand-row';
-        row.innerHTML = '<div class="expand-row-left">' +
-          '<span class="expand-row-label">' + (item.date || '') + '</span>' +
-          '<span class="expand-row-name">' + (item.title || '') + '</span>' +
-          '<span class="expand-row-sub">' + (item.content || '') + '</span>' +
-          '</div>';
-        container.appendChild(row);
+        var itemDiv = document.createElement('div');
+        itemDiv.className = 'informasi-item';
+        itemDiv.innerHTML = '<div class="informasi-item-date">' + (item.date || '') + '</div>' +
+          '<div class="informasi-item-title">' + (item.title || '') + '</div>' +
+          '<div class="informasi-item-content">' + (item.content || '') + '</div>';
+        container.appendChild(itemDiv);
       });
     }
 

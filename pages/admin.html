@@ -327,9 +327,13 @@
               <textarea id="galeriDesc" rows="3" required placeholder="Deskripsi singkat tentang galeri ini..."></textarea>
             </div>
             <div class="form-group">
+              <label>Thumbnail Galeri</label>
+              <input type="file" id="galeriThumbnail" accept="image/*" class="file-input" hidden>
+              <label for="galeriThumbnail" class="file-input-label">Pilih thumbnail</label>
+              <div id="galeriThumbnailPreview" class="photo-preview-grid"></div>
               <label>Foto Galeri (max 10)</label>
               <input type="file" id="galeriPhotos" accept="image/*" multiple class="file-input" hidden>
-              <label for="galeriPhotos" class="file-input-label">📎 Pilih foto galeri</label>
+              <label for="galeriPhotos" class="file-input-label">Pilih foto galeri</label>
               <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 10 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
               <div id="galeriPhotoPreview" class="photo-preview-grid"></div>
             </div>
