@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/global.css?v=20261110">
   <style>
     .hero-btns .btn-peach {
       background: #FFF7F2 !important;
@@ -204,7 +204,7 @@
       <div style="margin-top: 3rem;">
         <h2>Kepengurusan</h2>
         <p style="margin-bottom: 2rem;">Pengurus pelayanan GKJTU Kinasih</p>
-        <div id="pengurusanContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;"></div>
+        <div id="pengurusanContainer"></div>
       </div>
     </section>
 
@@ -260,7 +260,7 @@
         return '<article class="person-card">' +
           '<img src="' + photo + '" alt="Foto ' + escapeHtml(person.name) + '" loading="lazy" />' +
           '<h3>' + escapeHtml(person.position) + '</h3>' +
-          '<p style="margin:0;color:#555;line-height:1.5;">' + escapeHtml(person.name) + '</p>' +
+          '<p>' + escapeHtml(person.name) + '</p>' +
           '</article>';
       }
       
@@ -281,12 +281,12 @@
           groupedByPosition[position].push(leader);
         });
         
-        // Build HTML grouped by position
+        // Build HTML grouped by position - horizontal layout
         var html = '';
         Object.keys(groupedByPosition).forEach(function(position) {
-          html += '<div style="margin-bottom: 2.5rem;">';
-          html += '<h3 style="margin: 0 0 1.5rem 0; color: var(--primary); font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.5px;">' + escapeHtml(position) + '</h3>';
-          html += '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">';
+          html += '<div style="margin-bottom: 2rem;">';
+          html += '<h3 style="margin: 0 0 0.75rem 0; color: var(--primary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">' + escapeHtml(position) + '</h3>';
+          html += '<div style="display: flex; flex-wrap: wrap; gap: 1rem;">';
           groupedByPosition[position].forEach(function(leader) {
             html += createPersonCard(leader);
           });

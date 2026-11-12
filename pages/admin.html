@@ -6,7 +6,6 @@
   <link rel="icon" type="image/png" href="/assets/images/icon.png">
   <link rel="apple-touch-icon" href="/assets/images/icon.png">
   <title>Admin Panel - GKJTU Kinasih</title>
-  <title>Admin Panel - GKJTU Kinasih</title>
   <meta name="robots" content="noindex, nofollow, noarchive">
   <script src="/config/settings.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,9 +34,12 @@
       
       <!-- Dropdown Lainnya -->
       <div class="admin-dropdown-wrapper">
-        <a href="#" class="admin-nav-link admin-dropdown-toggle" onclick="toggleAdminDropdown(event)">Lainnya</a>
+        <a href="#" class="admin-nav-link admin-dropdown-toggle" onclick="toggleAdminDropdown(event)">Lainnya ▾</a>
         <div class="admin-dropdown-menu" id="adminDropdownMenu">
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pengumuman'); toggleAdminDropdown()">Pengumuman Duka</a>
           <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('formulir'); toggleAdminDropdown()">Formulir Jemaat</a>
         </div>
       </div>
@@ -437,7 +439,7 @@
   <script>
     // Firebase Hosting tidak menjalankan endpoint server-side lokal.
     // Gunakan Google Apps Script langsung agar upload event tidak mendapat 404.
-    var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbwfcHMfpD8bNW6BRgPbwhpyv12D3nMarQY7SNR-I9xIBqc7mhSj_dFIoCJpQC2eNtVA/exec';
+    var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbxrByP5ARHeFnNRBVxbHGCFt55FYY7h9f-VGEDUJr4aG58ggIhSpdl8Vq0_hS7M6XHb/exec';
 
     async function checkAuth() {
       var isAuth = false;
@@ -1108,10 +1110,12 @@
           adminNav.classList.toggle('open');
         });
         
-        var links = adminNav.querySelectorAll('.admin-nav-link');
+        var links = adminNav.querySelectorAll('.admin-nav-link:not(.admin-dropdown-toggle), .admin-dropdown-link');
         links.forEach(function(link) {
           link.addEventListener('click', function() {
             adminNav.classList.remove('open');
+            var menu = document.getElementById('adminDropdownMenu');
+            if (menu) menu.classList.remove('open');
           });
         });
       }
