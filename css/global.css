@@ -94,19 +94,19 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 860px) {
   body.mobile-menu-open { overflow: hidden; }
-  .navbar { position: relative; z-index: 210; }
-  .menu-toggle { display: flex; }
+  .navbar { position: relative; z-index: 230; }
+  .menu-toggle { display: flex; position: relative; z-index: 260; }
   .nav-menu-single {
     position: fixed;
     inset: 0;
-    z-index: 200;
+    z-index: 250;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
     gap: .35rem;
-    padding: 5.5rem 10% 3rem;
-    background: var(--text);
+    padding: 6.5rem 10% 3rem;
+    background: linear-gradient(rgba(66,40,32,.94), rgba(66,40,32,.97)), url('/assets/images/hero-church-collage.webp') center / cover;
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
@@ -124,23 +124,31 @@ img { display: block; max-width: 100%; }
     width: 100%;
     padding: .8rem 1rem;
     color: var(--card);
-    font-size: clamp(1.25rem, 5vw, 1.7rem);
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 5.5vw, 1.85rem);
+    font-weight: 600;
+    line-height: 1.2;
     text-align: center;
-    border-radius: .6rem;
+    border-radius: .75rem;
   }
   .nav-menu-single .nav-link:hover,
+  .nav-menu-single .nav-link:focus-visible,
   .nav-menu-single .nav-link.active,
   .nav-menu-single .nav-link[aria-current="page"] {
     color: var(--primary-dark);
     background: var(--bg-alt);
   }
+  .nav-menu-single .nav-link::after { display: none; }
   .nav-dropdown { width: 100%; }
   .dropdown-toggle {
     width: 100%;
     padding: .8rem 1rem;
     justify-content: center;
     color: var(--card);
+  }
+  .nav-menu-single .dropdown-menu,
+  .nav-menu-single .nav-dropdown:focus-within .dropdown-menu {
+    display: block;
   }
   .dropdown-menu {
     position: static;
@@ -153,10 +161,14 @@ img { display: block; max-width: 100%; }
   .dropdown-item {
     color: var(--card);
     text-align: center;
-    font-size: 1rem;
-    padding: .6rem 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    line-height: 1.2;
+    padding: .65rem 1rem;
+    border-radius: .75rem;
   }
-  .dropdown-item:hover { background: var(--bg-alt); color: var(--primary-dark); }
+  .dropdown-item:hover,
+  .dropdown-item:focus-visible { background: var(--bg-alt); color: var(--primary-dark); }
 }
 
 /* ===== HOME MENU CARDS (STYLE MIRIP REFERENSI) ===== */
@@ -275,6 +287,44 @@ img { display: block; max-width: 100%; }
   background: linear-gradient(135deg, rgba(20,14,12,0.55) 0%, rgba(143,67,43,0.35) 100%);
   z-index: 1;
 }
+.hero-socials, .mobile-socials {
+  display: flex;
+  gap: .65rem;
+  flex-wrap: wrap;
+}
+.hero-socials { margin: -.35rem 0 1.5rem; }
+.hero-socials .social-button { background: rgba(255,255,255,.92); color: var(--text); }
+.hero-socials .social-button:hover, .hero-socials .social-button:focus-visible { background: #fff; }
+.hero-socials .social-youtube svg { fill: #FF0000; stroke: #FF0000; }
+.hero-socials .social-instagram svg { fill: none; stroke: #E4405F; }
+.social-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .55rem .8rem;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(66,40,32,.35);
+  font-size: .82rem;
+  font-weight: 700;
+  transition: background .2s ease, transform .2s ease;
+}
+.social-button svg { width: 1.05rem; height: 1.05rem; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
+.social-youtube svg { fill: #FF0000; stroke: #FF0000; }
+.social-instagram svg { fill: none; stroke: #E4405F; }
+.social-instagram svg .social-dot { fill: #E4405F; }
+.social-button .social-dot { fill: currentColor; stroke: none; }
+.social-button:hover, .social-button:focus-visible { background: var(--primary-dark); transform: translateY(-2px); }
+.mobile-socials {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255,255,255,.25);
+}
+.mobile-socials .social-button { background: rgba(255,247,242,.12); }
+@media (min-width: 861px) { .mobile-socials { display: none; } }
 .hero-content {
   position: relative;
   z-index: 2;
@@ -680,7 +730,7 @@ footer { position: relative; z-index: 100; background: var(--primary-dark); colo
     overflow: visible;
   }
   .menu-toggle, .admin-menu-toggle { display: flex; }
-  .nav-menu, .admin-nav {
+  .nav-menu:not(.nav-menu-single), .admin-nav {
     position: absolute; top: 100%; left: 0; right: 0;
     width: 100%;
     box-sizing: border-box;
@@ -690,8 +740,8 @@ footer { position: relative; z-index: 100; background: var(--primary-dark); colo
     display: none;
     overflow: hidden;
   }
-  .nav-menu.open, .admin-nav.open { display: flex; }
-  .nav-link, .admin-nav-link { width: 100%; padding: 16px 4%; box-sizing: border-box; }
+  .nav-menu:not(.nav-menu-single).open, .admin-nav.open { display: flex; }
+  .nav-menu:not(.nav-menu-single) .nav-link, .admin-nav-link { width: 100%; padding: 16px 4%; box-sizing: border-box; }
   .hero { padding: 3rem 6% 2.5rem; }
   .hero-content { grid-template-columns: 1fr; gap: 2rem; }
   .hero-image { aspect-ratio: auto; }
@@ -717,10 +767,10 @@ footer { position: relative; z-index: 100; background: var(--primary-dark); colo
 .hero-content {
   max-width: 1100px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 2.5rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
 }
 .hero-text h1 {
   font-size: clamp(1.8rem, 3.2vw, 2.5rem);
@@ -1062,6 +1112,39 @@ body { overflow-x: hidden; }
   .informasi-item-content ol, .informasi-item-content ul { padding-left: 1.45rem; }
 }
 .informasi-item:last-child { margin-bottom: 0; }
+
+/* Mobile navigation must behave as a viewport-sized page, not a dropdown. */
+@media (max-width: 860px) {
+  html:has(body.mobile-menu-open), body.mobile-menu-open { overflow: hidden; }
+  .navbar:has(.nav-menu-single.open) { z-index: 1000; }
+  .nav-menu-single.open {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    display: flex !important;
+    z-index: 999 !important;
+    background: linear-gradient(rgba(66,40,32,.86), rgba(66,40,32,.92)), url('/assets/images/hero-church-collage.webp') center / cover !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+  .nav-menu-single.open > .nav-link,
+  .nav-menu-single.open .dropdown-toggle {
+    color: var(--card) !important;
+  }
+  .nav-menu-single.open > .nav-link.active,
+  .nav-menu-single.open > .nav-link[aria-current="page"] {
+    color: var(--primary-dark) !important;
+    background: var(--bg-alt) !important;
+  }
+}
 
 /* ===== EXTRA SMALL PHONE (<480px) ===== */
 @media (max-width: 480px) {

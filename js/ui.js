@@ -31,7 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.classList.toggle('mobile-menu-open', open && window.matchMedia('(max-width: 860px)').matches);
     }
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.addEventListener('click', function() { setMenuOpen(!menu.classList.contains('open')); });
+    toggle.addEventListener('click', function() {
+      setMenuOpen(!menu.classList.contains('open'));
+      if (menu.classList.contains('open')) menu.querySelector('.nav-link')?.focus();
+    });
     menu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', function() { setMenuOpen(false); }); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') setMenuOpen(false); });
     window.addEventListener('resize', function() { if (!window.matchMedia('(max-width: 860px)').matches) setMenuOpen(false); });
