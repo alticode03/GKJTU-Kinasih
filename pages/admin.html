@@ -28,14 +28,14 @@
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('renungan')">Renungan</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
       <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('informasi')">Informasi</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('galeri')">Galeri</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('kepemimpinan')">Kepemimpinan</a>
       
       <!-- Dropdown Lainnya -->
       <div class="admin-dropdown-wrapper">
         <a href="#" class="admin-nav-link admin-dropdown-toggle" onclick="toggleAdminDropdown(event)">Lainnya ▾</a>
         <div class="admin-dropdown-menu" id="adminDropdownMenu">
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('informasi'); toggleAdminDropdown()">Informasi</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
+          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kepemimpinan'); toggleAdminDropdown()">Kepemimpinan</a>
           <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
           <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
           <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
@@ -87,7 +87,7 @@
       <!-- PANEL WARTA -->
       <div id="panel-warta" class="admin-panel active">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Warta</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Warta</h3>
           <form class="auth-form" onsubmit="saveWarta(event)">
             <div class="form-group">
               <label>Judul Warta</label>
@@ -96,6 +96,12 @@
             <div class="form-group">
               <label>Tanggal</label>
               <input type="date" id="wartaDate" required>
+            </div>
+            <div class="form-group">
+              <label>Foto Warta (opsional)</label>
+              <input type="file" id="wartaPhotoFile" accept="image/jpeg,image/png,image/webp" class="file-input" hidden>
+              <label for="wartaPhotoFile" class="file-input-label">🖼️ Pilih foto warta</label>
+              <div id="wartaPhotoPreview" class="photo-preview-grid"></div>
             </div>
             <div class="form-group">
               <label>Upload PDF Warta (max 5MB)</label>
@@ -107,14 +113,14 @@
             <button type="submit" class="btn-primary">Simpan Warta</button>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Warta</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Warta</h3>
         <div id="adminWartaList"></div>
       </div>
 
       <!-- PANEL RENUNGAN -->
       <div id="panel-renungan" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Renungan</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Renungan</h3>
           <form class="auth-form" onsubmit="saveRenungan(event)">
             <div class="form-group">
               <label for="renunganTitle">Judul Renungan</label>
@@ -134,14 +140,14 @@
             <button type="submit" class="btn-primary">Simpan Renungan</button>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Renungan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Renungan</h3>
         <div id="adminRenunganList"></div>
       </div>
 
       <!-- PANEL JADWAL -->
       <div id="panel-jadwal" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Jadwal Ibadah</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Jadwal Ibadah</h3>
           <form class="auth-form schedule-form-layout" onsubmit="saveJadwal(event)">
             <div class="schedule-form-fields">
               <div class="form-group">
@@ -187,14 +193,14 @@
             </div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Jadwal</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Jadwal</h3>
         <div id="adminJadwalList"></div>
       </div>
 
       <!-- PANEL EVENT -->
       <div id="panel-event" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Event</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Event</h3>
           <form class="auth-form" onsubmit="saveEvent(event)">
             <div class="form-group">
               <label>Nama Event</label>
@@ -223,14 +229,14 @@
             <div id="eventDriveResult" style="display:none;margin-top:12px;padding:12px;border-radius:8px;background:var(--primary-light);"></div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Event</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Event</h3>
         <div id="adminEventList"></div>
       </div>
 
       <!-- PANEL KEPEMIMPINAN -->
       <div id="panel-kepemimpinan" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h3>
           <form class="auth-form" onsubmit="saveKepengurusan(event)">
             <div class="form-group"><label for="leaderPosition">Nama Jabatan</label><input id="leaderPosition" type="text" required maxlength="120" placeholder="Contoh: Ketua"></div>
             <div class="form-group"><label for="leaderCount">Jumlah Orang</label><input id="leaderCount" type="number" min="1" max="30" value="1" required oninput="buildLeaderFields()"></div>
@@ -238,7 +244,7 @@
             <button type="submit" class="btn-primary" id="saveLeaderButton">Simpan Kepengurusan</button>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Kepengurusan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Kepengurusan</h3>
         <div id="adminKepemimpinanList"></div>
       </div>
 
@@ -258,7 +264,7 @@
             </div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Pengumuman</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Pengumuman</h3>
         <div id="adminPengumumanList"></div>
       </div>
 
@@ -298,24 +304,24 @@
             </div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Informasi</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Informasi</h3>
         <div id="adminInformasiList"></div>
       </div>
 
       <!-- PANEL PELAYANAN -->
       <div id="panel-pelayanan" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h3>
+          <h2 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h3>
           <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola informasi komisi kategorial dan pelayanan jemaat akan ditambahkan di sini.</p>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Pelayanan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Pelayanan</h3>
         <div id="adminPelayananList"></div>
       </div>
 
       <!-- PANEL GALERI -->
       <div id="panel-galeri" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Tambah Galeri</h3>
+          <h2 style="margin-bottom: 1rem;">Tambah Galeri</h3>
           <form class="auth-form" onsubmit="saveGaleri(event)">
             <input type="hidden" id="galeriId">
             <div class="form-group">
@@ -327,14 +333,10 @@
               <textarea id="galeriDesc" rows="3" required placeholder="Deskripsi singkat tentang galeri ini..."></textarea>
             </div>
             <div class="form-group">
-              <label>Thumbnail Galeri</label>
-              <input type="file" id="galeriThumbnail" accept="image/*" class="file-input" hidden>
-              <label for="galeriThumbnail" class="file-input-label">Pilih thumbnail</label>
-              <div id="galeriThumbnailPreview" class="photo-preview-grid"></div>
-              <label>Foto Galeri (max 10)</label>
+              <label>Foto Galeri (max 3)</label>
               <input type="file" id="galeriPhotos" accept="image/*" multiple class="file-input" hidden>
               <label for="galeriPhotos" class="file-input-label">Pilih foto galeri</label>
-              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 10 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
+              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 3 foto. JPG/PNG/JPEG akan dikompres otomatis ke WebP sebelum disimpan.</small>
               <div id="galeriPhotoPreview" class="photo-preview-grid"></div>
             </div>
             <div style="display: flex; gap: 0.5rem;">
@@ -343,27 +345,27 @@
             </div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Galeri</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Galeri</h3>
         <div id="adminGaleriList"></div>
       </div>
 
       <!-- PANEL PERSEMBAHAN -->
       <div id="panel-persembahan" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Kelola Data Persembahan</h3>
+          <h2 style="margin-bottom: 1rem;">Kelola Data Persembahan</h3>
           <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola rekening bank dan laporan persembahan mingguan akan ditambahkan di sini.</p>
         </div>
-        <h3 style="margin-bottom: 1rem;">Laporan Persembahan</h3>
+        <h2 style="margin-bottom: 1rem;">Laporan Persembahan</h3>
         <div id="adminPersembahanList"></div>
       </div>
 
       <!-- PANEL KONTAK -->
       <div id="panel-kontak" class="admin-panel">
         <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h3>
+          <h2 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h3>
           <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola alamat gereja, email, Instagram, dan nomor kontak akan ditambahkan di sini.</p>
         </div>
-        <h3 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h3>
+        <h2 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h3>
         <div id="adminKontakList"></div>
       </div>
 
@@ -383,7 +385,7 @@
             </div>
           </form>
         </div>
-        <h3 style="margin-bottom: 1rem;">Daftar Formulir</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Formulir</h3>
         <div id="adminFormulirList"></div>
       </div>
     </div>
@@ -664,8 +666,14 @@
       try {
         var filename = DB.filename(file.name, '.pdf');
         var pdfUrl = await DB.upload('warta', filename, file, 'application/pdf');
-        await DB.add('warta', { title: document.getElementById('wartaTitle').value.trim(), date: document.getElementById('wartaDate').value, pdf_url: pdfUrl, pdf_name: file.name });
-        e.target.reset(); selectedWartaPdf = null; document.getElementById('wartaPdfPreview').innerHTML = '';
+        var photoUrl = '';
+        if (selectedWartaPhoto) {
+          var compressed = await ImageCompressor.compress(selectedWartaPhoto);
+          var photoBlob = await (await fetch(compressed.dataUrl)).blob();
+          photoUrl = await DB.upload('warta', DB.filename(selectedWartaPhoto.name, '.webp'), photoBlob, 'image/webp');
+        }
+        await DB.add('warta', { title: document.getElementById('wartaTitle').value.trim(), date: document.getElementById('wartaDate').value, pdf_url: pdfUrl, pdf_name: file.name, photo_url: photoUrl });
+        e.target.reset(); selectedWartaPdf = null; selectedWartaPhoto = null; document.getElementById('wartaPdfPreview').innerHTML = ''; document.getElementById('wartaPhotoPreview').innerHTML = '';
         showToast('Warta berhasil ditambahkan', 'success'); await renderAdminWarta();
       } catch (error) { showToast('Gagal menyimpan warta: ' + error.message, 'error'); }
     }
@@ -751,6 +759,7 @@
 
     var selectedEventPhotos = [];
     var selectedWartaPdf = null;
+    var selectedWartaPhoto = null;
     var selectedRenunganFile = null;
     var calendarMonth = new Date();
 
@@ -876,6 +885,17 @@
         document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview gambar renungan"></div>';
       };
       reader.readAsDataURL(file);
+    });
+
+    // Foto warta upload handler
+    document.getElementById('wartaPhotoFile').addEventListener('change', function(e) {
+      selectedWartaPhoto = e.target.files[0] || null;
+      var preview = document.getElementById('wartaPhotoPreview');
+      preview.innerHTML = '';
+      if (!selectedWartaPhoto) return;
+      var reader = new FileReader();
+      reader.onload = function(evt) { preview.innerHTML = '<div class="photo-preview-item"><img src="' + evt.target.result + '" alt="Preview foto warta"></div>'; };
+      reader.readAsDataURL(selectedWartaPhoto);
     });
 
     // PDF upload handler
@@ -1133,6 +1153,3 @@
   </script>
 </body>
 </html>
-
-
-

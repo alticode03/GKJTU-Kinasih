@@ -1,5 +1,4 @@
 var GOOGLE_DRIVE_GALERI_API = 'https://script.google.com/macros/s/AKfycbyKdzDpfpsef-lY-bi_5gz4rMfnuXQntQcg7EpzDKHOK-k6QMBR1UMErYbGQXGxaYrl/exec';
-var selectedGaleriThumbnail = null;
 var selectedGaleriPhotos = [];
 
 function escapeGaleriHtml(value) {
@@ -32,11 +31,8 @@ function resetGaleriForm() {
   document.getElementById('galeriId').value = '';
   document.getElementById('galeriTitle').value = '';
   document.getElementById('galeriDesc').value = '';
-  document.getElementById('galeriThumbnail').value = '';
   document.getElementById('galeriPhotos').value = '';
-  selectedGaleriThumbnail = null;
   selectedGaleriPhotos = [];
-  renderGaleriThumbnailPreview();
   renderGaleriPhotoPreviews();
 }
 
@@ -47,7 +43,7 @@ async function saveGaleri(e) {
   var description = document.getElementById('galeriDesc').value.trim();
   var id = document.getElementById('galeriId').value.trim();
   if (!title || !description) return showToast('Judul dan deskripsi tidak boleh kosong', 'error');
-  if (!id && (!selectedGaleriThumbnail || !selectedGaleriPhotos.length)) return showToast('Pilih thumbnail dan minimal satu foto galeri', 'error');
+  if (!id && selectedGaleriPhotos.length === 0) return showToast('Pilih minimal satu foto galeri', 'error');
   if (id) return showToast('Edit galeri belum mengunggah ulang foto. Hapus lalu buat galeri baru bila dokumentasi perlu diganti.', 'error');
 
   button.disabled = true;
@@ -56,7 +52,6 @@ async function saveGaleri(e) {
   var payload = {
     title: title,
     description: description,
-    thumbnail: { name: selectedGaleriThumbnail.name, data: selectedGaleriThumbnail.dataUrl },
     photos: selectedGaleriPhotos.map(function(photo) { return { name: photo.name, data: photo.dataUrl }; })
   };
   try {
@@ -64,8 +59,8 @@ async function saveGaleri(e) {
     if (!response.ok) throw new Error('Google Apps Script merespons HTTP ' + response.status);
     var result = await response.json();
     if ((result.status && result.status !== 'success') || result.success === false || !result.folderUrl) throw new Error(result.message || result.error || 'Folder Drive tidak berhasil dibuat.');
-    var thumbnailUrl = result.thumbnailUrl || result.photoUrl || (result.thumbnail && (result.thumbnail.url || result.thumbnail.link)) || '';
-    if (!thumbnailUrl) throw new Error('Apps Script tidak mengembalikan URL thumbnail.');
+    var thumbnailUrl = result.thumbnailUrl || result.photoUrl || (result.photos && result.photos[0] && (result.photos[0].url || result.photos[0].link)) || '';
+    if (!thumbnailUrl) throw new Error('Apps Script tidak mengembalikan URL foto.');
     await DB.add('galeri', { title: title, description: description, photo_url: thumbnailUrl, drive_folder_url: result.folderUrl, drive_folder_id: result.folderId || '' });
     resetGaleriForm();
     await renderAdminGaleri();
@@ -92,18 +87,9 @@ async function deleteGaleri(id) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  var thumbnailInput = document.getElementById('galeriThumbnail');
   var photosInput = document.getElementById('galeriPhotos');
-  thumbnailInput.addEventListener('change', function() {
-    var file = thumbnailInput.files[0];
-    if (!file) return;
-    ImageCompressor.compress(file).then(function(result) {
-      selectedGaleriThumbnail = { name: file.name.replace(/\.[^.]+$/, '') + '.webp', dataUrl: result.dataUrl };
-      renderGaleriThumbnailPreview();
-    }).catch(function(error) { showToast('Gagal kompres thumbnail: ' + error.message, 'error'); });
-  });
   photosInput.addEventListener('change', function() {
-    var files = Array.from(photosInput.files || []).slice(0, 10 - selectedGaleriPhotos.length);
+    var files = Array.from(photosInput.files || []).slice(0, 3 - selectedGaleriPhotos.length);
     Promise.all(files.map(function(file) {
       return ImageCompressor.compress(file).then(function(result) {
         selectedGaleriPhotos.push({ name: file.name.replace(/\.[^.]+$/, '') + '.webp', dataUrl: result.dataUrl });
@@ -112,10 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-function renderGaleriThumbnailPreview() {
-  var container = document.getElementById('galeriThumbnailPreview');
-  container.innerHTML = selectedGaleriThumbnail ? '<img src="' + selectedGaleriThumbnail.dataUrl + '" alt="Preview thumbnail" style="width:90px;height:90px;object-fit:cover;border-radius:8px">' : '';
-}
 function renderGaleriPhotoPreviews() {
   var container = document.getElementById('galeriPhotoPreview');
   container.innerHTML = selectedGaleriPhotos.map(function(photo, index) {

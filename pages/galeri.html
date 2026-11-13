@@ -45,11 +45,7 @@
       <h2>Galeri Kegiatan</h2>
       <p style="margin: 0;">Dokumentasi foto kegiatan ibadah, persekutuan, dan pelayanan jemaat</p>
     </div>
-    <div class="content-card">
-      <p style="font-size: 1.05rem; color: var(--muted); margin-bottom: 1.5rem;">
-        Galeri foto sedang disiapkan. Nantikan dokumentasi kegiatan-kegiatan terbaru jemaat GKJTU Kinasih.
-      </p>
-    </div>
+    <div id="galeriList" class="event-grid"></div>
   </main>
 
     <footer>
@@ -87,7 +83,21 @@
     </div>
   </footer>
 
+  <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      var list = document.getElementById('galeriList');
+      try {
+        var items = await DB.reload('galeri', '?select=*&order=id.desc');
+        list.innerHTML = items.length ? items.map(function(item) {
+          var image = item.photo_url ? '<img src="' + item.photo_url + '" alt="' + (item.title || 'Galeri') + '" style="width:100%;height:220px;object-fit:contain;background:var(--card);">' : '';
+          var drive = item.drive_folder_url ? '<a class="btn-primary" href="' + item.drive_folder_url + '" target="_blank" rel="noopener">Buka Dokumentasi Lengkap</a>' : '';
+          return '<article class="event-card">' + image + '<div class="event-info"><h3>' + (item.title || '') + '</h3><p>' + (item.description || '') + '</p>' + drive + '</div></article>';
+        }).join('') : '<p style="color:var(--muted)">Belum ada galeri.</p>';
+      } catch (error) { list.innerHTML = '<p style="color:var(--muted)">Gagal memuat galeri.</p>'; }
+    });
+  </script>
 </body>
 </html>
 

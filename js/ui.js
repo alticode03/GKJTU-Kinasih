@@ -24,9 +24,26 @@ function createRipple(event) {
 document.addEventListener('DOMContentLoaded', function() {
   var toggle = document.getElementById('menuToggle'), menu = document.getElementById('navMenu');
   if (toggle && menu) {
-    toggle.addEventListener('click', function() { menu.classList.toggle('open'); });
-    document.addEventListener('click', function(e) { if (!menu.contains(e.target) && !toggle.contains(e.target)) menu.classList.remove('open'); });
+    function setMenuOpen(open) {
+      menu.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+      document.body.classList.toggle('mobile-menu-open', open && window.matchMedia('(max-width: 860px)').matches);
+    }
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() { setMenuOpen(!menu.classList.contains('open')); });
+    menu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', function() { setMenuOpen(false); }); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') setMenuOpen(false); });
+    window.addEventListener('resize', function() { if (!window.matchMedia('(max-width: 860px)').matches) setMenuOpen(false); });
   }
+  var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('#navMenu a.nav-link').forEach(function(link) {
+    var linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/$/, '') || '/';
+    if (linkPath === currentPath) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
   document.querySelectorAll('.btn-peach, .btn-soft, .btn-primary, .btn-sm').forEach(function(btn) { btn.addEventListener('click', createRipple); });
   var adminToggle = document.getElementById('adminMenuToggle'), adminNav = document.getElementById('adminNav');
   if (adminToggle && adminNav) {
