@@ -78,15 +78,23 @@ async function loadInformasi() {
     data.forEach(function(item) {
       var row = document.createElement('div');
       row.style.cssText = 'background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;';
-      var statusBadge = '<span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; background: ' + (item.status === 'published' ? 'var(--primary-light)' : '#fff3cd') + '; color: ' + (item.status === 'published' ? 'var(--primary-dark)' : '#856404') + ';">' + (item.status === 'published' ? 'Published' : 'Pending') + '</span>';
-      row.innerHTML = '<div>' +
-        '<div style="font-weight: 600; margin-bottom: 0.25rem;">' + (item.title || 'Tanpa judul') + statusBadge + '</div>' +
-        '<div style="font-size: 0.9rem; color: var(--muted);">' + (item.date || '') + '</div>' +
-        '</div>' +
-        '<div style="display: flex; gap: 0.5rem;">' +
-        '<button type="button" class="btn-soft" onclick="editInformasi(' + item.id + ')">Edit</button>' +
-        '<button type="button" class="btn-soft" style="color: #d32f2f;" onclick="deleteInformasi(' + item.id + ')">Hapus</button>' +
-        '</div>';
+      var content = document.createElement('div');
+      var title = document.createElement('div');
+      title.style.cssText = 'font-weight: 600; margin-bottom: 0.25rem;';
+      title.appendChild(document.createTextNode(item.title || 'Tanpa judul'));
+      var badge = document.createElement('span');
+      badge.textContent = item.status === 'published' ? 'Published' : 'Pending';
+      badge.style.cssText = 'display:inline-block;padding:.25rem .75rem;border-radius:4px;font-size:.8rem;font-weight:600;margin-left:.5rem;background:' + (item.status === 'published' ? 'var(--primary-light)' : '#fff3cd') + ';color:' + (item.status === 'published' ? 'var(--primary-dark)' : '#856404') + ';';
+      title.appendChild(badge);
+      var date = document.createElement('div');
+      date.textContent = item.date || '';
+      date.style.cssText = 'font-size:.9rem;color:var(--muted);';
+      content.append(title, date);
+      var actions = document.createElement('div');
+      actions.style.cssText = 'display:flex;gap:.5rem;';
+      var edit = document.createElement('button'); edit.type = 'button'; edit.className = 'btn-soft'; edit.textContent = 'Edit'; edit.addEventListener('click', function() { editInformasi(item.id); });
+      var remove = document.createElement('button'); remove.type = 'button'; remove.className = 'btn-soft'; remove.textContent = 'Hapus'; remove.style.color = '#8f432b'; remove.addEventListener('click', function() { deleteInformasi(item.id); });
+      actions.append(edit, remove); row.append(content, actions);
       container.appendChild(row);
     });
   } catch (err) {

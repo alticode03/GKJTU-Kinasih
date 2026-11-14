@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.btn-peach, .btn-soft, .btn-primary, .btn-sm').forEach(function(btn) { btn.addEventListener('click', createRipple); });
   var adminToggle = document.getElementById('adminMenuToggle'), adminNav = document.getElementById('adminNav');
   if (adminToggle && adminNav) {
-    adminToggle.addEventListener('click', function() { adminNav.classList.toggle('open'); });
-    adminNav.querySelectorAll('.admin-nav-link').forEach(function(link) { link.addEventListener('click', function() { adminNav.classList.remove('open'); }); });
+    adminNav.querySelectorAll('.admin-nav-link:not(.admin-dropdown-toggle)').forEach(function(link) { link.addEventListener('click', function() { adminNav.classList.remove('open'); adminToggle.setAttribute('aria-expanded', 'false'); }); });
   }
   if (window.IntersectionObserver) {
     var observer = new IntersectionObserver(function(entries) { entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.style.animation = 'fadeIn 0.5s ease forwards'; observer.unobserve(entry.target); } }); }, { threshold: 0.1 });

@@ -106,7 +106,7 @@ img { display: block; max-width: 100%; }
     justify-content: center;
     gap: .35rem;
     padding: 6.5rem 10% 3rem;
-    background: linear-gradient(rgba(66,40,32,.94), rgba(66,40,32,.97)), url('/assets/images/hero-church-collage.webp') center / cover;
+    background: linear-gradient(rgba(66,40,32,.78), rgba(66,40,32,.86)), url('/assets/images/hero-church-collage.webp') center / cover;
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
@@ -743,7 +743,7 @@ footer { position: relative; z-index: 100; background: var(--primary-dark); colo
   .nav-menu:not(.nav-menu-single).open, .admin-nav.open { display: flex; }
   .nav-menu:not(.nav-menu-single) .nav-link, .admin-nav-link { width: 100%; padding: 16px 4%; box-sizing: border-box; }
   .hero { padding: 3rem 6% 2.5rem; }
-  .hero-content { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-content { gap: 0; }
   .hero-image { aspect-ratio: auto; }
   .hero-image img { display: block; height: auto; aspect-ratio: auto; max-height: none; object-fit: contain; }
   .hero-image::after { inset: .7rem -.55rem -.55rem .7rem; }
@@ -1129,7 +1129,7 @@ body { overflow-x: hidden; }
     max-height: none !important;
     display: flex !important;
     z-index: 999 !important;
-    background: linear-gradient(rgba(66,40,32,.86), rgba(66,40,32,.92)), url('/assets/images/hero-church-collage.webp') center / cover !important;
+    background: linear-gradient(rgba(66,40,32,.72), rgba(66,40,32,.82)), url('/assets/images/hero-church-collage.webp') center / cover !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;

@@ -20,27 +20,27 @@
       <img src="/assets/images/icon.png" alt="Logo GKJTU Kinasih" class="brand-logo" />
       <span>Admin Panel</span>
     </a>
-    <button class="admin-menu-toggle" id="adminMenuToggle" aria-label="Toggle menu">
+    <button type="button" class="admin-menu-toggle" id="adminMenuToggle" aria-label="Buka menu admin" aria-controls="adminNav" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
     <nav class="admin-nav" id="adminNav">
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('warta')">Warta Jemaat</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('renungan')">Renungan</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</a>
-      <a href="#" class="admin-nav-link" onclick="switchTabAdmin('event')">Event</a>
+      <button type="button" class="admin-nav-link" data-admin-tab="warta" onclick="switchTabAdmin('warta')">Warta Jemaat</button>
+      <button type="button" class="admin-nav-link" data-admin-tab="renungan" onclick="switchTabAdmin('renungan')">Renungan</button>
+      <button type="button" class="admin-nav-link" data-admin-tab="jadwal" onclick="switchTabAdmin('jadwal')">Jadwal Ibadah</button>
+      <button type="button" class="admin-nav-link" data-admin-tab="event" onclick="switchTabAdmin('event')">Event</button>
       
       <!-- Dropdown Lainnya -->
       <div class="admin-dropdown-wrapper">
-        <a href="#" class="admin-nav-link admin-dropdown-toggle" onclick="toggleAdminDropdown(event)">Lainnya ▾</a>
+        <button type="button" class="admin-nav-link admin-dropdown-toggle" aria-expanded="false" aria-controls="adminDropdownMenu" onclick="toggleAdminDropdown(event)">Lainnya ▾</button>
         <div class="admin-dropdown-menu" id="adminDropdownMenu">
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('informasi'); toggleAdminDropdown()">Informasi</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kepemimpinan'); toggleAdminDropdown()">Kepemimpinan</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('pengumuman'); toggleAdminDropdown()">Pengumuman Duka</a>
-          <a href="#" class="admin-dropdown-link" onclick="switchTabAdmin('formulir'); toggleAdminDropdown()">Formulir Jemaat</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="informasi" onclick="event.preventDefault(); switchTabAdmin('informasi'); toggleAdminDropdown()">Informasi</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="galeri" onclick="event.preventDefault(); switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="kepemimpinan" onclick="event.preventDefault(); switchTabAdmin('kepemimpinan'); toggleAdminDropdown()">Kepemimpinan</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="pelayanan" onclick="event.preventDefault(); switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="persembahan" onclick="event.preventDefault(); switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="kontak" onclick="event.preventDefault(); switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="pengumuman" onclick="event.preventDefault(); switchTabAdmin('pengumuman'); toggleAdminDropdown()">Pengumuman Duka</a>
+          <a href="#" class="admin-dropdown-link" data-admin-tab="formulir" onclick="event.preventDefault(); switchTabAdmin('formulir'); toggleAdminDropdown()">Formulir Jemaat</a>
         </div>
       </div>
       
@@ -68,10 +68,10 @@
 
     <!-- DASHBOARD VIEW -->
     <div id="dashboardView" style="display: none; max-width: 900px; margin: 0 auto;">
-      <h1 style="font-size: 1.8rem; margin-bottom: 24px;">Kelola Konten Gereja</h1>
+      <h1 style="font-size: 1.8rem; margin-bottom: 24px;">Kelola Isi Situs GKJTU Kinasih</h1>
 
       <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchTab('warta')">Warta Jemaat</button>
+        <button type="button" class="admin-tab active" onclick="switchTab('warta')">Warta Jemaat</button>
         <button class="admin-tab" onclick="switchTab('renungan')">Renungan</button>
         <button class="admin-tab" onclick="switchTab('jadwal')">Jadwal Ibadah</button>
         <button class="admin-tab" onclick="switchTab('event')">Event</button>
@@ -86,8 +86,8 @@
 
       <!-- PANEL WARTA -->
       <div id="panel-warta" class="admin-panel active">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Warta</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Warta</h2>
           <form class="auth-form" onsubmit="saveWarta(event)">
             <div class="form-group">
               <label>Judul Warta</label>
@@ -98,29 +98,22 @@
               <input type="date" id="wartaDate" required>
             </div>
             <div class="form-group">
-              <label>Foto Warta (opsional)</label>
+              <label>Foto Warta</label>
               <input type="file" id="wartaPhotoFile" accept="image/jpeg,image/png,image/webp" class="file-input" hidden>
-              <label for="wartaPhotoFile" class="file-input-label">🖼️ Pilih foto warta</label>
+              <label for="wartaPhotoFile" class="file-input-label">Pilih foto warta</label>
               <div id="wartaPhotoPreview" class="photo-preview-grid"></div>
-            </div>
-            <div class="form-group">
-              <label>Upload PDF Warta (max 5MB)</label>
-              <input type="file" id="wartaPdfFile" accept=".pdf" class="file-input" hidden>
-              <label for="wartaPdfFile" class="file-input-label">📎 Pilih file PDF</label>
-              <small style="color:var(--muted);display:block;margin-top:4px">Maksimal 5MB, format PDF</small>
-              <div id="wartaPdfPreview" class="photo-preview-grid"></div>
             </div>
             <button type="submit" class="btn-primary">Simpan Warta</button>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Warta</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Warta</h2>
         <div id="adminWartaList"></div>
       </div>
 
       <!-- PANEL RENUNGAN -->
       <div id="panel-renungan" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Renungan</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Renungan</h2>
           <form class="auth-form" onsubmit="saveRenungan(event)">
             <div class="form-group">
               <label for="renunganTitle">Judul Renungan</label>
@@ -132,22 +125,22 @@
             </div>
             <div class="form-group">
               <label>Upload Berkas Renungan</label>
-              <input type="file" id="renunganImageFile" accept="image/*,application/pdf" class="file-input" hidden>
+              <input type="file" id="renunganImageFile" accept="image/jpeg,image/png,image/webp" class="file-input" hidden>
               <label for="renunganImageFile" class="file-input-label">📎 Pilih gambar atau PDF</label>
-              <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, WEBP, atau PDF</small>
+              <small style="color:var(--muted);display:block;margin-top:4px">Format JPG, PNG, atau WEBP; akan dikonversi ke WebP</small>
               <div id="renunganImagePreview" class="photo-preview-grid"></div>
             </div>
             <button type="submit" class="btn-primary">Simpan Renungan</button>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Renungan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Renungan</h2>
         <div id="adminRenunganList"></div>
       </div>
 
       <!-- PANEL JADWAL -->
       <div id="panel-jadwal" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Jadwal Ibadah</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Jadwal Ibadah</h2>
           <form class="auth-form schedule-form-layout" onsubmit="saveJadwal(event)">
             <div class="schedule-form-fields">
               <div class="form-group">
@@ -158,7 +151,7 @@
                 <label>Gereja</label>
                 <div class="schedule-type-options">
                   <label><input type="radio" name="jadwalChurch" value="gereja1" checked> Getas</label>
-                  <label><input type="radio" name="jadwalChurch" value="gereja2"> Gentan</label>
+                  <label><input type="radio" name="jadwalChurch" value="gereja2"> Genthan</label>
                   <label><input type="radio" name="jadwalChurch" value="gereja3"> Kadirejo</label>
                 </div>
               </div>
@@ -193,14 +186,14 @@
             </div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Jadwal</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Jadwal</h2>
         <div id="adminJadwalList"></div>
       </div>
 
       <!-- PANEL EVENT -->
       <div id="panel-event" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Event</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Event</h2>
           <form class="auth-form" onsubmit="saveEvent(event)">
             <div class="form-group">
               <label>Nama Event</label>
@@ -229,14 +222,14 @@
             <div id="eventDriveResult" style="display:none;margin-top:12px;padding:12px;border-radius:8px;background:var(--primary-light);"></div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Event</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Event</h2>
         <div id="adminEventList"></div>
       </div>
 
       <!-- PANEL KEPEMIMPINAN -->
       <div id="panel-kepemimpinan" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Pengurus Gereja</h2>
           <form class="auth-form" onsubmit="saveKepengurusan(event)">
             <div class="form-group"><label for="leaderPosition">Nama Jabatan</label><input id="leaderPosition" type="text" required maxlength="120" placeholder="Contoh: Ketua"></div>
             <div class="form-group"><label for="leaderCount">Jumlah Orang</label><input id="leaderCount" type="number" min="1" max="30" value="1" required oninput="buildLeaderFields()"></div>
@@ -244,14 +237,14 @@
             <button type="submit" class="btn-primary" id="saveLeaderButton">Simpan Kepengurusan</button>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Kepengurusan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Kepengurusan</h2>
         <div id="adminKepemimpinanList"></div>
       </div>
 
       <!-- PANEL PENGUMUMAN -->
       <div id="panel-pengumuman" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;" id="pengumumanFormTitle">Tambah Pengumuman</h3>
+        <div class="admin-card">
+          <h3 style="margin-bottom: 1rem;" id="pengumumanFormTitle">Tambah Pengumuman</h2>
           <form class="auth-form" onsubmit="savePengumuman(event)">
             <input type="hidden" id="pengumumanId">
             <div class="form-group">
@@ -264,14 +257,14 @@
             </div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Pengumuman</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Pengumuman</h2>
         <div id="adminPengumumanList"></div>
       </div>
 
       <!-- PANEL INFORMASI -->
       <div id="panel-informasi" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;" id="informasiFormTitle">Tambah Informasi</h3>
+        <div class="admin-card">
+          <h3 style="margin-bottom: 1rem;" id="informasiFormTitle">Tambah Informasi</h2>
           <form class="auth-form" onsubmit="saveInformasi(event)">
             <input type="hidden" id="informasiId">
             <div class="form-group">
@@ -296,7 +289,7 @@
                 <span style="width: 1px; background: var(--border, #ccc); margin: 0 8px;"></span>
                 <button type="button" onclick="insertTab()" style="width: 32px; height: 32px; border: 1px solid var(--border, #ccc); background: #fff; border-radius: 4px; cursor: pointer;" title="Tab">⇥</button>
               </div>
-              <div id="informasiContent" contenteditable="true" style="min-height: 200px; padding: 12px; border: 1px solid var(--border, #ddd); border-radius: 0 0 6px 6px; background: #fff; font-family: inherit; font-size: 0.95rem; line-height: 1.6; overflow-y: auto;" placeholder="Tulis informasi di sini..."></div>
+              <div id="informasiContent" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Tulis informasi di sini..." style="min-height: 200px; padding: 12px; border: 1px solid var(--border, #ddd); border-radius: 0 0 6px 6px; background: #fff; font-family: inherit; font-size: 0.95rem; line-height: 1.6; overflow-y: auto;" placeholder="Tulis informasi di sini..."></div>
             </div>
             <div style="display: flex; gap: 0.5rem;">
               <button type="submit" class="btn-primary" id="saveInformasiButton">Simpan Informasi</button>
@@ -304,24 +297,24 @@
             </div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Informasi</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Informasi</h2>
         <div id="adminInformasiList"></div>
       </div>
 
       <!-- PANEL PELAYANAN -->
       <div id="panel-pelayanan" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola informasi komisi kategorial dan pelayanan jemaat akan ditambahkan di sini.</p>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h2>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan pelayanan belum tersedia. Data pelayanan masih dikelola di luar panel ini.</p>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Pelayanan</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Pelayanan</h2>
         <div id="adminPelayananList"></div>
       </div>
 
       <!-- PANEL GALERI -->
       <div id="panel-galeri" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Tambah Galeri</h3>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Tambah Galeri</h2>
           <form class="auth-form" onsubmit="saveGaleri(event)">
             <input type="hidden" id="galeriId">
             <div class="form-group">
@@ -345,34 +338,34 @@
             </div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Galeri</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Galeri</h2>
         <div id="adminGaleriList"></div>
       </div>
 
       <!-- PANEL PERSEMBAHAN -->
       <div id="panel-persembahan" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Kelola Data Persembahan</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola rekening bank dan laporan persembahan mingguan akan ditambahkan di sini.</p>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Kelola Data Persembahan</h2>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan persembahan belum tersedia. Laporan saat ini ditampilkan dari sumber data yang sudah ada.</p>
         </div>
-        <h2 style="margin-bottom: 1rem;">Laporan Persembahan</h3>
+        <h2 style="margin-bottom: 1rem;">Laporan Persembahan</h2>
         <div id="adminPersembahanList"></div>
       </div>
 
       <!-- PANEL KONTAK -->
       <div id="panel-kontak" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h2 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h3>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Panel untuk mengelola alamat gereja, email, Instagram, dan nomor kontak akan ditambahkan di sini.</p>
+        <div class="admin-card">
+          <h2 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h2>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan kontak belum tersedia. Perubahan kontak masih dilakukan melalui konfigurasi situs.</p>
         </div>
-        <h2 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h3>
+        <h2 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h2>
         <div id="adminKontakList"></div>
       </div>
 
       <!-- PANEL FORMULIR JEMAAT -->
       <div id="panel-formulir" class="admin-panel">
-        <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem;">
-          <h3 style="margin-bottom: 1rem;" id="formulirFormTitle">Tambah Jenis Formulir</h3>
+        <div class="admin-card">
+          <h3 style="margin-bottom: 1rem;" id="formulirFormTitle">Tambah Jenis Formulir</h2>
           <form class="auth-form" onsubmit="saveFormulir(event)">
             <input type="hidden" id="formulirId">
             <div class="form-group">
@@ -385,7 +378,7 @@
             </div>
           </form>
         </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Formulir</h3>
+        <h2 style="margin-bottom: 1rem;">Daftar Formulir</h2>
         <div id="adminFormulirList"></div>
       </div>
     </div>
@@ -394,7 +387,7 @@
     <footer>
     <div class="footer-grid">
       <div class="footer-col">
-        <h3>GKJTU Kinasih</h3>
+        <h3>GKJTU Kinasih</h2>
         <p>Tempat beribadah yang nyaman dan penuh kasih, bertumbuh bersama melayani Tuhan dan sesama.</p>
       </div>
       <div class="footer-col">
@@ -416,9 +409,9 @@
       </div>
       <div class="footer-col">
         <h4>Lokasi</h4>
-        <p><strong>Lokasi 1:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps ?</a></p>
-        <p style="margin-top: 1.5rem;"><strong>Lokasi 2:</strong><br><em>Alamat gereja 2 (segera diisi)</em></p>
-        <p style="margin-top: 1.5rem;"><strong>Lokasi 3:</strong><br><em>Alamat gereja 3 (segera diisi)</em></p>
+        <p><strong>GKJTU Kinasih Genthan</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 2: GKJTU Kinasih Getas</strong><br>Jalan Getas, Popongan, Bringin, Semarang Regency, Central Java 50772<br><a href="https://share.google/uIlek4ewJg7Vm2Jve" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 3: GKJTU Kinasih Kadirejo</strong><br>Jl. Sumowono–Macanan, Dusun Bungas, Desa Kadirejo, Kecamatan Pabelan, Kabupaten Semarang, Jawa Tengah 50771<br><a href="https://share.google/OHExDXEqDGQAN1AvV" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -446,9 +439,12 @@
     // Firebase Hosting tidak menjalankan endpoint server-side lokal.
     // Gunakan Google Apps Script langsung agar upload event tidak mendapat 404.
     var GOOGLE_DRIVE_EVENT_API = 'https://script.google.com/macros/s/AKfycbxrByP5ARHeFnNRBVxbHGCFt55FYY7h9f-VGEDUJr4aG58ggIhSpdl8Vq0_hS7M6XHb/exec';
+    var GOOGLE_DRIVE_WARTA_API = 'https://script.google.com/macros/s/AKfycbz1w0s2-LGGFF278Zc_GfHP3UuFAdO2BEKMxRIMQBz4eMHBUziof1smMii9cExdUinl/exec';
+    var GOOGLE_DRIVE_RENUNGAN_API = 'https://script.google.com/macros/s/AKfycbyd3wVYPvqNYmPu_Gj_4NbCTa0M4KcznZc-Q_3vpbGHE4A4kucg7ZbKKEt_rhe93gIa-A/exec';
 
     async function checkAuth() {
       var isAuth = false;
+      try {
       if (window.supabaseClient) {
         var result = await window.supabaseClient.auth.getUser();
         if (result.data && result.data.user) {
@@ -460,6 +456,10 @@
       document.getElementById('loginView').style.display = isAuth ? 'none' : 'block';
       document.getElementById('dashboardView').style.display = isAuth ? 'block' : 'none';
       if (isAuth) renderAllAdmin();
+      } catch (error) {
+        showToast('Tidak dapat memeriksa sesi admin. Periksa koneksi lalu coba lagi.', 'error');
+        console.error('Gagal memeriksa sesi admin:', error);
+      }
     }
 
     async function handleLogin(e) {
@@ -503,7 +503,7 @@
       });
       
       // Find and activate the corresponding nav link
-      var navLink = document.querySelector('.admin-nav-link[onclick*="' + tab + '"]');
+      var navLink = document.querySelector('[data-admin-tab="' + tab + '"]');
       if (navLink) navLink.classList.add('active');
     }
 
@@ -519,7 +519,9 @@
       }
       var menu = document.getElementById('adminDropdownMenu');
       if (menu) {
-        menu.classList.toggle('open');
+        var isOpen = menu.classList.toggle('open');
+        var toggle = document.querySelector('.admin-dropdown-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', String(isOpen));
       }
     }
 
@@ -529,17 +531,24 @@
       var menu = document.getElementById('adminDropdownMenu');
       if (menu && dropdown && !dropdown.contains(e.target)) {
         menu.classList.remove('open');
+        var toggle = document.querySelector('.admin-dropdown-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
       }
     });
 
-    // Hide the old tab buttons since navigation is now in navbar
-    document.querySelectorAll('.admin-tab').forEach(function(btn) {
-      btn.style.display = 'none';
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape') return;
+      var menu = document.getElementById('adminDropdownMenu');
+      var toggle = document.querySelector('.admin-dropdown-toggle');
+      if (menu) menu.classList.remove('open');
+      if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
+      var adminNav = document.getElementById('adminNav');
+      var adminMenuToggle = document.getElementById('adminMenuToggle');
+      if (adminNav && adminNav.classList.contains('open')) {
+        adminNav.classList.remove('open');
+        if (adminMenuToggle) { adminMenuToggle.setAttribute('aria-expanded', 'false'); adminMenuToggle.focus(); }
+      }
     });
-
-    async function renderAllAdmin() {
-      await Promise.all([renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(), renderAdminEvent(), renderAdminKepemimpinan(), renderAdminPengumuman(), renderAdminFormulir()]);
-    }
 
     async function renderAdminPengumuman() {
       var items = [];
@@ -549,7 +558,7 @@
         var date = new Date(item.created_at);
         var dateStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         var preview = item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content;
-        html += '<div class="admin-item" style="display: flex; justify-content: space-between; align-items: start; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem;"><div style="flex: 1;"><div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">' + dateStr + '</div><p style="margin: 0; line-height: 1.6;">' + preview + '</p></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editPengumuman(\'' + item.id + '\', \'' + item.content.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n') + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'pengumuman\',\'' + item.id + '\')">Hapus</button></div></div>';
+        html += '<div class="admin-item" style="display: flex; justify-content: space-between; align-items: start; padding: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.75rem;"><div style="flex: 1;"><div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">' + dateStr + '</div><p style="margin: 0; line-height: 1.6;">' + escapeHtml(preview) + '</p></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editPengumuman(\'' + item.id + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'pengumuman\',\'' + item.id + '\')">Hapus</button></div></div>';
       });
       document.getElementById('adminPengumumanList').innerHTML = html || '<p style="color:var(--muted);">Belum ada pengumuman.</p>';
     }
@@ -580,7 +589,9 @@
       }
     }
 
-    function editPengumuman(id, content) {
+    async function editPengumuman(id) {
+      var rows = await DB.reload('pengumuman', '?select=*&id=eq.' + encodeURIComponent(id));
+      var content = rows && rows[0] ? rows[0].content : '';
       document.getElementById('pengumumanId').value = id;
       document.getElementById('pengumumanContent').value = content;
       document.getElementById('pengumumanFormTitle').textContent = 'Edit Pengumuman';
@@ -600,7 +611,7 @@
       try { items = await DB.reload('formulir'); } catch (error) { showToast(error.message, 'error'); }
       var html = '';
       items.forEach(function(item) {
-        html += '<div class="admin-item"><div><strong>' + item.nama + '</strong></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editFormulir(\'' + item.id + '\', \'' + item.nama.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'formulir\',\'' + item.id + '\')">Hapus</button></div></div>';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.nama) + '</strong></div><div style="display: flex; gap: 0.5rem;"><button class="btn-sm btn-soft" onclick="editFormulir(\'' + item.id + '\')">Edit</button><button class="btn-sm btn-danger" onclick="deleteItem(\'formulir\',\'' + item.id + '\')">Hapus</button></div></div>';
       });
       document.getElementById('adminFormulirList').innerHTML = html || '<p style="color:var(--muted);">Belum ada formulir.</p>';
     }
@@ -631,7 +642,9 @@
       }
     }
 
-    function editFormulir(id, nama) {
+    async function editFormulir(id) {
+      var rows = await DB.reload('formulir', '?select=*&id=eq.' + encodeURIComponent(id));
+      var nama = rows && rows[0] ? rows[0].nama : '';
       document.getElementById('formulirId').value = id;
       document.getElementById('formulirNama').value = nama;
       document.getElementById('formulirFormTitle').textContent = 'Edit Jenis Formulir';
@@ -654,28 +667,16 @@
         var pdfUrl = item.pdf_url || item.pdfData;
         var pdfName = item.pdf_name || item.pdfName || 'warta.pdf';
         var pdfLink = pdfUrl ? '<a href="' + pdfUrl + '" download="' + pdfName + '" class="btn-sm btn-soft" style="margin-left: 8px;">📥 Unduh PDF</a>' : '';
-        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.title) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.date) + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminWartaList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data warta.</p>';
     }
 
     async function saveWarta(e) {
       e.preventDefault();
-      if (!selectedWartaPdf) { showToast('Silakan pilih file PDF warta', 'error'); return; }
-      var file = selectedWartaPdf;
-      try {
-        var filename = DB.filename(file.name, '.pdf');
-        var pdfUrl = await DB.upload('warta', filename, file, 'application/pdf');
-        var photoUrl = '';
-        if (selectedWartaPhoto) {
-          var compressed = await ImageCompressor.compress(selectedWartaPhoto);
-          var photoBlob = await (await fetch(compressed.dataUrl)).blob();
-          photoUrl = await DB.upload('warta', DB.filename(selectedWartaPhoto.name, '.webp'), photoBlob, 'image/webp');
-        }
-        await DB.add('warta', { title: document.getElementById('wartaTitle').value.trim(), date: document.getElementById('wartaDate').value, pdf_url: pdfUrl, pdf_name: file.name, photo_url: photoUrl });
-        e.target.reset(); selectedWartaPdf = null; selectedWartaPhoto = null; document.getElementById('wartaPdfPreview').innerHTML = ''; document.getElementById('wartaPhotoPreview').innerHTML = '';
-        showToast('Warta berhasil ditambahkan', 'success'); await renderAdminWarta();
-      } catch (error) { showToast('Gagal menyimpan warta: ' + error.message, 'error'); }
+      if (!selectedWartaPhoto) { showToast('Silakan pilih foto warta', 'error'); return; }
+      var button = e.target.querySelector('button[type="submit"]'); button.disabled = true;
+      try { var date = document.getElementById('wartaDate').value; var compressed = await ImageCompressor.compress(selectedWartaPhoto); var response = await fetch(GOOGLE_DRIVE_WARTA_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ date: date, photo: { data: compressed.dataUrl } }) }); if (!response.ok) throw new Error('Google Drive merespons HTTP ' + response.status); var result = await response.json(); if (result.status !== 'success' || !result.photoUrl) throw new Error(result.message || 'Upload Warta ke Google Drive gagal.'); await DB.add('warta', { title: document.getElementById('wartaTitle').value.trim(), date: date, photo_url: result.photoUrl, photo_name: result.fileName || '' }); e.target.reset(); selectedWartaPhoto = null; document.getElementById('wartaPhotoPreview').innerHTML = ''; showToast('Warta tersimpan di Google Drive', 'success'); await renderAdminWarta(); } catch (error) { showToast('Gagal menyimpan warta: ' + error.message, 'error'); } finally { button.disabled = false; }
     }
 
     async function renderAdminRenungan() {
@@ -684,39 +685,16 @@
       var html = '';
       items.forEach(function(item) {
         var label = item.title || 'Renungan';
-        html += '<div class="admin-item"><div><strong>' + label + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'renungan\',\'' + item.id + '\')">Hapus</button></div>';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(label) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.date) + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'renungan\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminRenunganList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data renungan.</p>';
     }
 
     async function saveRenungan(e) {
       e.preventDefault();
-      if (!selectedRenunganFile) { showToast('Silakan pilih gambar atau PDF renungan', 'error'); return; }
-      try {
-        var file = selectedRenunganFile;
-        var isPdf = file.type === 'application/pdf';
-        var uploadBody = file;
-        var contentType = file.type;
-        var filename;
-        if (isPdf) {
-          filename = DB.filename(file.name, '.pdf');
-        } else {
-          var compressed = await ImageCompressor.compress(file);
-          uploadBody = await (await fetch(compressed.dataUrl)).blob();
-          contentType = 'image/webp';
-          filename = DB.filename(file.name, '.webp');
-        }
-        var fileUrl = await DB.upload('renungan', filename, uploadBody, contentType);
-        // Skema tabel renungan saat ini memakai kolom date, image_url, dan image_name.
-        // Judul tetap dipakai sebagai nama file agar tidak mengirim kolom yang belum ada.
-        await DB.add('renungan', {
-          date: document.getElementById('renunganDate').value,
-          image_url: fileUrl,
-          image_name: document.getElementById('renunganTitle').value.trim() + ' — ' + filename
-        });
-        e.target.reset(); selectedRenunganFile = null; document.getElementById('renunganImagePreview').innerHTML = '';
-        showToast('Renungan berhasil ditambahkan', 'success'); await renderAdminRenungan();
-      } catch (error) { showToast('Gagal menyimpan renungan: ' + error.message, 'error'); }
+      if (!selectedRenunganFile || selectedRenunganFile.type === 'application/pdf') { showToast('Silakan pilih gambar renungan', 'error'); return; }
+      var button = e.target.querySelector('button[type="submit"]'); button.disabled = true;
+      try { var date = document.getElementById('renunganDate').value; var compressed = await ImageCompressor.compress(selectedRenunganFile); var response = await fetch(GOOGLE_DRIVE_RENUNGAN_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ date: date, photo: { data: compressed.dataUrl } }) }); if (!response.ok) throw new Error('Google Drive merespons HTTP ' + response.status); var result = await response.json(); if (result.status !== 'success' || !result.photoUrl) throw new Error(result.message || 'Upload Renungan ke Google Drive gagal.'); await DB.add('renungan', { date: date, image_url: result.photoUrl, image_name: result.fileName || '' }); e.target.reset(); selectedRenunganFile = null; document.getElementById('renunganImagePreview').innerHTML = ''; showToast('Renungan tersimpan di Google Drive', 'success'); await renderAdminRenungan(); } catch (error) { showToast('Gagal menyimpan renungan: ' + error.message, 'error'); } finally { button.disabled = false; }
     }
 
     async function renderAdminJadwal() {
@@ -725,8 +703,8 @@
       items.forEach(function(item) {
         var scheduleType = item.type === 'khusus' ? 'Ibadah Khusus' : 'Ibadah Rutin';
         var scheduleDate = item.type === 'khusus' ? ' • ' + (item.date || '-') : '';
-        var churchLabel = item.church === 'gereja1' ? 'Gereja 1' : item.church === 'gereja2' ? 'Gereja 2' : item.church === 'gereja3' ? 'Gereja 3' : item.church || '-';
-        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + churchLabel + ' • ' + scheduleType + scheduleDate + ' • ' + item.time + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
+        var churchLabel = item.church === 'gereja1' ? 'GKJTU Kinasih Genthan' : item.church === 'gereja2' ? 'GKJTU Kinasih Getas' : item.church === 'gereja3' ? 'GKJTU Kinasih Kadirejo' : item.church || '-';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.name) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(churchLabel) + ' • ' + scheduleType + scheduleDate + ' • ' + escapeHtml(item.time) + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'jadwal\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminJadwalList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data jadwal.</p>';
     }
@@ -758,7 +736,6 @@
     }
 
     var selectedEventPhotos = [];
-    var selectedWartaPdf = null;
     var selectedWartaPhoto = null;
     var selectedRenunganFile = null;
     var calendarMonth = new Date();
@@ -877,7 +854,7 @@
       }
       selectedRenunganFile = file;
       if (isPdf) {
-        document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item" style="padding:1rem;display:flex;align-items:center;gap:.5rem;">📄 <span>' + file.name + '</span></div>';
+        document.getElementById('renunganImagePreview').innerHTML = '<div class="photo-preview-item" style="padding:1rem;display:flex;align-items:center;gap:.5rem;">📄 <span>' + escapeHtml(file.name) + '</span></div>';
         return;
       }
       var reader = new FileReader();
@@ -899,28 +876,6 @@
     });
 
     // PDF upload handler
-    document.getElementById('wartaPdfFile').addEventListener('change', function(e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) {
-        showToast('Ukuran PDF melebihi 5MB', 'error');
-        e.target.value = '';
-        selectedWartaPdf = null;
-        document.getElementById('wartaPdfPreview').innerHTML = '';
-        return;
-      }
-      if (file.type !== 'application/pdf') {
-        showToast('File harus berformat PDF', 'error');
-        e.target.value = '';
-        selectedWartaPdf = null;
-        document.getElementById('wartaPdfPreview').innerHTML = '';
-        return;
-      }
-      selectedWartaPdf = file;
-      var container = document.getElementById('wartaPdfPreview');
-      container.innerHTML = '<div class="photo-preview-item" style="display:flex;align-items:center;justify-content:center"><div style="text-align:center"><span style="font-size:24px">📄</span><p style="margin:4px 0 0; font-size:12px">' + file.name + '</p></div></div>';
-    });
-
     function renderPhotoPreviews() {
       var container = document.getElementById('eventPhotoPreview');
       container.innerHTML = '';
@@ -948,7 +903,7 @@
         var photoCount = countByEvent[item.id] || 0;
         var folderUrl = item.drive_folder_url || item.driveFolderUrl || '';
         var folderLink = folderUrl ? ' • <a href="' + folderUrl + '" target="_blank" rel="noopener">📂 Buka folder Drive</a>' : '';
-        html += '<div class="admin-item"><div><strong>' + item.title + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.date + ') • ' + photoCount + ' foto</span>' + folderLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.title) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.date) + ') • ' + photoCount + ' foto</span>' + folderLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'event\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminEventList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data event.</p>';
     }
@@ -1033,7 +988,7 @@
       try { items = await DB.reload('kepemimpinan', '?select=*&is_active=eq.true&order=sort_order.asc,created_at.asc'); } catch (error) { showToast(error.message, 'error'); }
       var html = '';
       items.forEach(function(item) {
-        html += '<div class="admin-item"><div><strong>' + item.name + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + item.position + ' • urutan ' + item.sort_order + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'kepemimpinan\',\'' + item.id + '\')">Hapus</button></div>';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.name) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.position) + ' • urutan ' + item.sort_order + ')</span></div><button class="btn-sm btn-danger" onclick="deleteItem(\'kepemimpinan\',\'' + item.id + '\')">Hapus</button></div>';
       });
       document.getElementById('adminKepemimpinanList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data kepemimpinan.</p>';
     }
@@ -1090,7 +1045,8 @@
     }
 
     async function deleteItem(type, id) {
-      if (!confirm('Yakin ingin menghapus item ini?')) return;
+      var labels = { warta: 'warta', renungan: 'renungan', jadwal: 'jadwal ibadah', event: 'event', kepemimpinan: 'data kepengurusan', pengumuman: 'pengumuman', formulir: 'formulir', informasi: 'informasi', galeri: 'galeri' };
+      if (!confirm('Yakin ingin menghapus ' + (labels[type] || 'item') + ' ini?')) return;
       try {
         if (type === 'event') {
           try { await DB.removeWhere('event_photo', 'event_id=eq.' + encodeURIComponent(id)); } catch (photoErr) { console.warn('Tidak ada event_photo yang perlu dihapus:', photoErr.message); }
@@ -1131,13 +1087,15 @@
       var adminNav = document.getElementById('adminNav');
       if (adminMenuToggle && adminNav) {
         adminMenuToggle.addEventListener('click', function() {
-          adminNav.classList.toggle('open');
+          var isOpen = adminNav.classList.toggle('open');
+          adminMenuToggle.setAttribute('aria-expanded', String(isOpen));
         });
         
         var links = adminNav.querySelectorAll('.admin-nav-link:not(.admin-dropdown-toggle), .admin-dropdown-link');
         links.forEach(function(link) {
           link.addEventListener('click', function() {
             adminNav.classList.remove('open');
+            adminMenuToggle.setAttribute('aria-expanded', 'false');
             var menu = document.getElementById('adminDropdownMenu');
             if (menu) menu.classList.remove('open');
           });
@@ -1146,9 +1104,18 @@
     });
 
     // ==================== INFORMASI CRUD ====================
+    // Semua panel dimuat dalam satu alur agar error tidak menghasilkan rentetan toast.
     async function renderAllAdmin() {
-      await loadInformasi();
-      await initInformasiForm();
+      try {
+        await Promise.all([
+          renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(),
+          renderAdminEvent(), renderAdminKepemimpinan(), renderAdminPengumuman(),
+          renderAdminFormulir(), loadInformasi(), initInformasiForm()
+        ]);
+      } catch (error) {
+        showToast('Sebagian data admin gagal dimuat. Periksa koneksi lalu coba lagi.', 'error');
+        console.error('Gagal memuat dashboard admin:', error);
+      }
     }
   </script>
 </body>

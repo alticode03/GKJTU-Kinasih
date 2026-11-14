@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -29,7 +29,7 @@
       <a href="/informasi" class="nav-link">Informasi</a>
       <a href="/renungan" class="nav-link">Renungan</a>
       <div class="nav-dropdown">
-        <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret">▾</span></button>
+        <button type="button" class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Lainnya <span class="dropdown-caret" aria-hidden="true">▾</span></button>
         <div class="dropdown-menu">
           <a href="/pages/formulir-jemaat.html" class="dropdown-item">Formulir Jemaat</a>
           <a href="/pages/galeri.html" class="dropdown-item">Galeri</a>
@@ -52,7 +52,7 @@
           <div class="form-group">
             <label for="jenisFormulir">Jenis Formulir</label>
             <select id="jenisFormulir" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: var(--font-body);">
-              <option value="">Memuat formulir...</option>
+              <option value="">Sedang memuat daftar formulir…</option>
             </select>
           </div>
 
@@ -75,7 +75,7 @@
               </label>
               <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="radio" name="asalGereja" value="gereja2" style="width: 18px; height: 18px; cursor: pointer;">
-                <span>GKJTU Kinasih Gentan</span>
+                <span>GKJTU Kinasih Genthan</span>
               </label>
               <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="radio" name="asalGereja" value="gereja3" style="width: 18px; height: 18px; cursor: pointer;">
@@ -115,9 +115,9 @@
       </div>
       <div class="footer-col">
         <h4>Lokasi</h4>
-        <p><strong>Lokasi 1:</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps ?</a></p>
-        <p style="margin-top: 1.5rem;"><strong>Lokasi 2:</strong><br><em>Alamat gereja 2 (segera diisi)</em></p>
-        <p style="margin-top: 1.5rem;"><strong>Lokasi 3:</strong><br><em>Alamat gereja 3 (segera diisi)</em></p>
+        <p><strong>GKJTU Kinasih Genthan</strong><br>Jalan Getas, Popongan, Bringin<br>Kabupaten Semarang, Jawa Tengah 50772<br><a href="https://maps.app.goo.gl/8MPk6GZdvaqbaswA6" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 2: GKJTU Kinasih Getas</strong><br>Jalan Getas, Popongan, Bringin, Semarang Regency, Central Java 50772<br><a href="https://share.google/uIlek4ewJg7Vm2Jve" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
+        <p style="margin-top: 1.5rem;"><strong>Lokasi 3: GKJTU Kinasih Kadirejo</strong><br>Jl. Sumowono–Macanan, Dusun Bungas, Desa Kadirejo, Kecamatan Pabelan, Kabupaten Semarang, Jawa Tengah 50771<br><a href="https://share.google/OHExDXEqDGQAN1AvV" target="_blank" rel="noopener">Buka di Google Maps →</a></p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -171,7 +171,7 @@
         return;
       }
 
-      var gerejaLabel = asalGereja === 'gereja1' ? 'Gereja 1' : asalGereja === 'gereja2' ? 'Gereja 2' : 'Gereja 3';
+      var gerejaLabel = asalGereja === 'gereja1' ? 'GKJTU Kinasih Genthan' : asalGereja === 'gereja2' ? 'GKJTU Kinasih Getas' : 'GKJTU Kinasih Kadirejo';
 
       var pesan = '*Formulir Jemaat GKJTU Kinasih*\n\n';
       pesan += '*Jenis Formulir:* ' + jenisFormulir + '\n';
