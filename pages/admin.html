@@ -1074,7 +1074,7 @@
         await Promise.all([
           renderAdminWarta(), renderAdminRenungan(), renderAdminJadwal(),
           renderAdminEvent(), renderAdminKepemimpinan(), renderAdminPengumuman(),
-          renderAdminFormulir(), loadInformasi(), initInformasiForm()
+          renderAdminFormulir(), renderAdminGaleri(), loadInformasi(), initInformasiForm()
         ]);
       } catch (error) {
         showToast('Sebagian data admin gagal dimuat. Periksa koneksi lalu coba lagi.', 'error');
