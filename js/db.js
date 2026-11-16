@@ -13,13 +13,18 @@ var DB = (function () {
   var key = window.SUPABASE_CONFIG.anonKey;
   var buckets = { warta: 'warta-pdfs', renungan: 'renungan-images', kepemimpinan: 'kepemimpinan-images' };
 
-  function isUsableJwt(token) {
-    if (typeof token !== 'string' || token.split('.').length !== 3) return false;
+  function jwtPayload(token) {
+    if (typeof token !== 'string' || token.split('.').length !== 3) return null;
     try {
       var payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
       payload += '='.repeat((4 - payload.length % 4) % 4);
-      return JSON.parse(atob(payload)).exp * 1000 > Date.now();
-    } catch (e) { return false; }
+      return JSON.parse(atob(payload));
+    } catch (e) { return null; }
+  }
+
+  function isUsableJwt(token) {
+    var payload = jwtPayload(token);
+    return !!(payload && payload.exp * 1000 > Date.now());
   }
 
   function headers(extra) {
@@ -27,9 +32,11 @@ var DB = (function () {
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var storageKey = localStorage.key(i);
-        if (/^sb-.*-auth-token$/.test(storageKey)) {
-          var session = JSON.parse(localStorage.getItem(storageKey));
-          if (session && session.access_token && isUsableJwt(session.access_token)) token = session.access_token;
+        if (!/^sb-[^-]+-auth-token$/.test(storageKey)) continue;
+        var session = JSON.parse(localStorage.getItem(storageKey));
+        var payload = session && jwtPayload(session.access_token);
+        if (session && session.access_token && payload && payload.ref === 'frowpckwjlrzterlmdud' && payload.role === 'authenticated' && isUsableJwt(session.access_token)) {
+          token = session.access_token;
           break;
         }
       }
