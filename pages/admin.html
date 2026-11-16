@@ -36,9 +36,6 @@
           <a href="#" class="admin-dropdown-link" data-admin-tab="informasi" onclick="event.preventDefault(); switchTabAdmin('informasi'); toggleAdminDropdown()">Informasi</a>
           <a href="#" class="admin-dropdown-link" data-admin-tab="galeri" onclick="event.preventDefault(); switchTabAdmin('galeri'); toggleAdminDropdown()">Galeri</a>
           <a href="#" class="admin-dropdown-link" data-admin-tab="kepemimpinan" onclick="event.preventDefault(); switchTabAdmin('kepemimpinan'); toggleAdminDropdown()">Kepemimpinan</a>
-          <a href="#" class="admin-dropdown-link" data-admin-tab="pelayanan" onclick="event.preventDefault(); switchTabAdmin('pelayanan'); toggleAdminDropdown()">Pelayanan</a>
-          <a href="#" class="admin-dropdown-link" data-admin-tab="persembahan" onclick="event.preventDefault(); switchTabAdmin('persembahan'); toggleAdminDropdown()">Persembahan</a>
-          <a href="#" class="admin-dropdown-link" data-admin-tab="kontak" onclick="event.preventDefault(); switchTabAdmin('kontak'); toggleAdminDropdown()">Kontak</a>
           <a href="#" class="admin-dropdown-link" data-admin-tab="pengumuman" onclick="event.preventDefault(); switchTabAdmin('pengumuman'); toggleAdminDropdown()">Pengumuman Duka</a>
           <a href="#" class="admin-dropdown-link" data-admin-tab="formulir" onclick="event.preventDefault(); switchTabAdmin('formulir'); toggleAdminDropdown()">Formulir Jemaat</a>
         </div>
@@ -77,10 +74,7 @@
         <button class="admin-tab" onclick="switchTab('event')">Event</button>
         <button class="admin-tab" onclick="switchTab('kepemimpinan')">Kepemimpinan</button>
         <button class="admin-tab" onclick="switchTab('informasi')">Informasi</button>
-        <button class="admin-tab" onclick="switchTab('pelayanan')">Pelayanan</button>
         <button class="admin-tab" onclick="switchTab('galeri')">Galeri</button>
-        <button class="admin-tab" onclick="switchTab('persembahan')">Persembahan</button>
-        <button class="admin-tab" onclick="switchTab('kontak')">Kontak</button>
         <button class="admin-tab" onclick="switchTab('formulir')">Formulir Jemaat</button>
       </div>
 
@@ -301,16 +295,6 @@
         <div id="adminInformasiList"></div>
       </div>
 
-      <!-- PANEL PELAYANAN -->
-      <div id="panel-pelayanan" class="admin-panel">
-        <div class="admin-card">
-          <h2 style="margin-bottom: 1rem;">Kelola Informasi Pelayanan</h2>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan pelayanan belum tersedia. Data pelayanan masih dikelola di luar panel ini.</p>
-        </div>
-        <h2 style="margin-bottom: 1rem;">Daftar Pelayanan</h2>
-        <div id="adminPelayananList"></div>
-      </div>
-
       <!-- PANEL GALERI -->
       <div id="panel-galeri" class="admin-panel">
         <div class="admin-card">
@@ -340,26 +324,6 @@
         </div>
         <h2 style="margin-bottom: 1rem;">Daftar Galeri</h2>
         <div id="adminGaleriList"></div>
-      </div>
-
-      <!-- PANEL PERSEMBAHAN -->
-      <div id="panel-persembahan" class="admin-panel">
-        <div class="admin-card">
-          <h2 style="margin-bottom: 1rem;">Kelola Data Persembahan</h2>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan persembahan belum tersedia. Laporan saat ini ditampilkan dari sumber data yang sudah ada.</p>
-        </div>
-        <h2 style="margin-bottom: 1rem;">Laporan Persembahan</h2>
-        <div id="adminPersembahanList"></div>
-      </div>
-
-      <!-- PANEL KONTAK -->
-      <div id="panel-kontak" class="admin-panel">
-        <div class="admin-card">
-          <h2 style="margin-bottom: 1rem;">Kelola Informasi Kontak</h2>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Fitur pengelolaan kontak belum tersedia. Perubahan kontak masih dilakukan melalui konfigurasi situs.</p>
-        </div>
-        <h2 style="margin-bottom: 1rem;">Info Kontak Saat Ini</h2>
-        <div id="adminKontakList"></div>
       </div>
 
       <!-- PANEL FORMULIR JEMAAT -->

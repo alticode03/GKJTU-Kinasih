@@ -14,9 +14,20 @@ var DB = (function () {
   var buckets = { warta: 'warta-pdfs', renungan: 'renungan-images', kepemimpinan: 'kepemimpinan-images' };
 
   function headers(extra) {
+    var token = key;
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var storageKey = localStorage.key(i);
+        if (/^sb-.*-auth-token$/.test(storageKey)) {
+          var session = JSON.parse(localStorage.getItem(storageKey));
+          if (session && session.access_token) token = session.access_token;
+          break;
+        }
+      }
+    } catch (e) {}
     var result = { 'Content-Type': 'application/json', Prefer: 'return=representation' };
     result['api' + 'key'] = key;
-    result['Authorization'] = 'Bearer ' + key;
+    result['Authorization'] = 'Bearer ' + token;
     if (extra) Object.assign(result, extra);
     return result;
   }
@@ -65,7 +76,7 @@ var DB = (function () {
       if (!bucket) throw new Error('Bucket Storage tidak tersedia untuk ' + table + '.');
       var uploadHeaders = { 'Content-Type': contentType || 'application/octet-stream' };
       uploadHeaders['api' + 'key'] = key;
-      uploadHeaders['Authorization'] = 'Bearer ' + key;
+      uploadHeaders['Authorization'] = headers()['Authorization'];
       var response = await fetch(base + '/storage/v1/object/' + bucket + '/' + filename, {
         method: 'POST', headers: uploadHeaders, body: body
       });
@@ -76,7 +87,7 @@ var DB = (function () {
       if (!filename || !buckets[table]) return Promise.resolve();
       var deleteHeaders = {};
       deleteHeaders['api' + 'key'] = key;
-      deleteHeaders['Authorization'] = 'Bearer ' + key;
+      deleteHeaders['Authorization'] = headers()['Authorization'];
       return request('/storage/v1/object/' + buckets[table] + '/' + filename, {
         method: 'DELETE', headers: deleteHeaders
       }, 'Gagal menghapus file Storage.');

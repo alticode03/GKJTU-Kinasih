@@ -59,7 +59,8 @@ async function saveGaleri(e) {
     if (!response.ok) throw new Error('Google Apps Script merespons HTTP ' + response.status);
     var result = await response.json();
     if ((result.status && result.status !== 'success') || result.success === false || !result.folderUrl) throw new Error(result.message || result.error || 'Folder Drive tidak berhasil dibuat.');
-    var thumbnailUrl = result.thumbnailUrl || result.photoUrl || (result.photos && result.photos[0] && (result.photos[0].url || result.photos[0].link)) || '';
+    var firstPhoto = result.photos && result.photos[0];
+    var thumbnailUrl = result.thumbnailUrl || result.photoUrl || (typeof firstPhoto === 'string' ? firstPhoto : firstPhoto && (firstPhoto.url || firstPhoto.link)) || '';
     if (!thumbnailUrl) throw new Error('Apps Script tidak mengembalikan URL foto.');
     await DB.add('galeri', { title: title, description: description, photo_url: thumbnailUrl, drive_folder_url: result.folderUrl, drive_folder_id: result.folderId || '' });
     resetGaleriForm();

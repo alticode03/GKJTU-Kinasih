@@ -16,7 +16,6 @@
       { "source": "/informasi", "destination": "/pages/informasi.html" },
       { "source": "/renungan", "destination": "/pages/renungan.html" },
       { "source": "/galeri", "destination": "/pages/galeri.html" },
-      { "source": "/persembahan", "destination": "/pages/persembahan.html" },
       { "source": "/formulir-jemaat", "destination": "/pages/formulir-jemaat.html" },
       { "source": "**", "destination": "/index.html" }
     ]
