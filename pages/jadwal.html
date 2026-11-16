@@ -240,7 +240,16 @@
       document.getElementById('wartaModalTitle').textContent = item.title || 'Warta';
       document.getElementById('wartaModalDate').textContent = item.date || '';
       document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
-      
+
+      const wartaImage = document.getElementById('wartaModalImage');
+      const photoUrl = item.photo_url || item.photoUrl || item.image_url || item.imageUrl;
+      if (photoUrl) {
+        wartaImage.src = photoUrl;
+        wartaImage.style.display = 'block';
+      } else {
+        wartaImage.style.display = 'none';
+      }
+
       const pdfLink = document.getElementById('wartaModalPdfLink');
       const pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
       if (pdfUrl && pdfUrl !== '#') {
