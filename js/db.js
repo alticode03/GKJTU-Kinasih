@@ -13,6 +13,15 @@ var DB = (function () {
   var key = window.SUPABASE_CONFIG.anonKey;
   var buckets = { warta: 'warta-pdfs', renungan: 'renungan-images', kepemimpinan: 'kepemimpinan-images' };
 
+  function isUsableJwt(token) {
+    if (typeof token !== 'string' || token.split('.').length !== 3) return false;
+    try {
+      var payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      payload += '='.repeat((4 - payload.length % 4) % 4);
+      return JSON.parse(atob(payload)).exp * 1000 > Date.now();
+    } catch (e) { return false; }
+  }
+
   function headers(extra) {
     var token = key;
     try {
@@ -20,7 +29,7 @@ var DB = (function () {
         var storageKey = localStorage.key(i);
         if (/^sb-.*-auth-token$/.test(storageKey)) {
           var session = JSON.parse(localStorage.getItem(storageKey));
-          if (session && session.access_token) token = session.access_token;
+          if (session && session.access_token && isUsableJwt(session.access_token)) token = session.access_token;
           break;
         }
       }
