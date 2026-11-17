@@ -3,8 +3,8 @@ function rowWartaWithPreview(item) {
   var itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
   var photoHtml = '';
   
-  if (item.photo_url || item.photoUrl) {
-    var photoUrl = item.photo_url || item.photoUrl;
+  var photoUrl = item.photo_url || item.photoUrl || item.photo_name;
+  if (photoUrl) {
     photoHtml = '<img src="' + photoUrl + '" alt="' + (item.title || 'Warta') + '" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; cursor: pointer;" onclick="openWartaPhotoModal(event, \'' + photoUrl.replace(/'/g, "\\'") + '\', ' + itemJson + ')" title="Klik untuk perbesar">';
   }
   

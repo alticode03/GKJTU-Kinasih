@@ -242,7 +242,7 @@
       document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
 
       const wartaImage = document.getElementById('wartaModalImage');
-      const photoUrl = item.photo_url || item.photoUrl || item.image_url || item.imageUrl;
+      const photoUrl = item.photo_url || item.photoUrl || item.photo_name || item.image_url || item.imageUrl;
       if (photoUrl) {
         wartaImage.src = photoUrl;
         wartaImage.style.display = 'block';
