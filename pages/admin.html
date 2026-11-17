@@ -629,9 +629,8 @@
       var html = '';
       items.forEach(function(item) {
         var pdfUrl = item.pdf_url || item.pdfData;
-        var pdfName = item.pdf_name || item.pdfName || 'warta.pdf';
-        var pdfLink = pdfUrl ? '<a href="' + pdfUrl + '" download="' + pdfName + '" class="btn-sm btn-soft" style="margin-left: 8px;">📥 Unduh PDF</a>' : '';
-        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.title) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.date) + ')</span>' + pdfLink + '</div><button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div>';
+        var pdfLink = pdfUrl ? '<a href="' + pdfUrl + '" target="_blank" rel="noopener" class="btn-sm btn-soft" style="margin-left: 8px;">Lihat PDF</a>' : '';
+        html += '<div class="admin-item"><div><strong>' + escapeHtml(item.title) + '</strong> <span style="color:var(--muted); font-size:.85rem;">(' + escapeHtml(item.date) + ')</span></div><div class="admin-item-actions">' + pdfLink + '<button class="btn-sm btn-danger" onclick="deleteItem(\'warta\',\'' + item.id + '\')">Hapus</button></div></div>';
       });
       document.getElementById('adminWartaList').innerHTML = html || '<p style="color:var(--muted);">Belum ada data warta.</p>';
     }

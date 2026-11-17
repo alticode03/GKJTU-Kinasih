@@ -1049,27 +1049,21 @@ body { overflow-x: hidden; }
 }
 
 .warta-modal-footer {
-  padding: 2rem;
-  border-top: 1px solid var(--border);
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: center;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--card);
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: #fff;
-  padding: 0.8rem 2rem;
-  border-radius: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(200, 109, 81, 0.25);
+.warta-modal-footer .btn-primary {
+  margin: 0;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -1086,9 +1080,12 @@ body { overflow-x: hidden; }
     font-size: 1.5rem;
   }
   
-  .warta-modal-body,
-  .warta-modal-footer {
+  .warta-modal-body {
     padding: 1.5rem;
+  }
+
+  .warta-modal-footer {
+    padding: 1rem 1.5rem;
   }
 }
 .informasi-section { margin-top: 2rem; }

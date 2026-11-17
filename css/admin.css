@@ -30,6 +30,7 @@
 .btn-sm { padding: 5px 14px; font-size: .82rem; border-radius: 2rem; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-weight: 600; }
 .btn-danger { color: #E53935; border-color: #E53935; }
 .btn-danger:hover { background: #E53935; color: #fff; }
+.admin-item-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 
 /* ===== CUSTOM FILE INPUT ===== */

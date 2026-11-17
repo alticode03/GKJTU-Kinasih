@@ -83,11 +83,10 @@
           <p id="wartaModalDate" class="warta-modal-date"></p>
         </div>
         <div class="warta-modal-body">
-          <img id="wartaModalImage" style="max-width:100%;height:auto;border-radius:8px;margin-bottom:1rem;display:none;" alt="Warta preview">
           <p id="wartaModalContent"></p>
-        </div
+        </div>
         <div class="warta-modal-footer">
-          <a id="wartaModalPdfLink" href="#" target="_blank" rel="noopener" class="btn-primary" style="display:none;">Unduh PDF Lengkap</a>
+          <a id="wartaModalPdfLink" href="#" target="_blank" rel="noopener" class="btn-primary" style="display:none;">Lihat PDF</a>
         </div>
       </div>
     </div>
@@ -131,7 +130,6 @@
   <div id="toastContainer" class="toast-container"></div>
   <script src="/js/db.js"></script>
   <script src="/js/ui.js"></script>
-  <script src="/js/warta-preview.js"></script>
   <script>
     var allJadwal = [];
     var allWarta = [];
@@ -185,8 +183,8 @@
     }
 
     function renderWarta() {
-      var preview = allWarta.slice(0, 2).map(rowWartaWithPreview).join('');
-      var more = allWarta.slice(2).map(rowWartaWithPreview).join('');
+      var preview = allWarta.slice(0, 2).map(rowWarta).join('');
+      var more = allWarta.slice(2).map(rowWarta).join('');
       
       var previewEl = document.getElementById('wartaPreview');
       var moreEl = document.getElementById('wartaMore');
@@ -241,20 +239,11 @@
       document.getElementById('wartaModalDate').textContent = item.date || '';
       document.getElementById('wartaModalContent').textContent = item.content || 'Lihat PDF untuk konten lengkap.';
 
-      const wartaImage = document.getElementById('wartaModalImage');
-      const photoUrl = item.photo_url || item.photoUrl || item.photo_name || item.image_url || item.imageUrl;
-      if (photoUrl) {
-        wartaImage.src = photoUrl;
-        wartaImage.style.display = 'block';
-      } else {
-        wartaImage.style.display = 'none';
-      }
-
       const pdfLink = document.getElementById('wartaModalPdfLink');
       const pdfUrl = item.pdf_url || item.pdfUrl || item.pdfData;
       if (pdfUrl && pdfUrl !== '#') {
         pdfLink.href = pdfUrl;
-        pdfLink.style.display = 'inline-block';
+        pdfLink.style.display = 'block';
       } else {
         pdfLink.style.display = 'none';
       }
