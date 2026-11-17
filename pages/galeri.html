@@ -91,7 +91,7 @@
       try {
         var items = await DB.reload('galeri', '?select=*&order=id.desc');
         list.innerHTML = items.length ? items.map(function(item) {
-          var image = item.photo_url ? '<img src="' + item.photo_url + '" alt="' + (item.title || 'Galeri') + '" style="width:100%;height:220px;object-fit:contain;background:var(--card);">' : '';
+          var image = item.photo_url ? '<img class="galeri-thumb" src="' + item.photo_url + '" alt="' + (item.title || 'Galeri') + '" loading="lazy">' : '';
           var drive = item.drive_folder_url ? '<a class="btn-primary" href="' + item.drive_folder_url + '" target="_blank" rel="noopener">Buka Dokumentasi Lengkap</a>' : '';
           return '<article class="event-card">' + image + '<div class="event-info"><h3>' + (item.title || '') + '</h3><p>' + (item.description || '') + '</p>' + drive + '</div></article>';
         }).join('') : '<p style="color:var(--muted)">Belum ada galeri.</p>';
